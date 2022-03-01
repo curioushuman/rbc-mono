@@ -20,6 +20,20 @@ $ npm install
 $ docker run -p 3000:3000 curioushuman/rbc-auth
 ```
 
+## Kubernetes
+
+Need to push the docker image up to docker hub:
+
+```bash
+$ docker push curioushuman/rbc-auth
+```
+
+Need to install Ingress Nginx
+
+```bash
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.1.1/deploy/static/provider/cloud/deploy.yaml
+```
+
 ## Running the app
 
 ```bash
