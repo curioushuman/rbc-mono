@@ -13,6 +13,13 @@ Members service for RbC
 $ npm install
 ```
 
+## Running the app via Docker
+
+```bash
+# development, listening on http://localhost:3000/
+$ docker run -p 3000:3000 curioushuman/rbc-auth
+```
+
 ## Running the app
 
 ```bash
@@ -38,7 +45,3 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
-
-## License
-
-Nest is [MIT licensed](LICENSE).
