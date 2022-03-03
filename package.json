@@ -1,0 +1,13 @@
+{
+  "name": "rbc-mono",
+  "version": "1.0.0",
+  "description": "Monorepo for RbC",
+  "scripts": {
+    "install:auth": "cd auth && npm install && cd ..",
+    "install:members": "cd auth && npm install && cd ..",
+    "install:all": "npm run install:auth && npm run install:members"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
