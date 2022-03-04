@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 
 import { MembersService } from './members.service';
-import { CreateMemberDto } from './dto/create-member.dto';
+import { CreateMemberDto } from './dto';
 
 @Controller('members')
 export class MembersController {
@@ -28,11 +28,4 @@ export class MembersController {
       throw new BadRequestException(error.message);
     }
   }
-
-  // use this syntax
-  // it specifies the method is asynchronous, and returns a type-safe Promise
-  // @Get()
-  // async findAll(): Promise<Cat[]> {
-  //   return this.catsService.findAll();
-  // }
 }

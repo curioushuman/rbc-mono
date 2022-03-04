@@ -4,7 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { MembersController } from './members.controller';
 import { MembersService } from './members.service';
-import { Member, MemberSchema } from './member.schema';
+import { Member, MemberSchema } from './schema';
 
 @Module({
   imports: [

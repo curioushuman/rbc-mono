@@ -3,8 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { MongooseError } from 'mongoose';
 import { CommonService } from '@curioushuman/rbc-common';
 
-import { Member, MemberModel } from './member.schema';
-import { CreateMemberDto } from './dto/create-member.dto';
+import { Member, MemberModel } from './schema';
+import { CreateMemberDto } from './dto';
 
 @Injectable()
 export class MembersService {
@@ -20,7 +20,12 @@ export class MembersService {
     return this.commonService.getHello();
   }
 
+  /**
+   * TODO: abstract the error handling
+   */
   async create(createMemberDto: CreateMemberDto): Promise<Member> {
+    // UP TO
+    // Converting from DTO to Member Schema structure
     const createdMember = new this.memberModel(createMemberDto);
     try {
       return await createdMember.save();

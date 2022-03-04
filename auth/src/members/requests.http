@@ -2,10 +2,18 @@
 GET http://rbc.dev/api/auth/members
 
 
-### Create a new member
+### Create a new member - SUCCESS
 POST http://rbc.dev/api/auth/members
 Content-Type: application/json
 
 {
     "_id": "123abc4"
+}
+
+### Create a new member - FAIL
+POST http://rbc.dev/api/auth/members
+Content-Type: application/json
+
+{
+    "_id": ""
 }
