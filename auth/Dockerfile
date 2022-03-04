@@ -10,6 +10,8 @@ COPY . .
 
 RUN npm run build
 
+CMD ["npm", "run", "start:dev"]
+
 FROM node:16.13.2-alpine as production
 
 ARG NODE_ENV=production
