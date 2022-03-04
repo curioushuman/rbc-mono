@@ -1,0 +1,11 @@
+### List all members
+GET http://rbc.dev/api/auth/members
+
+
+### Create a new member
+POST http://rbc.dev/api/auth/members
+Content-Type: application/json
+
+{
+    "_id": "123abc4"
+}
