@@ -1,5 +1,5 @@
 export default () => ({
-  database: {
+  mongodb: {
     uri: process.env.MONGODB_URI,
   },
 });

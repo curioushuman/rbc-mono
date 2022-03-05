@@ -5,6 +5,7 @@ import {
   DocumentBuilder,
   SwaggerDocumentOptions,
 } from '@nestjs/swagger';
+import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app.module';
 
 // TODO
@@ -18,6 +19,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api/auth');
   app.useGlobalPipes(new ValidationPipe());
 
+  // Swagger
   const config = new DocumentBuilder()
     .setTitle('RbC Ecosystem')
     .setDescription(
@@ -33,6 +35,8 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config, options);
   SwaggerModule.setup('docs/api', app, document);
 
-  await app.listen(3000);
+  const configService = app.get(ConfigService);
+  const port = configService.get('port');
+  await app.listen(port);
 }
 bootstrap();
