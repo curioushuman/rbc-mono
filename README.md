@@ -178,9 +178,7 @@ There were a few different options in the mapper space:
 
 Automapper is Typescript first with Nest integration being a core part of it's selling point. It allows us to use decorators where possible, and separate out remaining mapping logic into *mappers* where I feel it belongs.
 
-Check the [docs for more info](https://automapperts.netlify.app/docs/introduction/what-why).
+Some useful links:
 
-Trying:
-
-* Single mapper
-  * Adding profiles in different contexts
+- [Docs](https://automapperts.netlify.app/docs/introduction/what-why)
+- [Example repo](https://github.com/Tevpro/nest-automapper-demo/tree/b04664999fd3517cbda3f7058580a15cd7a97f49)

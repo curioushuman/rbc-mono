@@ -28,7 +28,8 @@ export class Member {
   @Prop({ required: true, type: [EmailSchema] })
   emails!: Email[];
 
-  // TODO: get the profile schema to work
+  // TODO: do not use the raw() method, use the Profile or ProfileSchema
+  // I just need to spend more time here. Other priorities exist.
   // ! Error: Cannot determine a type for the "Member.profile" field
   // ! (union/intersection/ambiguous type was used). Make sure your property
   // ! is decorated with a "@Prop({ type: TYPE_HERE })" decorator.

@@ -6,6 +6,9 @@ import { MembersEmailService } from '../members-email.service';
 import { Member, Email } from '../schema';
 import { CreateMemberDto } from '../dto';
 
+// TODO
+// - create separate functions for the member mapping below
+
 @Injectable()
 export class MemberMapperProfile extends AutomapperProfile {
   constructor(

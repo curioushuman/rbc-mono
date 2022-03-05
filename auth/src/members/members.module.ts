@@ -6,8 +6,10 @@ import { MembersController } from './members.controller';
 import { MembersService } from './members.service';
 import { MembersEmailService } from './members-email.service';
 import { MemberMapperProfile } from './mappers/member.mapper-profile';
-// import { MembersMappingProfile } from './schema';
 import { Member, MemberSchema } from './schema';
+
+// TODO
+// - extract profile to a separate module
 
 @Module({
   imports: [
