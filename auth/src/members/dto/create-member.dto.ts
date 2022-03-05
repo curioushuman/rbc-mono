@@ -1,17 +1,19 @@
 import { IsEmail, IsOptional, IsString } from 'class-validator';
+import { AutoMap } from '@automapper/classes';
 
 export class CreateMemberDto {
+  @AutoMap()
   @IsString()
-  _id: string;
+  crmId!: string;
 
   @IsEmail()
-  email: string;
+  email!: string;
 
   @IsString()
   @IsOptional()
-  firstName: string;
+  firstName?: string;
 
   @IsString()
   @IsOptional()
-  lastName: string;
+  lastName?: string;
 }

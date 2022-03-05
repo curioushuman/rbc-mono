@@ -4,6 +4,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { MembersController } from './members.controller';
 import { MembersService } from './members.service';
+import { MembersEmailService } from './members-email.service';
+import { MemberMapperProfile } from './mappers/member.mapper-profile';
+// import { MembersMappingProfile } from './schema';
 import { Member, MemberSchema } from './schema';
 
 @Module({
@@ -12,6 +15,6 @@ import { Member, MemberSchema } from './schema';
     MongooseModule.forFeature([{ name: Member.name, schema: MemberSchema }]),
   ],
   controllers: [MembersController],
-  providers: [MembersService],
+  providers: [MembersService, MembersEmailService, MemberMapperProfile],
 })
 export class MembersModule {}

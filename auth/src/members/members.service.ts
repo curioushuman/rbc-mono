@@ -1,6 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { MongooseError } from 'mongoose';
+import { InjectMapper } from '@automapper/nestjs';
+import { Mapper } from '@automapper/core';
 import { CommonService } from '@curioushuman/rbc-common';
 
 import { Member, MemberModel } from './schema';
@@ -14,6 +16,7 @@ export class MembersService {
     @InjectModel(Member.name)
     private memberModel: MemberModel,
     private commonService: CommonService,
+    @InjectMapper() private mapper: Mapper,
   ) {}
 
   getHello(): string {
@@ -24,9 +27,8 @@ export class MembersService {
    * TODO: abstract the error handling
    */
   async create(createMemberDto: CreateMemberDto): Promise<Member> {
-    // UP TO
-    // Converting from DTO to Member Schema structure
-    const createdMember = new this.memberModel(createMemberDto);
+    const member = this.mapper.map(createMemberDto, Member, CreateMemberDto);
+    const createdMember = new this.memberModel(member);
     try {
       return await createdMember.save();
     } catch (error) {

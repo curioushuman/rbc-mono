@@ -7,7 +7,10 @@ POST http://rbc.dev/api/auth/members
 Content-Type: application/json
 
 {
-    "_id": "123abc4"
+    "crmId": "dtf3",
+    "email": "james@brown.com",
+    "firstName": "James",
+    "lastName": "Brown"
 }
 
 ### Create a new member - FAIL
