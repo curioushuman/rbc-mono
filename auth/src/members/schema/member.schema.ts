@@ -23,7 +23,7 @@ export class Member {
   // We will be using the CRM ID for member records across the ecosystem
   @AutoMap()
   @Prop({ type: Types.ObjectId, required: true, unique: true })
-  crmId!: string;
+  id!: string;
 
   @Prop({ required: true, type: [EmailSchema] })
   emails!: Email[];

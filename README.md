@@ -130,6 +130,20 @@ Mongoose is the generally preferred option, but it's Typescript support pales in
 * https://mongoosejs.com/docs/typescript.html
 * [Another helpful article](https://javascript.plainenglish.io/leverage-polymorphic-data-validation-with-nest-js-and-mongoose-10ae1dcbcf6d)
 
+## Exception handling
+
+- HTTP exceptions from controller ONLY
+- Exceptions caught in the service and below should be caught, logged, and passed up to be converted to HTTP format by the controller
+
+This allows us flexibility in the future in case our services etc are serving non HTTP channels.
+
+## OpenAPI / Swagger
+
+- We'll use the [CLI plugin](https://docs.nestjs.com/openapi/cli-plugin) to keep additional decorators at a minimum
+- **MOST IMPORTANT** to remember are to use comments above
+  - DTO props
+  - Controller routes
+
 ## Automapper for data mapping between DTO and Schema
 
 We don't want the data structure to be directly exposed as the API. Therefore there was always going to need to be some kind of mapping between (incoming) DTO objects/classes and Schema/Entity classes.

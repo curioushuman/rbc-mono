@@ -13,11 +13,17 @@ import { CreateMemberDto } from './dto';
 export class MembersController {
   constructor(private membersService: MembersService) {}
 
+  /**
+   * Get all members
+   */
   @Get()
   findAll() {
     return this.membersService.findAll();
   }
 
+  /**
+   * Create a member
+   */
   @Post()
   async create(@Body() createMemberDto: CreateMemberDto) {
     try {
