@@ -16,7 +16,7 @@ spec:
         - name: auth
           image: curioushuman/rbc-auth
           env:
-            - name: MONGO_URI
+            - name: MONGODB_URI
               value: 'mongodb://auth-mongo-srv:27017/auth'
             # - name: JWT_KEY
             #   valueFrom:
