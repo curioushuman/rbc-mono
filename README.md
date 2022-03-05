@@ -192,6 +192,11 @@ There were a few different options in the mapper space:
 
 Automapper is Typescript first with Nest integration being a core part of it's selling point. It allows us to use decorators where possible, and separate out remaining mapping logic into *mappers* where I feel it belongs.
 
+The basics:
+
+* Props marked with @AutoMap() map directly from DTO to Model
+* Otherwise look in the relevant mapper and you'll see the logic for mapping
+
 Some useful links:
 
 - [Docs](https://automapperts.netlify.app/docs/introduction/what-why)

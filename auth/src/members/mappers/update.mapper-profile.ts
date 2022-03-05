@@ -4,13 +4,13 @@ import { Injectable } from '@nestjs/common';
 
 import { MembersEmailService } from '../members-email.service';
 import { Member, Email } from '../schema';
-import { CreateMemberDto } from '../dto';
+import { UpdateMemberDto } from '../dto';
 
 // TODO
 // - create separate functions for the member mapping below
 
 @Injectable()
-export class MemberMapperProfile extends AutomapperProfile {
+export class UpdateMapperProfile extends AutomapperProfile {
   constructor(
     @InjectMapper() mapper: Mapper,
     private membersEmailService: MembersEmailService,
@@ -21,7 +21,7 @@ export class MemberMapperProfile extends AutomapperProfile {
   mapProfile() {
     return (mapper) => {
       mapper
-        .createMap(CreateMemberDto, Member, {
+        .createMap(UpdateMemberDto, Member, {
           namingConventions: {
             source: new CamelCaseNamingConvention(),
             destination: new CamelCaseNamingConvention(),

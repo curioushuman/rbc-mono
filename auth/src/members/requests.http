@@ -7,10 +7,10 @@ POST http://rbc.dev/api/auth/members
 Content-Type: application/json
 
 {
-    "crmId": "dtf3",
-    "email": "james@brown.com",
-    "firstName": "James",
-    "lastName": "Brown"
+    "id": "dtf3",
+    "email": "jake@bluesbrothers.com",
+    "firstName": "Jake",
+    "lastName": "Blues"
 }
 
 ### Create a new member - FAIL
@@ -19,4 +19,22 @@ Content-Type: application/json
 
 {
     "_id": ""
+}
+
+### Update member - SUCCESS (after creating above)
+PUT http://rbc.dev/api/auth/members
+Content-Type: application/json
+
+{
+    "id": "dtf3",
+    "email": "joliet@bluesbrothers.com"
+}
+
+
+### Update member - FAIL
+PUT http://rbc.dev/api/auth/members
+Content-Type: application/json
+
+{
+    "email": "joliet@bluesbrothers.com"
 }
