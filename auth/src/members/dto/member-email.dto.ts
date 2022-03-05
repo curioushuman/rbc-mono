@@ -1,5 +1,5 @@
 import { IsEmail, IsOptional, IsBoolean } from 'class-validator';
-import { EmailType } from '../type/email-type.enum';
+import { EmailType } from '../types/email-type.enum';
 
 // ! This is currently a candidate for deprecation
 

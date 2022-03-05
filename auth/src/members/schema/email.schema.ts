@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { EmailType } from '../type/email-type.enum';
+import { EmailType } from '../types/email-type.enum';
 
 @Schema({ _id: false })
 export class Email {
