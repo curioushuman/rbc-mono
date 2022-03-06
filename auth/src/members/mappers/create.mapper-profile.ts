@@ -3,7 +3,7 @@ import { Mapper, CamelCaseNamingConvention, mapFrom } from '@automapper/core';
 import { Injectable } from '@nestjs/common';
 
 import { MembersEmailService } from '../members-email.service';
-import { Member, Email } from '../schema';
+import { Member, MemberEmail } from '../schema';
 import { CreateMemberDto } from '../dto';
 
 // TODO
@@ -30,7 +30,7 @@ export class CreateMapperProfile extends AutomapperProfile {
         .forMember(
           (destination) => destination.emails,
           mapFrom((source) => {
-            const email = new Email(source.email);
+            const email = new MemberEmail(source.email);
             email.primary = true;
             return [email];
           }),

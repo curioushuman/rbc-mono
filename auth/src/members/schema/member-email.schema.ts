@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { EmailType } from '../types/email-type.enum';
 
 @Schema({ _id: false })
-export class Email {
+export class MemberEmail {
   constructor(email?: string) {
     this.email = email || null;
   }
@@ -20,4 +20,4 @@ export class Email {
   primary?: boolean;
 }
 
-export const EmailSchema = SchemaFactory.createForClass(Email);
+export const MemberEmailSchema = SchemaFactory.createForClass(MemberEmail);

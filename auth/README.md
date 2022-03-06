@@ -19,28 +19,22 @@ Should be done as part of a cluster. See @/README.md
 $ docker run -p 3000:3000 curioushuman/rbc-auth
 ```
 
-### Running the app (otherwise)
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
 ## Test
 
+### Quick and dirty
+
+**NOTE**: this won't work if your tests actually use the MongoDB service, please mock it.
+
 ```bash
-# unit tests
-$ npm run test
+# rebuild development image
+$ docker build --target development -t curioushuman/rbc-auth:development .
+
+# run tests
+$ docker run curioushuman/rbc-auth:development npm run test
 
 # e2e tests
-$ npm run test:e2e
+$ docker run curioushuman/rbc-auth:development npm run test:e2e
 
 # test coverage
-$ npm run test:cov
+$ docker run curioushuman/rbc-auth:development npm run test:cov
 ```

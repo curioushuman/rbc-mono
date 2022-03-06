@@ -129,6 +129,7 @@ Mongoose is the generally preferred option, but it's Typescript support pales in
 
 * https://mongoosejs.com/docs/typescript.html
 * [Another helpful article](https://javascript.plainenglish.io/leverage-polymorphic-data-validation-with-nest-js-and-mongoose-10ae1dcbcf6d)
+* Use [Document.save() over other update methods](https://masteringjs.io/tutorials/mongoose/update)
 
 ## Exception handling
 

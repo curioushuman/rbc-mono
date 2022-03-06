@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Document, Types, Model } from 'mongoose';
 import { AutoMap } from '@automapper/classes';
 
-import { Email, EmailSchema, Profile } from './';
+import { MemberEmail, MemberEmailSchema, Profile } from './';
 
 // * Key
 // Member: Is a Nest.js class used to help build the schema, and act as your Type interface
@@ -25,8 +25,8 @@ export class Member {
   @Prop({ type: Types.ObjectId, required: true, unique: true })
   id!: string;
 
-  @Prop({ required: true, type: [EmailSchema] })
-  emails!: Email[];
+  @Prop({ required: true, type: [MemberEmailSchema] })
+  emails!: MemberEmail[];
 
   // TODO: do not use the raw() method, use the Profile or ProfileSchema
   // I just need to spend more time here. Other priorities exist.
@@ -49,7 +49,7 @@ export type MemberDocument = Member & Document;
 // TMethodsAndOverrides
 // https://mongoosejs.com/docs/typescript/subdocuments.html#subdocument-arrays
 type MemberDocumentProps = {
-  emails: Types.DocumentArray<Email>;
+  emails: Types.DocumentArray<MemberEmail>;
   profile: Types.Subdocument<Types.ObjectId> & Profile;
 };
 
