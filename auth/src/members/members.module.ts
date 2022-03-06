@@ -8,6 +8,7 @@ import { CreateMapperProfile, UpdateMapperProfile } from './mappers';
 import { Member, MemberSchema } from './schema';
 
 // TODO
+// * add roles as child document to member
 // - extract profile to a separate module
 // - then you can do away with mappers for this module
 //    - instead focus on the complexity of email updates
