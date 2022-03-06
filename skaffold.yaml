@@ -22,3 +22,16 @@ build:
             dest: .
           - src: 'src/**/*.md'
             dest: .
+    - image: curioushuman/rbc-subscriptions
+      context: subscriptions
+      docker:
+        dockerfile: Dockerfile
+        target: development
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+          - src: 'src/**/*.http'
+            dest: .
+          - src: 'src/**/*.md'
+            dest: .

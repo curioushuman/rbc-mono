@@ -17,6 +17,13 @@ spec:
                 name: auth-srv
                 port:
                   number: 3000
+          - path: /api/subscriptions/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: subscriptions-srv
+                port:
+                  number: 3001
       # mongodb:
       #     - path: /auth
       #       pathType: Exact
