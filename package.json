@@ -4,8 +4,8 @@
   "description": "Monorepo for RbC",
   "scripts": {
     "install:auth": "cd auth && npm install && cd ..",
-    "install:members": "cd auth && npm install && cd ..",
-    "install:all": "npm run install:auth && npm run install:members"
+    "install:subscriptions": "cd subscriptions && npm install && cd ..",
+    "install:all": "npm run install:auth && npm run install:subscriptions"
   },
   "keywords": [],
   "author": "",
