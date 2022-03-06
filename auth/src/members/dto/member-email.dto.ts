@@ -1,5 +1,5 @@
 import { IsEmail, IsOptional, IsBoolean } from 'class-validator';
-import { EmailType } from '../types/email-type.enum';
+import { EmailTypeEnum } from '../types/email-type.enum';
 
 // ! This is currently a candidate for deprecation
 
@@ -12,7 +12,7 @@ export class MemberEmailDto {
   email!: string;
 
   @IsOptional()
-  type?: EmailType;
+  type?: EmailTypeEnum;
 
   @IsBoolean()
   @IsOptional()

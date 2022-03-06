@@ -36,13 +36,13 @@ export class MembersController {
   }
 
   /**
-   * Get a members
+   * Get a member
    */
   @Get(':id')
   async findOne(@Param('id') id: string) {
     let member: Member;
     try {
-      member = await this.membersService.findOne({ id: id });
+      member = await this.membersService.findOne({ id });
     } catch (error) {
       throw new BadRequestException(error.message);
     }

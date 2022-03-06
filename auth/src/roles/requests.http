@@ -1,0 +1,21 @@
+### List all roles
+GET http://rbc.dev/api/auth/roles
+
+
+### Create a new role - SUCCESS
+POST http://rbc.dev/api/auth/roles
+Content-Type: application/json
+
+{
+    "label": "admin"
+}
+
+
+### Create a new role - SUCCESS
+POST http://rbc.dev/api/auth/roles
+Content-Type: application/json
+
+{
+    "label": "member",
+    "subscriptionTypeId": "heyho321"
+}

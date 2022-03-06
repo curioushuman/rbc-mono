@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { EmailType } from '../types/email-type.enum';
+import { EmailTypeEnum } from '../types/email-type.enum';
 
 @Schema({ _id: false })
 export class MemberEmail {
@@ -11,10 +11,10 @@ export class MemberEmail {
   email!: string;
 
   @Prop({
-    enum: Object.values(EmailType),
-    default: Object.values(EmailType)[0],
+    enum: Object.values(EmailTypeEnum),
+    default: Object.values(EmailTypeEnum)[0],
   })
-  type?: EmailType;
+  type?: EmailTypeEnum;
 
   @Prop({ default: false })
   primary?: boolean;

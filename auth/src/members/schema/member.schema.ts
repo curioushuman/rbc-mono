@@ -18,8 +18,6 @@ import { MemberEmail, MemberEmailSchema, Profile } from './';
 
 @Schema()
 export class Member {
-  // * IMPORTANT: We are overriding the default id field with our own custom field
-  // https://mongoosejs.com/docs/guide.html#_id
   // We will be using the CRM ID for member records across the ecosystem
   @AutoMap()
   @Prop({ type: Types.ObjectId, required: true, unique: true })

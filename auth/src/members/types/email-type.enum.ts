@@ -1,4 +1,4 @@
-export enum EmailType {
+export enum EmailTypeEnum {
   Work = 'WORK',
   Personal = 'PERSONAL',
   Other = 'OTHER',

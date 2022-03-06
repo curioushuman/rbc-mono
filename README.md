@@ -202,3 +202,7 @@ Some useful links:
 
 - [Docs](https://automapperts.netlify.app/docs/introduction/what-why)
 - [Example repo](https://github.com/Tevpro/nest-automapper-demo/tree/b04664999fd3517cbda3f7058580a15cd7a97f49)
+
+## Map in the controller, not the service
+
+If you **DO** use a mapper, use it at the controller level and **NOT** the service. This is to allow potentially different transport methods to use different DTOs.

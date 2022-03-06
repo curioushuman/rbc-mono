@@ -8,6 +8,7 @@ import { HttpLoggerMiddleware } from '@curioushuman/rbc-common';
 import config from './config/config';
 import databaseConfig from './config/database.config';
 import { MembersModule } from './members/members.module';
+import { RolesModule } from './roles/roles.module';
 
 // TODO
 // - move config to common
@@ -30,6 +31,7 @@ import { MembersModule } from './members/members.module';
       singular: true,
     }),
     MembersModule,
+    RolesModule,
   ],
   controllers: [],
   providers: [],
