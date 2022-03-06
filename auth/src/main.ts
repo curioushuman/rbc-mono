@@ -21,10 +21,8 @@ async function bootstrap() {
 
   // Swagger
   const config = new DocumentBuilder()
-    .setTitle('RbC Ecosystem')
-    .setDescription(
-      'Monorepo that gathers all the code for the RbC-Microservices + Apps Kubernetes cluster.',
-    )
+    .setTitle('RbC Ecosystem : Auth & Members')
+    .setDescription('Auth & members API')
     .setVersion('1.0')
     .addTag('agriculture')
     .build();

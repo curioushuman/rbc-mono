@@ -26,13 +26,14 @@ export class Role {
   @Prop({ required: true, unique: true })
   label!: string;
 
+  @AutoMap({ typeFn: () => Permission })
   @Prop({ type: [PermissionSchema] })
   permissions!: Permission[];
 
   /**
    * An identifier for a SubscriptionType (from Subscription Service)
    */
-  @AutoMap({ typeFn: () => Permission })
+  @AutoMap()
   @Prop()
   subscriptionTypeId?: string;
 }
