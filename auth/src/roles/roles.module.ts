@@ -14,6 +14,8 @@ import { Role, RoleSchema } from './schema';
 // - bloody mapper fills in missing DTO fields with undefined!
 //   - even if you use their special ignore() function
 //   - I may need to replace it, or find another solution
+// - mapper also having issues with array of objects
+//   - Let's debug, and make a call on it's usefulness
 // - TESTING
 //   - Once the solution to the mapper is in place and we stop getting false negatives
 

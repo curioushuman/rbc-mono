@@ -20,7 +20,6 @@ export class CreateMapperProfile extends AutomapperProfile {
         },
       });
       // .forMember((destination) => destination.permissions, ignore());
-      // .forMember((destination) => destination.permissions, ignore());
     };
   }
 }

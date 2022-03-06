@@ -1,5 +1,5 @@
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
-import { Mapper, CamelCaseNamingConvention } from '@automapper/core';
+import { Mapper, CamelCaseNamingConvention, ignore } from '@automapper/core';
 import { Injectable } from '@nestjs/common';
 
 import { Role } from '../schema';
@@ -13,12 +13,14 @@ export class PermissionsMapperProfile extends AutomapperProfile {
 
   mapProfile() {
     return (mapper) => {
-      mapper.createMap(PermissionsDto, Role, {
-        namingConventions: {
-          source: new CamelCaseNamingConvention(),
-          destination: new CamelCaseNamingConvention(),
-        },
-      });
+      mapper
+        .createMap(PermissionsDto, Role, {
+          namingConventions: {
+            source: new CamelCaseNamingConvention(),
+            destination: new CamelCaseNamingConvention(),
+          },
+        })
+        .forMember((destination) => destination.subscriptionTypeId, ignore());
     };
   }
 }

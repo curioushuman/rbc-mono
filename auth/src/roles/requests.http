@@ -19,3 +19,28 @@ Content-Type: application/json
     "label": "member",
     "subscriptionTypeId": "heyho321"
 }
+
+
+### Create a new role - FAIL
+POST http://rbc.dev/api/auth/roles
+Content-Type: application/json
+
+{
+
+}
+
+
+### Create permissions for role - SUCCESS
+PUT http://rbc.dev/api/auth/roles/permissions
+Content-Type: application/json
+
+{
+    "label": "admin",
+    "permissions": [
+        {
+          "zone": "all",
+          "resource": "all",
+          "action": "all"
+        }
+    ]
+}

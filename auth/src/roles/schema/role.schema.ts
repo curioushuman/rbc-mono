@@ -32,7 +32,7 @@ export class Role {
   /**
    * An identifier for a SubscriptionType (from Subscription Service)
    */
-  @AutoMap()
+  @AutoMap({ typeFn: () => Permission })
   @Prop()
   subscriptionTypeId?: string;
 }

@@ -69,6 +69,7 @@ export class RolesController {
 
   /**
    * Update a role
+   * NOTE: Currently not in use
    */
   @Put()
   async update(@Body() updateRoleDto: UpdateRoleDto) {
@@ -89,7 +90,7 @@ export class RolesController {
   @Put('/permissions')
   async permissions(@Body() permissionsDto: PermissionsDto) {
     let role = await this.findOne(permissionsDto.label);
-    const roleFromDto = this.mapper.map(permissionsDto, Role, UpdateRoleDto);
+    const roleFromDto = this.mapper.map(permissionsDto, Role, PermissionsDto);
     merge(role, roleFromDto);
     try {
       role = await this.rolesService.update(role);
