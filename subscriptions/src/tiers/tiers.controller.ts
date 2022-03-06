@@ -57,9 +57,7 @@ export class TiersController {
    */
   @Post()
   async create(@Body() createTierDto: CreateTierDto) {
-    console.log('createTierDto', createTierDto);
     const tier = this.mapper.map(createTierDto, Tier, CreateTierDto);
-    console.log('tier', tier);
     try {
       return await this.tiersService.create(tier);
     } catch (error) {
