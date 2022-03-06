@@ -1,8 +1,9 @@
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AutomapperModule } from '@automapper/nestjs';
 import { classes as AutomapperClasses } from '@automapper/classes';
+import { HttpLoggerMiddleware } from '@curioushuman/rbc-common';
 
 import config from './config/config';
 import databaseConfig from './config/database.config';
@@ -33,4 +34,8 @@ import { MembersModule } from './members/members.module';
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(HttpLoggerMiddleware);
+  }
+}
