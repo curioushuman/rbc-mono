@@ -10,6 +10,6 @@
  * - Obviously add the rest
  */
 export enum Resource {
-  all = 'all',
-  course = 'course',
+  All = 'all',
+  Course = 'course',
 }

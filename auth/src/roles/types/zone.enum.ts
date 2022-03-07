@@ -5,9 +5,9 @@
  * - Essentially these should align, so consider both (where you can, without breaking your brain)
  */
 export enum Zone {
-  all = 'all',
-  forum = 'forum',
-  courses = 'courses',
-  knowledge = 'knowledge',
-  other = 'other',
+  All = 'all',
+  Forum = 'forum',
+  Courses = 'courses',
+  Knowledge = 'knowledge',
+  Other = 'other',
 }

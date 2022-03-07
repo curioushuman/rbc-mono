@@ -5,9 +5,9 @@
  * - Essentially these should align, so consider both (where you can, without breaking your brain)
  */
 export enum Action {
-  all = 'all',
-  create = 'create',
-  read = 'read',
-  update = 'update',
-  delete = 'delete',
+  All = 'all',
+  Create = 'create',
+  Read = 'read',
+  Update = 'update',
+  Delete = 'delete',
 }
