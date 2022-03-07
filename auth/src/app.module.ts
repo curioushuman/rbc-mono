@@ -3,26 +3,21 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AutomapperModule } from '@automapper/nestjs';
 import { classes as AutomapperClasses } from '@automapper/classes';
-import { HttpLoggerMiddleware } from '@curioushuman/rbc-common';
+import { HttpLoggerMiddleware, Configuration } from '@curioushuman/rbc-common';
 
-import config from './config/config';
-import databaseConfig from './config/database.config';
 import { MembersModule } from './members/members.module';
 import { RolesModule } from './roles/roles.module';
-
-// TODO
-// - move config to common
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       ignoreEnvFile: true,
-      load: [config, databaseConfig],
+      load: [Configuration],
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('mongodb.uri'),
+        uri: configService.get<string>('database.mongodb.uri'),
       }),
       inject: [ConfigService],
     }),

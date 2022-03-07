@@ -10,7 +10,6 @@ import { AppModule } from './app.module';
 
 // TODO
 // - move swagger to common
-// - use config for port, move this to common
 // - move whatever else you can over to common
 
 async function bootstrap() {
@@ -34,7 +33,7 @@ async function bootstrap() {
   SwaggerModule.setup('docs/api', app, document);
 
   const configService = app.get(ConfigService);
-  const port = configService.get('port');
+  const port = configService.get('host.port');
   await app.listen(port);
 }
 bootstrap();
