@@ -24,29 +24,45 @@ import { Role, RoleSchema } from './schema';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Role.name, schema: RoleSchema }]),
-    ClientsModule.registerAsync([
+    ClientsModule.register([
       {
         name: 'SUBSCRIPTIONS_SERVICE',
-        imports: [ConfigModule],
-        inject: [ConfigService],
-        useFactory: async (configService: ConfigService) => ({
-          transport: Transport.KAFKA,
-          options: {
-            client: {
-              clientId: configService.get<string>(
-                'microservices.services.subscriptions.clientId',
-              ),
-              brokers: [configService.get<string>('microservices.broker')],
-            },
-            consumer: {
-              groupId: configService.get<string>(
-                'microservices.services.subscriptions.groupId',
-              ),
-            },
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            clientId: 'subscriptions',
+            brokers: ['kafka-srv:9092'],
           },
-        }),
+          consumer: {
+            groupId: 'subscriptions-consumer',
+          },
+        },
       },
     ]),
+    // ClientsModule.registerAsync([
+    //   {
+    //     name: 'SUBSCRIPTIONS_SERVICE',
+    //     imports: [ConfigModule],
+    //     inject: [ConfigService],
+    //     useFactory: async (configService: ConfigService) => ({
+    //       transport: Transport.KAFKA,
+    //       options: {
+    //         client: {
+    //           clientId: configService.get<string>(
+    //             'microservices.services.subscriptions.clientId',
+    //           ),
+    //           // brokers: [configService.get<string>('microservices.broker')],
+    //           brokers: ['kafka-srv:9092'],
+    //         },
+    //         consumer: {
+    //           groupId: configService.get<string>(
+    //             'microservices.services.subscriptions.groupId',
+    //           ),
+    //         },
+    //       },
+    //     }),
+    //   },
+    // ]),
   ],
   controllers: [RolesController],
   providers: [

@@ -5,7 +5,7 @@ deploy:
     manifests:
       - ./infra/k8s/*
       - ./infra/k8s-dev/*
-      - ./infra/k8s-monitor/*
+      # - ./infra/k8s-monitor/*
 build:
   local:
     push: false

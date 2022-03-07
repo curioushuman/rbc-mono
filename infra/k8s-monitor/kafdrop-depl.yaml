@@ -17,7 +17,7 @@ spec:
           image: obsidiandynamics/kafdrop
           env:
             - name: KAFKA_BROKERCONNECT
-              value: 'kafka:29092'
+              value: 'kafka-srv:9092'
             - name: JVM_OPTS
               value: '-Xms16M -Xmx48M -Xss180K -XX:-TieredCompilation -XX:+UseStringDeduplication -noverify'
 ---

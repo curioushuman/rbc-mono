@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { MicroserviceOptions } from '@nestjs/microservices';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { configObject } from '@curioushuman/rbc-common';
 
 import { AppModule } from './app.module';
@@ -15,13 +15,16 @@ async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {
-      transport: configObject.microservices.transport,
+      // transport: configObject.microservices.transport,
+      transport: Transport.KAFKA,
       options: {
         client: {
-          brokers: [configObject.microservices.broker],
+          // brokers: [configObject.microservices.broker],
+          brokers: ['kafka-srv:9092'],
         },
         consumer: {
-          groupId: configObject.microservices.services.auth.groupId,
+          // groupId: configObject.microservices.services.auth.groupId,
+          groupId: 'auth-consumer',
         },
       },
     },
