@@ -24,11 +24,13 @@ spec:
                 name: subscriptions-srv
                 port:
                   number: 3001
-      # mongodb:
-      #     - path: /auth
-      #       pathType: Exact
-      #       backend:
-      #         service:
-      #           name: auth-mongo-srv
-      #           port:
-      #             number: 27017
+    - host: kafka.rbc.dev
+      http:
+        paths:
+          - path: /?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: kafdrop-srv
+                port:
+                  number: 9000

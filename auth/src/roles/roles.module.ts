@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { RolesService } from './roles.service';
 import { RolesController } from './roles.controller';
@@ -22,6 +24,29 @@ import { Role, RoleSchema } from './schema';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Role.name, schema: RoleSchema }]),
+    ClientsModule.registerAsync([
+      {
+        name: 'SUBSCRIPTIONS_SERVICE',
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: async (configService: ConfigService) => ({
+          transport: Transport.KAFKA,
+          options: {
+            client: {
+              clientId: configService.get<string>(
+                'microservices.services.subscriptions.clientId',
+              ),
+              brokers: [configService.get<string>('microservices.broker')],
+            },
+            consumer: {
+              groupId: configService.get<string>(
+                'microservices.services.subscriptions.groupId',
+              ),
+            },
+          },
+        }),
+      },
+    ]),
   ],
   controllers: [RolesController],
   providers: [

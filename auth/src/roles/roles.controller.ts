@@ -5,10 +5,12 @@ import {
   Put,
   Body,
   Param,
+  Inject,
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectMapper } from '@automapper/nestjs';
+import { ClientKafka, EventPattern } from '@nestjs/microservices';
 import { Mapper } from '@automapper/core';
 import { merge } from 'lodash';
 
@@ -21,6 +23,8 @@ export class RolesController {
   constructor(
     private readonly rolesService: RolesService,
     @InjectMapper() private mapper: Mapper,
+    @Inject('SUBSCRIPTIONS_SERVICE')
+    private readonly subscriptionsClient: ClientKafka,
   ) {}
 
   /**

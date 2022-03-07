@@ -5,9 +5,11 @@ import {
   Put,
   Body,
   Param,
+  Inject,
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
+import { ClientKafka, EventPattern } from '@nestjs/microservices';
 import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
 import { merge } from 'lodash';
@@ -21,6 +23,7 @@ export class TiersController {
   constructor(
     private readonly tiersService: TiersService,
     @InjectMapper() private mapper: Mapper,
+    @Inject('AUTH_SERVICE') private readonly authClient: ClientKafka,
   ) {}
 
   /**
