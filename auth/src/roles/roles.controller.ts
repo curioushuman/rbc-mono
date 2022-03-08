@@ -23,8 +23,7 @@ export class RolesController {
   constructor(
     private readonly rolesService: RolesService,
     @InjectMapper() private mapper: Mapper,
-    @Inject('SUBSCRIPTIONS_SERVICE')
-    private readonly subscriptionsClient: ClientKafka,
+    @Inject('KAFKA_CLIENT') private readonly kafkaClient: ClientKafka,
   ) {}
 
   /**

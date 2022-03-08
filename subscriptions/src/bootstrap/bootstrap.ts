@@ -30,7 +30,7 @@ export class App {
     this.setupSwagger(app);
 
     // global settings
-    app.setGlobalPrefix('api/auth');
+    app.setGlobalPrefix('api/subscriptions');
     app.useGlobalPipes(new ValidationPipe());
 
     // start listening

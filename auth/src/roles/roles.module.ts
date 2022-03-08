@@ -27,12 +27,12 @@ import { Role, RoleSchema } from './schema';
     MongooseModule.forFeature([{ name: Role.name, schema: RoleSchema }]),
     ClientsModule.registerAsync([
       {
-        name: 'SUBSCRIPTIONS_SERVICE',
+        name: 'KAFKA_CLIENT',
         imports: [ConfigModule],
         inject: [ConfigService],
         useFactory: async (configService: ConfigService) => {
           const config = configService.get<KafkaConfig>(
-            'microservices.services.subscriptions',
+            'microservices.services.auth',
           );
           return new KafkaProducerConfig(config).get();
         },

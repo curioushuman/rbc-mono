@@ -20,12 +20,12 @@ import { Tier, TierSchema } from './schema';
     MongooseModule.forFeature([{ name: Tier.name, schema: TierSchema }]),
     ClientsModule.registerAsync([
       {
-        name: 'AUTH_SERVICE',
+        name: 'KAFKA_CLIENT',
         imports: [ConfigModule],
         inject: [ConfigService],
         useFactory: async (configService: ConfigService) => {
           const config = configService.get<KafkaConfig>(
-            'microservices.services.auth',
+            'microservices.services.subscriptions',
           );
           return new KafkaProducerConfig(config).get();
         },
