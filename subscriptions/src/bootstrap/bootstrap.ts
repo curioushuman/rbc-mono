@@ -2,8 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { KafkaConfig } from '@curioushuman/rbc-common';
-
-import { KafkaConsumerConfig } from '../microservices/types/kafka.consumer.config';
+import { KafkaConsumerConfig } from '@curioushuman/rbc-common';
 
 export class App {
   public static async start(module: any) {

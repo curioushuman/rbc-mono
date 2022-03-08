@@ -2,12 +2,11 @@
 
 A quick collection of things that need to be done at the highest level.
 
-## Key list
+## Next up
 
-A list of key items I would like to get done soon.
+List currently working through:
 
-- [ ] Use @/tsconfig.json as source of truth for microservice tsconfig.json
-  - [ ] Work out how to create tsconfig.json file on the fly within container using Docker
+- [ ] Finish Kafka abstraction
 
 ## Important admin stuff
 
@@ -15,4 +14,13 @@ A list of key items I would like to get done soon.
 
 ## Nice to have
 
+- [ ] Use @/tsconfig.json as source of truth for microservice tsconfig.json
+  - [ ] Work out how to create tsconfig.json file on the fly within container using Docker
 - [ ] Similar shared eslint and prettier config
+
+---
+
+## Kafka abstraction
+
+- [ ] Create extends of KafkaConsumerConfig and use for KafkaProducer
+  - [ ] Also change the name of the subscriptions-consumer etc to subscriptions-service
