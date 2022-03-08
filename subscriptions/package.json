@@ -24,7 +24,7 @@
     "@automapper/classes": "^7.3.10",
     "@automapper/core": "^7.3.10",
     "@automapper/nestjs": "^7.3.10",
-    "@curioushuman/rbc-common": "^1.0.18",
+    "@curioushuman/rbc-common": "^1.0.21",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^1.2.0",
     "@nestjs/core": "^8.0.0",
