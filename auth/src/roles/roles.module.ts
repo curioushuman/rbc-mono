@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ClientsModule } from '@nestjs/microservices';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { KafkaConfig, KafkaProducerConfig } from '@curioushuman/rbc-common';
 
 import { RolesService } from './roles.service';
 import { RolesController } from './roles.controller';
@@ -24,45 +25,19 @@ import { Role, RoleSchema } from './schema';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Role.name, schema: RoleSchema }]),
-    ClientsModule.register([
+    ClientsModule.registerAsync([
       {
         name: 'SUBSCRIPTIONS_SERVICE',
-        transport: Transport.KAFKA,
-        options: {
-          client: {
-            clientId: 'subscriptions',
-            brokers: ['kafka-srv:9092'],
-          },
-          consumer: {
-            groupId: 'subscriptions-consumer',
-          },
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: async (configService: ConfigService) => {
+          const config = configService.get<KafkaConfig>(
+            'microservices.services.subscriptions',
+          );
+          return new KafkaProducerConfig(config).get();
         },
       },
     ]),
-    // ClientsModule.registerAsync([
-    //   {
-    //     name: 'SUBSCRIPTIONS_SERVICE',
-    //     imports: [ConfigModule],
-    //     inject: [ConfigService],
-    //     useFactory: async (configService: ConfigService) => ({
-    //       transport: Transport.KAFKA,
-    //       options: {
-    //         client: {
-    //           clientId: configService.get<string>(
-    //             'microservices.services.subscriptions.clientId',
-    //           ),
-    //           // brokers: [configService.get<string>('microservices.broker')],
-    //           brokers: ['kafka-srv:9092'],
-    //         },
-    //         consumer: {
-    //           groupId: configService.get<string>(
-    //             'microservices.services.subscriptions.groupId',
-    //           ),
-    //         },
-    //       },
-    //     }),
-    //   },
-    // ]),
   ],
   controllers: [RolesController],
   providers: [

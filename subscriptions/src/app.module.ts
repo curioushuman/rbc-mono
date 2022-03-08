@@ -7,13 +7,6 @@ import { HttpLoggerMiddleware, configFactory } from '@curioushuman/rbc-common';
 
 import { TiersModule } from './tiers/tiers.module';
 
-// TODO
-// - REFACTOR: use the much cleaner method of useFactory outlined here:
-//   - https://docs.nestjs.com/microservices/basics#client
-//   - transport should also be coming from config
-// - Create a script/function in the common module to output the full list of microservices
-//   - Pull ClientsModule.client.Name from config as well
-
 @Module({
   imports: [
     ConfigModule.forRoot({

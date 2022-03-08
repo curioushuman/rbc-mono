@@ -6,7 +6,10 @@ A quick collection of things that need to be done at the highest level.
 
 List currently working through:
 
-- [ ] Finish Kafka abstraction
+- [*] Finish Kafka abstraction
+- [ ] Split REST and MS stuff in each service
+  - [ ] REST should be in it's own controller
+  - [ ] MS in a different one
 
 ## Important admin stuff
 

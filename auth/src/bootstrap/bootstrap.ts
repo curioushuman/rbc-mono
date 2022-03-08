@@ -45,7 +45,7 @@ export class App {
   ) {
     // grab auth microservice config
     const config = configService.get<KafkaConfig>(
-      'microservices.services.subscriptions',
+      'microservices.services.auth',
     );
 
     // add microservices
