@@ -9,11 +9,7 @@ import { Member, MemberSchema } from './schema';
 
 // TODO
 // * add roles as child document to member
-// - extract profile to a separate module
-// - then you can do away with mappers for this module
-//    - instead focus on the complexity of email updates
 // - 3rd party accounts can also be in their own module
-// - Roles and role assignment also in their own module
 
 @Module({
   imports: [
@@ -26,5 +22,6 @@ import { Member, MemberSchema } from './schema';
     CreateMapperProfile,
     UpdateMapperProfile,
   ],
+  exports: [MembersService],
 })
 export class MembersModule {}

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ClientsModule } from '@nestjs/microservices';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { KafkaConfig, KafkaProducerConfig } from '@curioushuman/rbc-common';
+import { KafkaConfig, KafkaConsumerConfig } from '@curioushuman/rbc-common';
 
 import { TiersService } from './tiers.service';
 import { TiersController } from './tiers.controller';
@@ -27,7 +27,7 @@ import { Tier, TierSchema } from './schema';
           const config = configService.get<KafkaConfig>(
             'microservices.services.subscriptions',
           );
-          return new KafkaProducerConfig(config).get();
+          return new KafkaConsumerConfig(config).get();
         },
       },
     ]),

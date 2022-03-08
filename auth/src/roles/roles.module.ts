@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ClientsModule } from '@nestjs/microservices';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { KafkaConfig, KafkaProducerConfig } from '@curioushuman/rbc-common';
+import { KafkaConfig, KafkaConsumerConfig } from '@curioushuman/rbc-common';
 
 import { RolesService } from './roles.service';
 import { RolesController } from './roles.controller';
@@ -34,7 +34,7 @@ import { Role, RoleSchema } from './schema';
           const config = configService.get<KafkaConfig>(
             'microservices.services.auth',
           );
-          return new KafkaProducerConfig(config).get();
+          return new KafkaConsumerConfig(config).get();
         },
       },
     ]),

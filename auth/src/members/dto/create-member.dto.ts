@@ -1,4 +1,4 @@
-import { IsEmail, IsOptional, IsString } from 'class-validator';
+import { IsEmail } from 'class-validator';
 import { AutoMap } from '@automapper/classes';
 
 export class CreateMemberDto {
@@ -14,20 +14,4 @@ export class CreateMemberDto {
    */
   @IsEmail()
   email!: string;
-
-  /**
-   * Members first name
-   * @example Jake
-   */
-  @IsString()
-  @IsOptional()
-  firstName?: string;
-
-  /**
-   * Members first name
-   * @example Blues
-   */
-  @IsString()
-  @IsOptional()
-  lastName?: string;
 }

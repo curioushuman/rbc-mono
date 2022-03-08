@@ -2,7 +2,6 @@ import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Mapper, CamelCaseNamingConvention, mapFrom } from '@automapper/core';
 import { Injectable } from '@nestjs/common';
 
-import { MembersEmailService } from '../members-email.service';
 import { Member, MemberEmail } from '../schema';
 import { CreateMemberDto } from '../dto';
 
@@ -11,10 +10,7 @@ import { CreateMemberDto } from '../dto';
 
 @Injectable()
 export class CreateMapperProfile extends AutomapperProfile {
-  constructor(
-    @InjectMapper() mapper: Mapper,
-    private membersEmailService: MembersEmailService,
-  ) {
+  constructor(@InjectMapper() mapper: Mapper) {
     super(mapper);
   }
 
@@ -34,14 +30,6 @@ export class CreateMapperProfile extends AutomapperProfile {
             email.primary = true;
             return [email];
           }),
-        )
-        .forMember(
-          (destination) => destination.profile.firstName,
-          mapFrom((source) => source.firstName),
-        )
-        .forMember(
-          (destination) => destination.profile.lastName,
-          mapFrom((source) => source.lastName),
         );
     };
   }

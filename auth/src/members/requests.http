@@ -8,9 +8,7 @@ Content-Type: application/json
 
 {
     "id": "dtf3",
-    "email": "jake@bluesbrothers.com",
-    "firstName": "Jake",
-    "lastName": "Blues"
+    "email": "jake@bluesbrothers.com"
 }
 
 ### Create a new member - FAIL
@@ -18,7 +16,7 @@ POST http://rbc.dev/api/auth/members
 Content-Type: application/json
 
 {
-    "_id": ""
+    "id": ""
 }
 
 ### Update member - SUCCESS (after creating above)

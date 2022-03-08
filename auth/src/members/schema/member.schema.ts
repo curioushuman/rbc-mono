@@ -2,7 +2,8 @@ import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Document, Types, Model } from 'mongoose';
 import { AutoMap } from '@automapper/classes';
 
-import { MemberEmail, MemberEmailSchema, Profile } from './';
+import { MemberEmail, MemberEmailSchema } from './';
+import { Profile } from '../../profiles/schema';
 
 // * Key
 // Member: Is a Nest.js class used to help build the schema, and act as your Type interface

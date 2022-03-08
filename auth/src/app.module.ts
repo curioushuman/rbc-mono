@@ -6,6 +6,7 @@ import { classes as AutomapperClasses } from '@automapper/classes';
 import { HttpLoggerMiddleware, configFactory } from '@curioushuman/rbc-common';
 
 import { MembersModule } from './members/members.module';
+import { ProfilesModule } from './profiles/profiles.module';
 import { RolesModule } from './roles/roles.module';
 
 @Module({
@@ -26,6 +27,7 @@ import { RolesModule } from './roles/roles.module';
       singular: true,
     }),
     MembersModule,
+    ProfilesModule,
     RolesModule,
   ],
   controllers: [],
