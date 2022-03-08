@@ -14,12 +14,12 @@ export class TiersService {
 
   constructor(
     @InjectModel(Tier.name)
-    private roleModel: TierModel,
+    private tierModel: TierModel,
   ) {}
 
   async findAll(): Promise<Tier[]> {
     try {
-      return await this.roleModel.find().exec();
+      return await this.tierModel.find().exec();
     } catch (error) {
       this.logger.warn(`AS YET UNHANDLED error: ${error.message}`);
       throw error;
@@ -29,15 +29,15 @@ export class TiersService {
   async findOne(label: string): Promise<Tier> {
     const query: findOneQuery = { label };
     try {
-      return await this.roleModel.findOne(query);
+      return await this.tierModel.findOne(query);
     } catch (error) {
       this.logger.warn(`AS YET UNHANDLED error: ${error.message}`);
       throw error;
     }
   }
 
-  async create(role: Tier): Promise<Tier> {
-    const createdTier = new this.roleModel(role);
+  async create(tier: Tier): Promise<Tier> {
+    const createdTier = new this.tierModel(tier);
     try {
       return await createdTier.save();
     } catch (error) {
@@ -45,7 +45,7 @@ export class TiersService {
       if (error.type === MongooseError && error.name === 'ValidationError') {
         this.logger.warn(`MongoDB Validation error: ${error.message}`);
         // Clean it, and pass back something more generic
-        throw new Error(`Error creating role: ${error.message}`);
+        throw new Error(`Error creating tier: ${error.message}`);
       }
       // Otherwise log the fact we haven't considered this type of error yet (agggh)
       this.logger.warn(`AS YET UNHANDLED error: ${error.message}`);
@@ -53,8 +53,8 @@ export class TiersService {
     }
   }
 
-  async update(role: Tier): Promise<Tier> {
-    const updatedTier = new this.roleModel(role);
+  async update(tier: Tier): Promise<Tier> {
+    const updatedTier = new this.tierModel(tier);
     try {
       return await updatedTier.save();
     } catch (error) {
@@ -62,7 +62,7 @@ export class TiersService {
       if (error.type === MongooseError && error.name === 'ValidationError') {
         this.logger.warn(`MongoDB Validation error: ${error.message}`);
         // Clean it, and pass back something more generic
-        throw new Error(`Error creating role: ${error.message}`);
+        throw new Error(`Error creating tier: ${error.message}`);
       }
       // Otherwise log the fact we haven't considered this type of error yet (agggh)
       this.logger.warn(`AS YET UNHANDLED error: ${error.message}`);

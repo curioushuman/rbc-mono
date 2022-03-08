@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
 import { AutoMap } from '@automapper/classes';
 
 export class CreateTierDto {
@@ -7,5 +7,6 @@ export class CreateTierDto {
    */
   @AutoMap()
   @IsString()
+  @IsNotEmpty()
   label!: string;
 }
