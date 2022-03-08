@@ -23,7 +23,7 @@ export class TiersController {
   constructor(
     private readonly tiersService: TiersService,
     @InjectMapper() private mapper: Mapper,
-    @Inject('AUTH_SERVICE') private readonly authClient: ClientKafka,
+    @Inject('AUTH_SERVICE') private readonly authProducer: ClientKafka,
   ) {}
 
   /**

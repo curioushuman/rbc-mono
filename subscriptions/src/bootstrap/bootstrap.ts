@@ -15,15 +15,17 @@ export class App {
     const configService = app.get(ConfigService);
 
     // grab subscriptions microservice config
-    const subscriptionsConfig = configService.get<KafkaConfig>(
+    const config = configService.get<KafkaConfig>(
       'microservices.services.subscriptions',
     );
 
     // add microservices
-    app.connectMicroservice(new KafkaConsumerConfig(subscriptionsConfig).get());
+    app.connectMicroservice(new KafkaConsumerConfig(config).get());
 
     // start the service
     await app.startAllMicroservices();
-    await app.listen(3000);
+    const port = configService.get<string>('app.port') || 3000;
+    await app.listen(port);
+    console.log(`Listening on port ${port}`);
   }
 }

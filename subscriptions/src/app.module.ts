@@ -1,6 +1,5 @@
 import { Module, MiddlewareConsumer } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ClientsModule, Transport } from '@nestjs/microservices';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AutomapperModule } from '@automapper/nestjs';
 import { classes as AutomapperClasses } from '@automapper/classes';
@@ -21,45 +20,6 @@ import { TiersModule } from './tiers/tiers.module';
       ignoreEnvFile: true,
       load: [configFactory],
     }),
-    ClientsModule.register([
-      {
-        name: 'AUTH_SERVICE',
-        transport: Transport.KAFKA,
-        options: {
-          client: {
-            clientId: 'auth',
-            brokers: ['kafka-srv:9092'],
-          },
-          consumer: {
-            groupId: 'auth-consumer',
-          },
-        },
-      },
-    ]),
-    // ClientsModule.registerAsync([
-    //   {
-    //     name: 'AUTH_SERVICE',
-    //     imports: [ConfigModule],
-    //     inject: [ConfigService],
-    //     useFactory: async (configService: ConfigService) => ({
-    //       transport: Transport.KAFKA,
-    //       options: {
-    //         client: {
-    //           clientId: configService.get<string>(
-    //             'microservices.services.auth.clientId',
-    //           ),
-    //           // brokers: [configService.get<string>('microservices.broker')],
-    //           brokers: ['kafka-srv:9092'],
-    //         },
-    //         consumer: {
-    //           groupId: configService.get<string>(
-    //             'microservices.services.auth.groupId',
-    //           ),
-    //         },
-    //       },
-    //     }),
-    //   },
-    // ]),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
