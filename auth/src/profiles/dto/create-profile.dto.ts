@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString, IsNotEmpty } from 'class-validator';
 import { AutoMap } from '@automapper/classes';
 
 export class CreateProfileDto {
@@ -22,5 +22,6 @@ export class CreateProfileDto {
    */
   @AutoMap()
   @IsString()
+  @IsNotEmpty()
   lastName?: string;
 }

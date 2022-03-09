@@ -13,6 +13,7 @@ import { Mapper } from '@automapper/core';
 import { merge } from 'lodash';
 
 import { MembersService } from './members.service';
+import { MembersProducerService } from './members-producer.service';
 import { CreateMemberDto, UpdateMemberDto } from './dto';
 import { Member } from './schema';
 
@@ -20,6 +21,7 @@ import { Member } from './schema';
 export class MembersController {
   constructor(
     private membersService: MembersService,
+    private producerService: MembersProducerService,
     @InjectMapper() private mapper: Mapper,
   ) {}
 
@@ -57,12 +59,19 @@ export class MembersController {
    */
   @Post()
   async create(@Body() createMemberDto: CreateMemberDto) {
-    const member = this.mapper.map(createMemberDto, Member, CreateMemberDto);
+    let member: Member;
+    const memberFromDto = this.mapper.map(
+      createMemberDto,
+      Member,
+      CreateMemberDto,
+    );
     try {
-      return await this.membersService.create(member);
+      member = await this.membersService.create(memberFromDto);
     } catch (error) {
       throw new BadRequestException(error.message);
     }
+    this.producerService.sendCreated(member);
+    return member;
   }
 
   /**
@@ -83,6 +92,7 @@ export class MembersController {
     } catch (error) {
       throw new BadRequestException(error.message);
     }
+    this.producerService.sendUpdated(member);
     return member;
   }
 }

@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Transport } from '@nestjs/microservices';
 import {
   SwaggerModule,
   DocumentBuilder,
@@ -44,15 +45,26 @@ export class App {
     configService: ConfigService,
   ) {
     // grab auth microservice config
-    const config = configService.get<KafkaConfig>(
-      'microservices.services.auth',
-    );
-
+    // const config = configService.get<KafkaConfig>(
+    //   'microservices.services.auth',
+    // );
     // add microservices
-    app.connectMicroservice(new KafkaConsumerConfig(config).get());
-
+    // app.connectMicroservice(new KafkaConsumerConfig(config).get());
+    // app.connectMicroservice(this.tmpConfig());
     // start the service
-    await app.startAllMicroservices();
+    // await app.startAllMicroservices();
+  }
+
+  // TESTING
+  public static tmpConfig() {
+    return {
+      transport: Transport.KAFKA,
+      options: {
+        client: {
+          brokers: ['kafka-srv:9092'],
+        },
+      },
+    };
   }
 
   public static setupSwagger(app: INestApplication) {

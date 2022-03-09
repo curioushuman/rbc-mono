@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString, IsNotEmpty } from 'class-validator';
 import { AutoMap } from '@automapper/classes';
 
 export class CreateRoleDto {
@@ -7,6 +7,7 @@ export class CreateRoleDto {
    */
   @AutoMap()
   @IsString()
+  @IsNotEmpty()
   label!: string;
 
   /**

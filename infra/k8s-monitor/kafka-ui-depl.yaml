@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-ui-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-ui
+  template:
+    metadata:
+      labels:
+        app: kafka-ui
+    spec:
+      containers:
+        - name: kafka-ui
+          image: provectuslabs/kafka-ui
+          env:
+            - name: KAFKA_CLUSTERS_0_NAME
+              value: 'local'
+            - name: KAFKA_CLUSTERS_0_ZOOKEEPER
+              value: 'zookeeper-srv:2181'
+            - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
+              value: 'kafka-srv:9092'
+            - name: LOGGING_LEVEL_ROOT
+              value: 'off'
+            - name: LOGGING_LEVEL_COM_PROVECTUS
+              value: 'off'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-ui-srv
+spec:
+  selector:
+    app: kafka-ui
+  ports:
+    - name: ui
+      protocol: TCP
+      port: 8080
+      targetPort: 8080

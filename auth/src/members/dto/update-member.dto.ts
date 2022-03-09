@@ -1,4 +1,4 @@
-import { IsEmail } from 'class-validator';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 import { AutoMap } from '@automapper/classes';
 
 // TODO
@@ -10,6 +10,7 @@ export class UpdateMemberDto {
    * Identifier for member. Set to the ID of this person in the CRM.
    */
   @AutoMap()
+  @IsNotEmpty()
   id!: string;
 
   /**
@@ -17,5 +18,6 @@ export class UpdateMemberDto {
    * @example joliet@bluesbrothers.com
    */
   @IsEmail()
+  @IsNotEmpty()
   email!: string;
 }

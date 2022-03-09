@@ -7,6 +7,7 @@ import { findOneQuery } from './types';
 
 // TODO
 // - abstract the error handling into the common logging service
+// - use the mutate format, with wrappers for update and create
 
 @Injectable()
 export class TiersService {

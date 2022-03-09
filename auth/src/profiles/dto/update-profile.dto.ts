@@ -18,7 +18,7 @@ export class UpdateProfileDto {
 
   /**
    * Members last name
-   * * Note: Is optional in update, model level validation will catch missing last names
+   * * Note: All validation for LastName is on it's original schema
    * @example Blues
    */
   @AutoMap()

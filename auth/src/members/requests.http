@@ -11,6 +11,15 @@ Content-Type: application/json
     "email": "jake@bluesbrothers.com"
 }
 
+### Create 2nd member - SUCCESS
+POST http://rbc.dev/api/auth/members
+Content-Type: application/json
+
+{
+    "id": "4",
+    "email": "elwood@bluesbrothers.com"
+}
+
 ### Create a new member - FAIL
 POST http://rbc.dev/api/auth/members
 Content-Type: application/json
