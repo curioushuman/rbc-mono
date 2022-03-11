@@ -12,6 +12,24 @@ spec:
       labels:
         app: subscriptions
     spec:
+      initContainers:
+        - name: init-kafka
+          image: curioushuman/rbc-base
+          env:
+            - name: KAFKA_BROKERS
+              value: 'kafka-srv:9092'
+            - name: KAFKA_GROUPID
+              value: 'auth-consumer-client'
+          command: ['sh', '-c', "until node /usr/src/app/dist/index.js -c kafka; do sleep 2; done"]
+        - name: init-subscriptions-mongo
+          image: busybox:1.28
+          command: ['sh', '-c', "until nslookup subscriptions-mongo-srv.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo subscriptions waiting for subscriptions-mongo-srv; sleep 2; done"]
+        # - name: init-auth
+        #   image: curioushuman/rbc-utils
+        #   env:
+        #     - name: API_URI
+        #       value: 'http://rbc.dev/api/auth/common/ready'
+        #   command: ['sh', '-c', "until node /usr/src/app/dist/index.js -c api; do sleep 2; done"]
       containers:
         - name: subscriptions
           image: curioushuman/rbc-subscriptions
@@ -20,6 +38,10 @@ spec:
               value: 'mongodb://subscriptions-mongo-srv:27017/subscriptions'
             - name: PORT
               value: '3001'
+            - name: KAFKA_BROKERS
+              value: 'kafka-srv:9092'
+            - name: KAFKA_GROUPID
+              value: 'auth-consumer-client'
             # - name: JWT_KEY
             #   valueFrom:
             #     secretKeyRef:

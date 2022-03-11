@@ -1,4 +1,4 @@
-FROM node:16.13.2-alpine As development
+FROM curioushuman/rbc-base:latest As development
 
 WORKDIR /usr/src/app
 
@@ -12,7 +12,7 @@ RUN npm run build
 
 CMD ["npm", "run", "start:dev"]
 
-FROM node:16.13.2-alpine as production
+FROM curioushuman/rbc-base:latest as production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}

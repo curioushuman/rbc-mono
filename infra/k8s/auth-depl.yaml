@@ -12,6 +12,18 @@ spec:
       labels:
         app: auth
     spec:
+      initContainers:
+        - name: init-kafka
+          image: curioushuman/rbc-base
+          env:
+            - name: KAFKA_BROKERS
+              value: 'kafka-srv:9092'
+            - name: KAFKA_GROUPID
+              value: 'auth-consumer-client'
+          command: ['sh', '-c', "until node /usr/src/app/dist/index.js -c kafka; do sleep 2; done"]
+        - name: init-auth-mongo
+          image: busybox:1.28
+          command: ['sh', '-c', "until nslookup auth-mongo-srv.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo auth waiting for auth-mongo-srv; sleep 2; done"]
       containers:
         - name: auth
           image: curioushuman/rbc-auth
