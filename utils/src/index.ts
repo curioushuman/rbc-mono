@@ -1,6 +1,5 @@
 import * as yargs from 'yargs';
 
-import { Checker } from './types/checker';
 import { KafkaChecker } from './kafka';
 import { ApiChecker } from './api';
 
