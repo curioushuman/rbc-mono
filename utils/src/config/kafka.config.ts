@@ -6,7 +6,8 @@ export class KafkaUtilsConfig extends UtilsConfig {
 
   constructor() {
     super();
-    this.brokers = [process.env.KAFKA_BROKER] || ['kafka-srv:9092'];
+    const broker = process.env.KAFKA_BROKERS || 'kafka-srv:9092';
+    this.brokers = [broker];
     this.groupId = process.env.KAFKA_GROUPID || 'auth-consumer-server';
   }
 }

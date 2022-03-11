@@ -8,12 +8,14 @@
     "build": "tsc",
     "start:dev": "nodemon",
     "run": "npm run build && node dist/index.js",
-    "loop": "npm run build && until node dist/index.js; do sleep 2; done"
+    "loop:kafka": "npm run build && until node dist/index.js -c kafka; do sleep 2; done",
+    "loop:api": "npm run build && until node dist/index.js -c api; do sleep 2; done"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.26.1",
     "kafkajs": "^1.16.0"
   },
   "devDependencies": {

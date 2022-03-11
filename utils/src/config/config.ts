@@ -1,6 +1,3 @@
-// TODO
-// - accept multiple brokers from ENV vars
-
 export class UtilsConfig {
   public timeout: number;
 

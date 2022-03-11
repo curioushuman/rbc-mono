@@ -1,26 +1,24 @@
 import { Kafka, Consumer } from 'kafkajs';
 
 import { KafkaUtilsConfig } from '../config/kafka.config';
+import { Checker } from '../types/checker';
 
-export class KafkaCheck {
+export class KafkaChecker extends Checker<KafkaUtilsConfig> {
   private kafka: Kafka;
   private consumer: Consumer;
-  constructor(private config: KafkaUtilsConfig = new KafkaUtilsConfig()) {}
 
-  public async check(): Promise<void> {
-    this.setupKafka();
-    this.setupConsumer();
-    const healthy = await this.checkConnect();
-    if (healthy) {
-      console.log('Kafka ready');
-      process.exit();
-    } else {
-      console.log('!!!Kafka NOT ready!!!');
-      process.exit(1);
-    }
+  constructor(config: KafkaUtilsConfig = new KafkaUtilsConfig()) {
+    super();
+    this.config = config;
+    this.checkerType = 'KAFKA';
   }
 
-  public async checkConnect(): Promise<boolean> {
+  async setup(): Promise<void> {
+    this.setupKafka();
+    this.setupConsumer();
+  }
+
+  async checkConnect(): Promise<boolean> {
     try {
       await this.consumer.connect();
       return true;
@@ -30,7 +28,7 @@ export class KafkaCheck {
     }
   }
 
-  public setupKafka(): void {
+  private setupKafka(): void {
     try {
       this.kafka = new Kafka({
         clientId: 'test-consumer',
@@ -41,20 +39,18 @@ export class KafkaCheck {
         },
       });
     } catch (error) {
-      // console.log(error);
-      process.exit();
+      this.returnFalse();
     }
   }
 
-  public setupConsumer(): void {
+  private setupConsumer(): void {
     try {
       this.consumer = this.kafka.consumer({
         groupId: this.config.groupId,
         sessionTimeout: this.config.timeout,
       });
     } catch (error) {
-      // console.log(error);
-      process.exit();
+      this.returnFalse();
     }
   }
 }
