@@ -6,7 +6,7 @@ import { Checker } from '../types/checker';
 export class ApiChecker extends Checker<ApiUtilsConfig> {
   constructor(config: ApiUtilsConfig = new ApiUtilsConfig()) {
     super();
-    this.config = config;
+    this.setConfig(config);
     this.checkerType = 'API';
   }
 
@@ -15,6 +15,7 @@ export class ApiChecker extends Checker<ApiUtilsConfig> {
   }
 
   async checkConnect(): Promise<boolean> {
+    console.log('Try:', this.config.uri);
     try {
       const { data } = await axios.get(this.config.uri);
       console.log(data);
