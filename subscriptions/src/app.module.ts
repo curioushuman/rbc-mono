@@ -6,6 +6,8 @@ import { classes as AutomapperClasses } from '@automapper/classes';
 import { HttpLoggerMiddleware, configFactory } from '@curioushuman/rbc-common';
 
 import { TiersModule } from './tiers/tiers.module';
+import { AppController } from './root/app.controller';
+import { AppService } from './root/app.service';
 
 @Module({
   imports: [
@@ -26,8 +28,8 @@ import { TiersModule } from './tiers/tiers.module';
     }),
     TiersModule,
   ],
-  controllers: [],
-  providers: [],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
