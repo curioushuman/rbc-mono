@@ -8,6 +8,8 @@ import { HttpLoggerMiddleware, configFactory } from '@curioushuman/rbc-common';
 import { MembersModule } from './members/members.module';
 import { ProfilesModule } from './profiles/profiles.module';
 import { RolesModule } from './roles/roles.module';
+import { AppController } from './root/app.controller';
+import { AppService } from './root/app.service';
 
 @Module({
   imports: [
@@ -30,8 +32,8 @@ import { RolesModule } from './roles/roles.module';
     ProfilesModule,
     RolesModule,
   ],
-  controllers: [],
-  providers: [],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
