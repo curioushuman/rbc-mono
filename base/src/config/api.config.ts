@@ -1,5 +1,9 @@
 import { UtilsConfig } from './config';
 
+// UP TO
+// made the fix below
+// need to add tests throughout
+
 export class ApiUtilsConfig extends UtilsConfig {
   public uri: string;
 
@@ -10,6 +14,6 @@ export class ApiUtilsConfig extends UtilsConfig {
       this.setErrorMessage('No API URI defined');
       return;
     }
-    this.uri = `${process.env.API_URI}/hello`;
+    this.uri = `${uriBase}/hello`;
   }
 }

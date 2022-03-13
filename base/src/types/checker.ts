@@ -11,6 +11,10 @@ export abstract class Checker<C extends UtilsConfig> {
     this.config = config;
   }
 
+  public getConfigValue(key: string): string {
+    return this.config[key];
+  }
+
   public async check(): Promise<void> {
     await this.setup();
     this.checkError();

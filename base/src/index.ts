@@ -2,10 +2,10 @@ import * as yargs from 'yargs';
 
 import { KafkaChecker } from './kafka';
 import { ApiChecker } from './api';
-import { Services, ServiceChecker } from './service';
+import { ServiceKey, ServiceChecker } from './service';
 
 // grab args to determine what is being checked
-const services = Object.values(Services);
+const services = Object.values(ServiceKey);
 const argvParser = yargs(process.argv.slice(2)).options({
   c: {
     alias: 'check',
@@ -25,7 +25,7 @@ async function check() {
   if (argv.c === 'kafka') {
     const checker = new KafkaChecker();
     await checker.check();
-  } else if (argv.c === 'kafka') {
+  } else if (argv.c === 'api') {
     const checker = new ApiChecker();
     await checker.check();
   } else {
