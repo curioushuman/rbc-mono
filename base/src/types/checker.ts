@@ -36,12 +36,12 @@ export abstract class Checker<C extends UtilsConfig> {
   }
 
   protected returnTrue(): void {
-    console.log('API ready');
+    console.log(`${this.checkerType} ready`);
     process.exit();
   }
 
   protected returnFalse(): void {
-    console.log('!!!API NOT ready!!!', this.config);
+    console.log(`!!!${this.checkerType}  NOT ready!!!`, this.config);
     process.exit(1);
   }
 }
