@@ -20,16 +20,11 @@ spec:
               value: 'kafka-srv:9092'
             - name: KAFKA_GROUPID
               value: 'auth-consumer-client'
-          command: ['sh', '-c', "until node /usr/src/app/dist/index.js -c kafka; do sleep 2; done"]
+          command: ['sh', '-c', "until node /usr/src/init/dist/index.js -c kafka; do sleep 2; done"]
         - name: init-subscriptions-mongo
           image: busybox:1.28
           command: ['sh', '-c', "until nslookup subscriptions-mongo-srv.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo subscriptions waiting for subscriptions-mongo-srv; sleep 2; done"]
-        # - name: init-auth
-        #   image: curioushuman/rbc-utils
-        #   env:
-        #     - name: API_URI
-        #       value: 'http://rbc.dev/api/auth/common/ready'
-        #   command: ['sh', '-c', "until node /usr/src/app/dist/index.js -c api; do sleep 2; done"]
+        # We also wait for auth-srv, but we do this within rbc-base
       containers:
         - name: subscriptions
           image: curioushuman/rbc-subscriptions

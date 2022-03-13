@@ -8,9 +8,11 @@ RUN npm install
 
 COPY . .
 
+RUN chmod +x start.sh
+
 RUN npm run build
 
-CMD ["npm", "run", "start:dev"]
+ENTRYPOINT [ "sh", "start.sh" ]
 
 FROM curioushuman/rbc-base:latest as production
 
@@ -26,5 +28,6 @@ RUN npm install --only=production
 COPY . .
 
 COPY --from=development /usr/src/app/dist ./dist
+COPY --from=development /usr/src/app/start.sh /usr/src/app/start.sh
 
-CMD ["node", "dist/main"]
+ENTRYPOINT [ "sh", "start.sh" ]
