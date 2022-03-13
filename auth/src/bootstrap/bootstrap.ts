@@ -25,7 +25,7 @@ export class App {
     const configService = app.get(ConfigService);
 
     // setup microservices
-    await this.setupMicroservices(app, configService);
+    // await this.setupMicroservices(app, configService);
 
     // setup swagger
     this.setupSwagger(app);
@@ -40,32 +40,32 @@ export class App {
     console.log(`Listening on port ${port}`);
   }
 
-  public static async setupMicroservices(
-    app: INestApplication,
-    configService: ConfigService,
-  ) {
-    // grab auth microservice config
-    // const config = configService.get<KafkaConfig>(
-    //   'microservices.services.auth',
-    // );
-    // add microservices
-    // app.connectMicroservice(new KafkaConsumerConfig(config).get());
-    // app.connectMicroservice(this.tmpConfig());
-    // start the service
-    // await app.startAllMicroservices();
-  }
+  // public static async setupMicroservices(
+  //   app: INestApplication,
+  //   configService: ConfigService,
+  // ) {
+  // grab auth microservice config
+  // const config = configService.get<KafkaConfig>(
+  //   'microservices.services.auth',
+  // );
+  // add microservices
+  // app.connectMicroservice(new KafkaConsumerConfig(config).get());
+  // app.connectMicroservice(this.tmpConfig());
+  // start the service
+  // await app.startAllMicroservices();
+  // }
 
   // TESTING
-  public static tmpConfig() {
-    return {
-      transport: Transport.KAFKA,
-      options: {
-        client: {
-          brokers: ['kafka-srv:9092'],
-        },
-      },
-    };
-  }
+  // public static tmpConfig() {
+  //   return {
+  //     transport: Transport.KAFKA,
+  //     options: {
+  //       client: {
+  //         brokers: ['kafka-srv:9092'],
+  //       },
+  //     },
+  //   };
+  // }
 
   public static setupSwagger(app: INestApplication) {
     const config = new DocumentBuilder()

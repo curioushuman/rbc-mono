@@ -41,14 +41,14 @@ export class MembersProducerService implements OnModuleInit, OnModuleDestroy {
    * Emit that a member has been created
    */
   public sendCreated(member: Member) {
-    this.emitMember('members-created', member);
+    this.emitMember('member_created', member);
   }
 
   /**
    * Emit that a member has been updated
    */
   public sendUpdated(member: Member) {
-    this.emitMember('members-updated', member);
+    this.emitMember('member_updated', member);
   }
 
   /**
@@ -64,6 +64,6 @@ export class MembersProducerService implements OnModuleInit, OnModuleDestroy {
       excludeExtraneousValues: true,
     });
     console.log('Serialized', serialized);
-    this.kafkaClient.emit(topic, serialized);
+    this.kafkaClient.emit<MemberInternalProducerDto>(topic, serialized);
   }
 }

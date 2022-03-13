@@ -64,7 +64,11 @@ export class App {
       transport: Transport.KAFKA,
       options: {
         client: {
+          clientId: 'subscriptions',
           brokers: ['kafka-srv:9092'],
+        },
+        consumer: {
+          groupId: 'auth-consumer',
         },
       },
     };

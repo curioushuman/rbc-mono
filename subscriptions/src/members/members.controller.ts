@@ -18,7 +18,7 @@ export class MembersController {
   /**
    * Create a member
    */
-  @EventPattern('members-created')
+  @EventPattern('member_created')
   async onMemberCreated(data: {
     value: MemberInternalConsumerDto;
   }): Promise<void> {
