@@ -4,10 +4,13 @@ import { ApiUtilsConfig } from '../config/api.config';
 import { Checker } from '../types/checker';
 
 export class ApiChecker extends Checker<ApiUtilsConfig> {
-  constructor(config: ApiUtilsConfig = new ApiUtilsConfig()) {
+  constructor(uri?: string) {
     super();
-    this.setConfig(config);
+    const uriBase = uri || process.env.API_URI;
     this.checkerType = 'API';
+    if (uriBase) {
+      this.setConfig(new ApiUtilsConfig(uriBase));
+    }
   }
 
   async setup(): Promise<void> {

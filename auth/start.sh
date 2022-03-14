@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Double check Kafka
-until node /usr/src/init/dist/index.js -c kafka
+until node /usr/src/init/dist/src/index.js -c kafka
 do
   echo 'Waiting for Kafka...\n'
   sleep 2

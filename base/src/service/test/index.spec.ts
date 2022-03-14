@@ -12,20 +12,22 @@ describe(ServiceChecker.name, () => {
     stub = {
       ip: '10.0.0.1',
       namespace: 'fakenamespace',
-      domain: `${serviceKey}.fakenamespace.svc.cluster.local`,
+      domain: `${serviceKey}-srv.fakenamespace.svc.cluster.local`,
       uri: 'http://10.0.0.1:3000/api/auth',
       readyUri: 'http://10.0.0.1:3000/api/auth/hello',
     };
-    checker = new ServiceChecker(serviceKey);
-    returnFalseSpy = jest
-      .spyOn(ServiceChecker.prototype as any, 'returnFalse')
-      .mockImplementation(() => {
-        console.log('mocked returnFalse');
-      });
-    lookupSpy = jest.spyOn(ServiceChecker.prototype as any, 'lookup');
   });
 
   describe('Setup', () => {
+    beforeAll(() => {
+      checker = new ServiceChecker(serviceKey);
+      returnFalseSpy = jest
+        .spyOn(ServiceChecker.prototype as any, 'returnFalse')
+        .mockImplementation(() => {
+          console.log('mocked returnFalse');
+        });
+      lookupSpy = jest.spyOn(ServiceChecker.prototype as any, 'lookup');
+    });
     beforeEach(() => {
       jest.clearAllMocks();
     });
@@ -59,6 +61,10 @@ describe(ServiceChecker.name, () => {
       expect(returnFalseSpy).toHaveBeenCalled();
     });
 
+    it.todo(
+      'should get the IP of a domain passed to it using the DNS.lookup function',
+    );
+
     it('should lookup the IP of the internal domain', async () => {
       const domainSpy = jest
         .spyOn(ServiceChecker.prototype as any, 'getDomain')
@@ -87,7 +93,43 @@ describe(ServiceChecker.name, () => {
       expect(internalUriSpy).toHaveBeenCalled();
       expect(checker.getConfigValue('uri')).toEqual(stub.readyUri);
     });
+  });
+  describe('CheckConnect', () => {
+    let returnTrueSpy: jest.SpyInstance;
+    let checkErrorSpy: jest.SpyInstance;
+    let checkConnectSpy: jest.SpyInstance;
 
-    it.todo('get the IP of a domain passed to it using the lookup function');
+    beforeAll(() => {
+      returnTrueSpy = jest
+        .spyOn(ServiceChecker.prototype as any, 'returnTrue')
+        .mockImplementation(() => {
+          console.log('mocked returnTrue');
+        });
+      checkErrorSpy = jest
+        .spyOn(ServiceChecker.prototype as any, 'checkError')
+        .mockImplementation(() => {
+          console.log('mocked checkError');
+        });
+      checkConnectSpy = jest
+        .spyOn(ServiceChecker.prototype as any, 'checkConnect')
+        .mockImplementation(() => {
+          console.log('mocked checkConnect');
+        });
+    });
+
+    it('should call setup from service checker prior to checkConnect', async () => {
+      const internalUriSpy = jest
+        .spyOn(ServiceChecker.prototype as any, 'getInternalUri')
+        .mockResolvedValue(stub.uri);
+      await checker.check();
+      expect(internalUriSpy).toHaveBeenCalled();
+      expect(checker.getConfigValue('uri')).toEqual(stub.readyUri);
+    });
+
+    // it('should call the setup function prior to checking the connection', async () => {
+    //   const setupSpy = jest.spyOn(ServiceChecker.prototype as any, 'setup');
+    //   checker.check();
+    //   expect(setupSpy).toHaveBeenCalled();
+    // });
   });
 });

@@ -27,6 +27,7 @@ export class ServiceChecker extends ApiChecker {
 
   async setup(): Promise<void> {
     const uri = await this.getInternalUri();
+    console.log('uri', uri);
     this.setConfig(new ApiUtilsConfig(uri));
   }
 
@@ -47,7 +48,7 @@ export class ServiceChecker extends ApiChecker {
 
   private async getDomain(): Promise<string> {
     const namespace = await this.getNamespace();
-    return `${this.service}.${namespace}.svc.cluster.local`;
+    return `${this.service}-srv.${namespace}.svc.cluster.local`;
   }
 
   private async getNamespace(): Promise<string> {
@@ -66,6 +67,7 @@ export class ServiceChecker extends ApiChecker {
     return new Promise((resolve, reject) => {
       lookup(name, { family: 4 }, (err, ips) => {
         if (err) {
+          // console.log(err);
           reject(err);
         } else {
           resolve(ips);
