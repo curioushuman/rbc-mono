@@ -14,8 +14,8 @@ import { plainToInstance } from 'class-transformer';
 import { merge } from 'lodash';
 
 import { RolesService } from './roles.service';
-import { CreateRoleDto, UpdateRoleDto, PermissionsDto } from './dto';
-import { CreateRoleMap, UpdateRoleMap, PermissionsMap } from './mappers';
+import { CreateRoleDto, UpdateRoleDto } from './dto';
+import { CreateRoleMap, UpdateRoleMap } from './mappers';
 import { Role } from './schema';
 
 @Controller('roles')
@@ -93,7 +93,9 @@ export class RolesController {
 
   /**
    * Set permissions on a role
-   * ! Decommisioned until I'm in a place to test it
+   * ! Decommissioned until I'm in a place to test it
+   *
+   * You might need to loop through the permissions, and convert them individually
    */
   // @Put('/permissions/:label')
   // async permissions(

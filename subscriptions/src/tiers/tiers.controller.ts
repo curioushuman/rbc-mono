@@ -13,6 +13,7 @@ import { merge } from 'lodash';
 
 import { TiersService } from './tiers.service';
 import { CreateTierDto, UpdateTierDto } from './dto';
+import { CreateTierMap, UpdateTierMap } from './mappers';
 import { Tier } from './schema';
 
 @Controller('tiers')
@@ -53,7 +54,7 @@ export class TiersController {
    */
   @Post()
   async create(@Body() createTierDto: CreateTierDto) {
-    const tier = plainToInstance(Tier, createTierDto, {
+    const tier = plainToInstance(CreateTierMap, createTierDto, {
       excludeExtraneousValues: true,
     });
     try {
@@ -65,12 +66,14 @@ export class TiersController {
 
   /**
    * Update a tier
-   * NOTE: Currently not in use
    */
-  @Put()
-  async update(@Body() updateTierDto: UpdateTierDto) {
-    let tier = await this.getOne(updateTierDto.label);
-    const tierFromDto = plainToInstance(Tier, updateTierDto, {
+  @Put(':label')
+  async update(
+    @Param('label') label: string,
+    @Body() updateTierDto: UpdateTierDto,
+  ) {
+    let tier = await this.getOne(label);
+    const tierFromDto = plainToInstance(UpdateTierMap, updateTierDto, {
       excludeExtraneousValues: true,
     });
     merge(tier, tierFromDto);
