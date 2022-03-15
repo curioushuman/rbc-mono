@@ -1,5 +1,4 @@
 import { IsOptional, IsString } from 'class-validator';
-import { AutoMap } from '@automapper/classes';
 
 export class UpdateProfileDto {
   /**
@@ -11,7 +10,6 @@ export class UpdateProfileDto {
    * Members first name
    * @example Jake
    */
-  @AutoMap()
   @IsString()
   @IsOptional()
   firstName?: string;
@@ -21,7 +19,6 @@ export class UpdateProfileDto {
    * * Note: All validation for LastName is on it's original schema
    * @example Blues
    */
-  @AutoMap()
   @IsString()
   @IsOptional()
   lastName?: string;

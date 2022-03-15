@@ -8,27 +8,23 @@ import {
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
-import { InjectMapper } from '@automapper/nestjs';
-import { Mapper } from '@automapper/core';
+import { plainToInstance } from 'class-transformer';
 import { merge } from 'lodash';
 
 import { CreateProfileDto, UpdateProfileDto } from './dto';
-import { Profile } from './schema';
+import { CreateProfileMap, UpdateProfileMap } from './mappers';
 import { Member } from '../members/schema';
 import { MembersService } from '../members/members.service';
 
-@Controller('profiles')
+@Controller('members/profiles')
 export class ProfilesController {
-  constructor(
-    private membersService: MembersService,
-    @InjectMapper() private mapper: Mapper,
-  ) {}
+  constructor(private membersService: MembersService) {}
 
   /**
    * Get a profile
    */
   @Get(':memberId')
-  async findOne(@Param('memberId') memberId: string) {
+  async getOne(@Param('memberId') memberId: string) {
     const member = await this.findMember(memberId);
     return member.profile;
   }
@@ -36,28 +32,30 @@ export class ProfilesController {
   /**
    * Create a profile
    */
-  @Post()
-  async create(@Body() createProfileDto: CreateProfileDto) {
-    const member = await this.findMember(createProfileDto.memberId);
-    member.profile = this.mapper.map(
-      createProfileDto,
-      Profile,
-      CreateProfileDto,
-    );
+  @Post(':memberId')
+  async create(
+    @Param('memberId') memberId: string,
+    @Body() createProfileDto: CreateProfileDto,
+  ) {
+    const member = await this.findMember(memberId);
+    member.profile = plainToInstance(CreateProfileMap, createProfileDto, {
+      excludeExtraneousValues: true,
+    });
     return this.updateMemberProfile(member);
   }
 
   /**
    * Atomic update of a profile
    */
-  @Patch()
-  async update(@Body() updateProfileDto: UpdateProfileDto) {
-    const member = await this.findMember(updateProfileDto.memberId);
-    const profileFromDto = this.mapper.map(
-      updateProfileDto,
-      Profile,
-      UpdateProfileDto,
-    );
+  @Patch(':memberId')
+  async update(
+    @Param('memberId') memberId: string,
+    @Body() updateProfileDto: UpdateProfileDto,
+  ) {
+    const member = await this.findMember(memberId);
+    const profileFromDto = plainToInstance(UpdateProfileMap, updateProfileDto, {
+      excludeExtraneousValues: true,
+    });
     merge(member.profile, profileFromDto);
     return this.updateMemberProfile(member);
   }
