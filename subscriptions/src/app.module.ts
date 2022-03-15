@@ -1,11 +1,14 @@
 import { Module, MiddlewareConsumer } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { HttpLoggerMiddleware, configFactory } from '@curioushuman/rbc-common';
+import {
+  LoggableHttpMiddleware,
+  MongoDbModule,
+  configFactory,
+} from '@curioushuman/rbc-common';
 
 import { TiersModule } from './tiers/tiers.module';
 import { AppController } from './root/app.controller';
 import { AppService } from './root/app.service';
-import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -14,7 +17,7 @@ import { DatabaseModule } from './database/database.module';
       load: [configFactory],
       isGlobal: true,
     }),
-    DatabaseModule,
+    MongoDbModule,
     TiersModule,
   ],
   controllers: [AppController],
@@ -22,6 +25,6 @@ import { DatabaseModule } from './database/database.module';
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(HttpLoggerMiddleware);
+    consumer.apply(LoggableHttpMiddleware);
   }
 }

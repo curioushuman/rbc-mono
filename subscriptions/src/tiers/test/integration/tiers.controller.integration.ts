@@ -1,9 +1,9 @@
 import { Test } from '@nestjs/testing';
 import { Connection } from 'mongoose';
 import * as request from 'supertest';
+import { MongoDbService } from '@curioushuman/rbc-common';
 
 import { AppModule } from '../../../app.module';
-import { DatabaseService } from '../../../database/database.service';
 import { tierNew, tierExisting } from '../stubs/tier.stub';
 import { CreateTierDto } from '../../dto';
 
@@ -26,9 +26,7 @@ describe('TiersController', () => {
 
     app = moduleRef.createNestApplication();
     await app.init();
-    dbConnection = moduleRef
-      .get<DatabaseService>(DatabaseService)
-      .getDbHandle();
+    dbConnection = moduleRef.get<MongoDbService>(MongoDbService).getDbHandle();
     httpServer = app.getHttpServer();
   });
 
