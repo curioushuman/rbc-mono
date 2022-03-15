@@ -1,7 +1,7 @@
 import { getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 import { FilterQuery } from 'mongoose';
-import { Tier } from '../schema/tier.schema';
+import { Tier } from '../schema';
 import { TiersRepository } from '../tiers.repository';
 import { tierNew, tierExisting } from './stubs/tier.stub';
 import { TierMockModel } from './support/tier.model';

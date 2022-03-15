@@ -9,6 +9,7 @@ import { CreateTierDto } from '../../dto';
 
 // * NOTES
 // Currently disabled, as it won't be able to connect to MongoDB without cluster
+//   To re-enable, add .spec at the end of the file
 
 // TODO
 // [ ] Complete other endpoints

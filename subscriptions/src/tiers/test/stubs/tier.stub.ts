@@ -1,4 +1,4 @@
-import { Tier } from '../../schema/tier.schema';
+import { Tier } from '../../schema';
 
 export const tierNew = (): Tier => {
   return {

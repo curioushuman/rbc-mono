@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { FilterQuery } from 'mongoose';
 
-import { Tier } from '../schema/tier.schema';
+import { Tier } from '../schema';
 import { TiersService } from '../tiers.service';
 import { tierNew, tierExisting } from './stubs/tier.stub';
 

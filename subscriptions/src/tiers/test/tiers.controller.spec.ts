@@ -99,13 +99,13 @@ describe('TiersController', () => {
 
       beforeEach(async () => {
         updateTierDto = {
-          label: tierNew().label,
+          label: tierExisting().label,
         };
-        tier = await controller.update(updateTierDto);
+        tier = await controller.update(tierExisting().label, updateTierDto);
       });
 
       test('then it should call service', () => {
-        expect(service.update).toHaveBeenCalledWith(tierNew());
+        expect(service.update).toHaveBeenCalledWith(tierExisting());
       });
 
       test('then it should return a tier', () => {
