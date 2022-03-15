@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { EntityRepository } from '../database/entity.repository';
+import { MongoDbRepository } from '@curioushuman/rbc-common';
 
 import { Member, MemberModel, MemberDocument } from './schema';
 
 @Injectable()
-export class MembersRepository extends EntityRepository<
+export class MembersRepository extends MongoDbRepository<
   MemberDocument,
   Member
 > {
