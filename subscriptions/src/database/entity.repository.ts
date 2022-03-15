@@ -1,6 +1,6 @@
 import { Document, FilterQuery, Model } from 'mongoose';
 
-import { Loggable, LoggableError } from '../logging';
+import { Loggable, LoggableError } from '@curioushuman/rbc-common';
 
 @Loggable('Database')
 export abstract class EntityRepository<D extends Document, M> {

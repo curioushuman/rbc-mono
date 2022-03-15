@@ -8,7 +8,7 @@ import {
   SwaggerDocumentOptions,
 } from '@nestjs/swagger';
 import type { KafkaConfig } from '@curioushuman/rbc-common';
-import { KafkaConsumerConfig } from '@curioushuman/rbc-common';
+import { KafkaConsumerConfig, LoggableLogger } from '@curioushuman/rbc-common';
 
 // TODO
 // - better handling of ConfigService
@@ -33,6 +33,7 @@ export class App {
     // global settings
     app.setGlobalPrefix('api/subscriptions');
     app.useGlobalPipes(new ValidationPipe());
+    app.useLogger(new LoggableLogger());
 
     // start listening
     const port = configService.get<string>('app.port') || 3000;
