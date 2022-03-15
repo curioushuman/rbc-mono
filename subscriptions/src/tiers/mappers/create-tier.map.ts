@@ -8,7 +8,7 @@ import { Tier } from '../schema';
  * Expose: allows data from DTO to be written directly to these fields
  * Transform: transforms info from DTO to DB structure
  */
-export class CreateTierMap extends Tier {
+export class CreateTierMap implements Tier {
   @Expose()
   label!: string;
 }

@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-import { Role } from '../schema';
+import { Role, Permission } from '../schema';
 
 /**
  * This converts data coming in (via DTO) to underlying DB structure
@@ -8,10 +8,12 @@ import { Role } from '../schema';
  * Expose: allows data from DTO to be written directly to these fields
  * Transform: transforms info from DTO to DB structure
  */
-export class CreateRoleMap extends Role {
+export class CreateRoleMap implements Role {
   @Expose()
   label!: string;
 
   @Expose()
   subscriptionTypeId?: string;
+
+  permissions!: Permission[];
 }
