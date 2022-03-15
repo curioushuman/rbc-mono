@@ -6,21 +6,8 @@ import { KafkaConfig, KafkaConsumerConfig } from '@curioushuman/rbc-common';
 
 import { RolesService } from './roles.service';
 import { RolesController } from './roles.controller';
-import {
-  CreateMapperProfile,
-  UpdateMapperProfile,
-  PermissionsMapperProfile,
-} from './mappers';
 import { Role, RoleSchema } from './schema';
-
-// TODO
-// - bloody mapper fills in missing DTO fields with undefined!
-//   - even if you use their special ignore() function
-//   - I may need to replace it, or find another solution
-// - mapper also having issues with array of objects
-//   - Let's debug, and make a call on it's usefulness
-// - TESTING
-//   - Once the solution to the mapper is in place and we stop getting false negatives
+import { RolesRepository } from './roles.repository';
 
 @Module({
   imports: [
@@ -40,11 +27,6 @@ import { Role, RoleSchema } from './schema';
     ]),
   ],
   controllers: [RolesController],
-  providers: [
-    RolesService,
-    CreateMapperProfile,
-    UpdateMapperProfile,
-    PermissionsMapperProfile,
-  ],
+  providers: [RolesService, RolesRepository],
 })
 export class RolesModule {}

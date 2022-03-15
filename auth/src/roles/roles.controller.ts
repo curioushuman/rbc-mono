@@ -9,9 +9,8 @@ import {
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
-import { InjectMapper } from '@automapper/nestjs';
 import { ClientKafka, EventPattern } from '@nestjs/microservices';
-import { Mapper } from '@automapper/core';
+import { plainToInstance } from 'class-transformer';
 import { merge } from 'lodash';
 
 import { RolesService } from './roles.service';
@@ -22,7 +21,6 @@ import { Role } from './schema';
 export class RolesController {
   constructor(
     private readonly rolesService: RolesService,
-    @InjectMapper() private mapper: Mapper,
     @Inject('KAFKA_CLIENT') private readonly kafkaClient: ClientKafka,
   ) {}
 
@@ -30,9 +28,9 @@ export class RolesController {
    * Get all roles
    */
   @Get()
-  async findAll() {
+  async get() {
     try {
-      return await this.rolesService.findAll();
+      return await this.rolesService.find();
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -42,7 +40,7 @@ export class RolesController {
    * Get a role
    */
   @Get(':label')
-  async findOne(@Param('label') label: string) {
+  async getOne(@Param('label') label: string) {
     let role: Role;
     try {
       role = await this.rolesService.findOne(label);
@@ -60,9 +58,9 @@ export class RolesController {
    */
   @Post()
   async create(@Body() createRoleDto: CreateRoleDto) {
-    console.log('createRoleDto', createRoleDto);
-    const role = this.mapper.map(createRoleDto, Role, CreateRoleDto);
-    console.log('role', role);
+    const role = plainToInstance(Role, createRoleDto, {
+      excludeExtraneousValues: true,
+    });
     try {
       return await this.rolesService.create(role);
     } catch (error) {
@@ -76,8 +74,10 @@ export class RolesController {
    */
   @Put()
   async update(@Body() updateRoleDto: UpdateRoleDto) {
-    let role = await this.findOne(updateRoleDto.label);
-    const roleFromDto = this.mapper.map(updateRoleDto, Role, UpdateRoleDto);
+    let role = await this.getOne(updateRoleDto.label);
+    const roleFromDto = plainToInstance(Role, updateRoleDto, {
+      excludeExtraneousValues: true,
+    });
     merge(role, roleFromDto);
     try {
       role = await this.rolesService.update(role);
@@ -92,8 +92,10 @@ export class RolesController {
    */
   @Put('/permissions')
   async permissions(@Body() permissionsDto: PermissionsDto) {
-    let role = await this.findOne(permissionsDto.label);
-    const roleFromDto = this.mapper.map(permissionsDto, Role, PermissionsDto);
+    let role = await this.getOne(permissionsDto.label);
+    const roleFromDto = plainToInstance(Role, permissionsDto, {
+      excludeExtraneousValues: true,
+    });
     merge(role, roleFromDto);
     try {
       role = await this.rolesService.update(role);
