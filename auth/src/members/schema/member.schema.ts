@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Document, Types, Model } from 'mongoose';
-import { AutoMap } from '@automapper/classes';
 
 import { MemberEmail, MemberEmailSchema } from './';
 import { Profile } from '../../profiles/schema';
@@ -20,7 +19,6 @@ import { Profile } from '../../profiles/schema';
 @Schema()
 export class Member {
   // We will be using the CRM ID for member records across the ecosystem
-  @AutoMap()
   @Prop({ type: Types.ObjectId, required: true, unique: true })
   id!: string;
 

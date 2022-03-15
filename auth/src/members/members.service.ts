@@ -1,62 +1,29 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { MongooseError } from 'mongoose';
+import { Injectable } from '@nestjs/common';
 
-import { Member, MemberModel } from './schema';
-import { findOneQuery } from './types';
-
-// TODO
-// - abstract the error handling into the common logging service
+import { Member } from './schema';
+import { MembersRepository } from './members.repository';
 
 @Injectable()
 export class MembersService {
-  private readonly logger = new Logger(MembersService.name);
+  constructor(private readonly membersRepository: MembersRepository) {}
 
-  constructor(
-    @InjectModel(Member.name)
-    private memberModel: MemberModel,
-  ) {}
-
-  async findAll(): Promise<Member[]> {
-    try {
-      return await this.memberModel.find().exec();
-    } catch (error) {
-      this.logger.warn(`AS YET UNHANDLED error: ${error.message}`);
-      throw error;
-    }
+  async find(): Promise<Member[]> {
+    return await this.membersRepository.find({});
   }
 
-  async findOne(query: findOneQuery): Promise<Member> {
-    try {
-      return await this.memberModel.findOne(query);
-    } catch (error) {
-      this.logger.warn(`AS YET UNHANDLED error: ${error.message}`);
-      throw error;
-    }
+  async findOne(id: string): Promise<Member> {
+    return await this.membersRepository.findOne({ id });
   }
 
-  create(member: Member) {
-    return this.mutate(member);
+  create(member: Member): Promise<Member> {
+    return this.save(member);
   }
 
-  update(member: Member) {
-    return this.mutate(member);
+  update(member: Member): Promise<Member> {
+    return this.save(member);
   }
 
-  async mutate(member: Member): Promise<Member> {
-    const mutatedMember = new this.memberModel(member);
-    try {
-      return await mutatedMember.save();
-    } catch (error) {
-      // If it's a known Mongoose error then...
-      if (error.type === MongooseError && error.name === 'ValidationError') {
-        this.logger.warn(`MongoDB Validation error: ${error.message}`);
-        // Clean it, and pass back something more generic
-        throw new Error(`Error creating member: ${error.message}`);
-      }
-      // Otherwise log the fact we haven't considered this type of error yet (agggh)
-      this.logger.warn(`AS YET UNHANDLED error: ${error.message}`);
-      throw error;
-    }
+  async save(member: Member): Promise<Member> {
+    return this.membersRepository.save(member);
   }
 }

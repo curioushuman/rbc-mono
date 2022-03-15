@@ -1,5 +1,4 @@
 import { IsEmail, IsNotEmpty } from 'class-validator';
-import { AutoMap } from '@automapper/classes';
 
 // TODO
 // - will AutoMap work alongside swagger.PartialType?
@@ -9,7 +8,6 @@ export class UpdateMemberDto {
   /**
    * Identifier for member. Set to the ID of this person in the CRM.
    */
-  @AutoMap()
   @IsNotEmpty()
   id!: string;
 

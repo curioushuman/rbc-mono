@@ -8,13 +8,13 @@ import {
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
-import { InjectMapper } from '@automapper/nestjs';
-import { Mapper } from '@automapper/core';
+import { plainToInstance } from 'class-transformer';
 import { merge } from 'lodash';
 
 import { MembersService } from './members.service';
 import { MembersProducerService } from './members-producer.service';
 import { CreateMemberDto, UpdateMemberDto } from './dto';
+import { CreateMemberMap, UpdateMemberMap } from './mappers';
 import { Member } from './schema';
 
 @Controller('members')
@@ -22,16 +22,15 @@ export class MembersController {
   constructor(
     private membersService: MembersService,
     private producerService: MembersProducerService,
-    @InjectMapper() private mapper: Mapper,
   ) {}
 
   /**
    * Get all members
    */
   @Get()
-  async findAll() {
+  async get() {
     try {
-      return await this.membersService.findAll();
+      return await this.membersService.find();
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -41,10 +40,10 @@ export class MembersController {
    * Get a member
    */
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async getOne(@Param('id') id: string) {
     let member: Member;
     try {
-      member = await this.membersService.findOne({ id });
+      member = await this.membersService.findOne(id);
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -60,11 +59,9 @@ export class MembersController {
   @Post()
   async create(@Body() createMemberDto: CreateMemberDto) {
     let member: Member;
-    const memberFromDto = this.mapper.map(
-      createMemberDto,
-      Member,
-      CreateMemberDto,
-    );
+    const memberFromDto = plainToInstance(CreateMemberMap, createMemberDto, {
+      excludeExtraneousValues: true,
+    });
     try {
       member = await this.membersService.create(memberFromDto);
     } catch (error) {
@@ -80,12 +77,10 @@ export class MembersController {
    */
   @Put()
   async update(@Body() updateMemberDto: UpdateMemberDto) {
-    let member = await this.findOne(updateMemberDto.id);
-    const memberFromDto = this.mapper.map(
-      updateMemberDto,
-      Member,
-      UpdateMemberDto,
-    );
+    let member = await this.getOne(updateMemberDto.id);
+    const memberFromDto = plainToInstance(UpdateMemberMap, updateMemberDto, {
+      excludeExtraneousValues: true,
+    });
     merge(member, memberFromDto);
     try {
       member = await this.membersService.update(member);

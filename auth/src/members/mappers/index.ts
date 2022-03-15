@@ -1,3 +1,2 @@
-// barrel baby
-export * from './create.mapper-profile';
-export * from './update.mapper-profile';
+export * from './create-member.map';
+export * from './update-member.map';
