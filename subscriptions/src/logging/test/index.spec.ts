@@ -21,7 +21,7 @@ class TestLoggable extends TestLoggableAbstract {
 }
 
 describe('Loggable', () => {
-  describe('When decorating a class', () => {
+  describe('Decorating a class', () => {
     let testLoggable: TestLoggable;
     beforeAll(() => {
       testLoggable = new TestLoggable();
@@ -51,7 +51,7 @@ describe('Loggable', () => {
     });
   });
 
-  describe('When decorating a method', () => {
+  describe('Decorating a method', () => {
     let testLoggable: TestLoggable;
 
     beforeEach(() => {
