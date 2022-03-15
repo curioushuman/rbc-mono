@@ -5,13 +5,10 @@ import {
   Put,
   Body,
   Param,
-  Inject,
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
-import { ClientKafka, EventPattern } from '@nestjs/microservices';
-import { InjectMapper } from '@automapper/nestjs';
-import { Mapper } from '@automapper/core';
+import { plainToInstance } from 'class-transformer';
 import { merge } from 'lodash';
 
 import { TiersService } from './tiers.service';
@@ -20,19 +17,15 @@ import { Tier } from './schema';
 
 @Controller('tiers')
 export class TiersController {
-  constructor(
-    private readonly tiersService: TiersService,
-    @InjectMapper() private mapper: Mapper,
-    @Inject('KAFKA_CLIENT') private readonly kafkaClient: ClientKafka,
-  ) {}
+  constructor(private readonly tiersService: TiersService) {}
 
   /**
    * Get all tiers
    */
   @Get()
-  async findAll() {
+  async get() {
     try {
-      return await this.tiersService.findAll();
+      return await this.tiersService.find();
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -42,7 +35,7 @@ export class TiersController {
    * Get a tier
    */
   @Get(':label')
-  async findOne(@Param('label') label: string) {
+  async getOne(@Param('label') label: string) {
     let tier: Tier;
     try {
       tier = await this.tiersService.findOne(label);
@@ -60,7 +53,9 @@ export class TiersController {
    */
   @Post()
   async create(@Body() createTierDto: CreateTierDto) {
-    const tier = this.mapper.map(createTierDto, Tier, CreateTierDto);
+    const tier = plainToInstance(Tier, createTierDto, {
+      excludeExtraneousValues: true,
+    });
     try {
       return await this.tiersService.create(tier);
     } catch (error) {
@@ -74,8 +69,10 @@ export class TiersController {
    */
   @Put()
   async update(@Body() updateTierDto: UpdateTierDto) {
-    let tier = await this.findOne(updateTierDto.label);
-    const tierFromDto = this.mapper.map(updateTierDto, Tier, UpdateTierDto);
+    let tier = await this.getOne(updateTierDto.label);
+    const tierFromDto = plainToInstance(Tier, updateTierDto, {
+      excludeExtraneousValues: true,
+    });
     merge(tier, tierFromDto);
     try {
       tier = await this.tiersService.update(tier);

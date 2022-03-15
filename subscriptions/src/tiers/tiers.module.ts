@@ -6,8 +6,8 @@ import { KafkaConfig, KafkaConsumerConfig } from '@curioushuman/rbc-common';
 
 import { TiersService } from './tiers.service';
 import { TiersController } from './tiers.controller';
-import { CreateMapperProfile, UpdateMapperProfile } from './mappers';
 import { Tier, TierSchema } from './schema';
+import { TiersRepository } from './tiers.repository';
 
 // TODO
 // - !!abstract the microservices stuff!!
@@ -33,6 +33,6 @@ import { Tier, TierSchema } from './schema';
     ]),
   ],
   controllers: [TiersController],
-  providers: [TiersService, CreateMapperProfile, UpdateMapperProfile],
+  providers: [TiersService, TiersRepository],
 })
 export class TiersModule {}

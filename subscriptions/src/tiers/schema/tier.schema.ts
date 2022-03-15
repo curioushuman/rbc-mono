@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Model } from 'mongoose';
-import { AutoMap } from '@automapper/classes';
+import { Expose } from 'class-transformer';
 
 @Schema()
 export class Tier {
-  @AutoMap()
+  @Expose()
   @Prop({ required: true, unique: true })
   label!: string;
 }
