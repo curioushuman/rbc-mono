@@ -1,11 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { AutoMap } from '@automapper/classes';
 
 import { Action, Resource, Zone } from '../types';
 
 @Schema({ _id: false })
 export class Permission {
-  @AutoMap()
   @Prop({
     required: true,
     type: String,
@@ -14,7 +12,6 @@ export class Permission {
   })
   zone!: Zone;
 
-  @AutoMap()
   @Prop({
     required: true,
     type: String,
@@ -23,7 +20,6 @@ export class Permission {
   })
   resource!: Resource;
 
-  @AutoMap()
   @Prop({
     required: true,
     type: String,

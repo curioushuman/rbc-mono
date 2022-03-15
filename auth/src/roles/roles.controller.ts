@@ -15,6 +15,7 @@ import { merge } from 'lodash';
 
 import { RolesService } from './roles.service';
 import { CreateRoleDto, UpdateRoleDto, PermissionsDto } from './dto';
+import { CreateRoleMap, UpdateRoleMap, PermissionsMap } from './mappers';
 import { Role } from './schema';
 
 @Controller('roles')
@@ -58,7 +59,7 @@ export class RolesController {
    */
   @Post()
   async create(@Body() createRoleDto: CreateRoleDto) {
-    const role = plainToInstance(Role, createRoleDto, {
+    const role = plainToInstance(CreateRoleMap, createRoleDto, {
       excludeExtraneousValues: true,
     });
     try {
@@ -72,10 +73,13 @@ export class RolesController {
    * Update a role
    * NOTE: Currently not in use
    */
-  @Put()
-  async update(@Body() updateRoleDto: UpdateRoleDto) {
-    let role = await this.getOne(updateRoleDto.label);
-    const roleFromDto = plainToInstance(Role, updateRoleDto, {
+  @Put(':label')
+  async update(
+    @Param('label') label: string,
+    @Body() updateRoleDto: UpdateRoleDto,
+  ) {
+    let role = await this.getOne(label);
+    const roleFromDto = plainToInstance(UpdateRoleMap, updateRoleDto, {
       excludeExtraneousValues: true,
     });
     merge(role, roleFromDto);
@@ -89,19 +93,23 @@ export class RolesController {
 
   /**
    * Set permissions on a role
+   * ! Decommisioned until I'm in a place to test it
    */
-  @Put('/permissions')
-  async permissions(@Body() permissionsDto: PermissionsDto) {
-    let role = await this.getOne(permissionsDto.label);
-    const roleFromDto = plainToInstance(Role, permissionsDto, {
-      excludeExtraneousValues: true,
-    });
-    merge(role, roleFromDto);
-    try {
-      role = await this.rolesService.update(role);
-    } catch (error) {
-      throw new BadRequestException(error.message);
-    }
-    return role;
-  }
+  // @Put('/permissions/:label')
+  // async permissions(
+  //   @Param('label') label: string,
+  //   @Body() permissionsDto: PermissionsDto,
+  // ) {
+  //   let role = await this.getOne(label);
+  //   const roleFromDto = plainToInstance(PermissionsMap, permissionsDto, {
+  //     excludeExtraneousValues: true,
+  //   });
+  //   merge(role, roleFromDto);
+  //   try {
+  //     role = await this.rolesService.update(role);
+  //   } catch (error) {
+  //     throw new BadRequestException(error.message);
+  //   }
+  //   return role;
+  // }
 }

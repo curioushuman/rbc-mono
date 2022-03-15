@@ -1,11 +1,10 @@
-import { IsNotEmpty } from 'class-validator';
-import { AutoMap } from '@automapper/classes';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class UpdateRoleDto {
   /**
    * Machine readable name for the role e.g. 'admin'
    */
-  @AutoMap()
+  @IsString()
   @IsNotEmpty()
   label!: string;
 }
