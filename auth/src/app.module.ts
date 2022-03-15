@@ -1,11 +1,9 @@
 import { Module, MiddlewareConsumer } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
-import { AutomapperModule } from '@automapper/nestjs';
-import { classes as AutomapperClasses } from '@automapper/classes';
+import { ConfigModule } from '@nestjs/config';
 import {
   LoggableHttpMiddleware,
   configFactory,
+  MongoDbModule,
 } from '@curioushuman/rbc-common';
 
 import { MembersModule } from './members/members.module';
@@ -19,18 +17,9 @@ import { AppService } from './root/app.service';
     ConfigModule.forRoot({
       ignoreEnvFile: true,
       load: [configFactory],
+      isGlobal: true,
     }),
-    MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('database.mongodb.uri'),
-      }),
-      inject: [ConfigService],
-    }),
-    AutomapperModule.forRoot({
-      options: [{ name: 'Mapper', pluginInitializer: AutomapperClasses }],
-      singular: true,
-    }),
+    MongoDbModule,
     MembersModule,
     ProfilesModule,
     RolesModule,
