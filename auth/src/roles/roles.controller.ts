@@ -21,8 +21,7 @@ import { Role } from './schema';
 @Controller('roles')
 export class RolesController {
   constructor(
-    private readonly rolesService: RolesService,
-    @Inject('KAFKA_CLIENT') private readonly kafkaClient: ClientKafka,
+    private readonly rolesService: RolesService, // @Inject('KAFKA_CLIENT') private readonly kafkaClient: ClientKafka,
   ) {}
 
   /**
