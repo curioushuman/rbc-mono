@@ -12,12 +12,12 @@ import {
 import { ClientKafka, EventPattern } from '@nestjs/microservices';
 import { plainToInstance } from 'class-transformer';
 import { merge } from 'lodash';
+import { SerializeInterceptor } from '@curioushuman/rbc-common';
 
 import { RolesService } from './roles.service';
 import { CreateRoleDto, RoleExternalDto, UpdateRoleDto } from './dto';
 import { CreateRoleMap, UpdateRoleMap } from './mappers';
 import { Role } from './schema';
-import { SerializeInterceptor } from '../interceptors';
 
 @SerializeInterceptor(RoleExternalDto)
 @Controller('roles')
