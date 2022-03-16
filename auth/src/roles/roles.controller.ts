@@ -14,10 +14,12 @@ import { plainToInstance } from 'class-transformer';
 import { merge } from 'lodash';
 
 import { RolesService } from './roles.service';
-import { CreateRoleDto, UpdateRoleDto } from './dto';
+import { CreateRoleDto, RoleExternalDto, UpdateRoleDto } from './dto';
 import { CreateRoleMap, UpdateRoleMap } from './mappers';
 import { Role } from './schema';
+import { SerializeInterceptor } from '../interceptors';
 
+@SerializeInterceptor(RoleExternalDto)
 @Controller('roles')
 export class RolesController {
   constructor(

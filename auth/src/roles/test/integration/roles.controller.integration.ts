@@ -5,7 +5,6 @@ import { MongoDbService } from '@curioushuman/rbc-common';
 
 import { AppModule } from '../../../app.module';
 import { createRoleDto, roleExisting, roleResponse } from '../stubs/role.stub';
-import { CreateRoleDto } from '../../dto';
 
 // * NOTES
 // Currently disabled, as it won't be able to connect to MongoDB without cluster
