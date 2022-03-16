@@ -3,7 +3,13 @@ import { FilterQuery } from 'mongoose';
 
 import { Role } from '../schema';
 import { RolesService } from '../roles.service';
-import { roleNew, roleExisting } from './stubs/role.stub';
+import {
+  roleExisting,
+  createRoleMap,
+  createRoleRole,
+  updateRoleMap,
+  updateRoleRole,
+} from './stubs/role.stub';
 
 import { RolesRepository } from '../roles.repository';
 jest.mock('../roles.repository');
@@ -96,19 +102,49 @@ describe('RolesService', () => {
       jest.clearAllMocks();
     });
 
+    describe('create', () => {
+      describe('when create is successful', () => {
+        let saveSpy: jest.SpyInstance;
+
+        beforeEach(async () => {
+          saveSpy = jest.spyOn(service, 'save');
+          await service.create(createRoleMap());
+        });
+
+        test('then it should call the save function with a Role, not a map', () => {
+          expect(saveSpy).toHaveBeenCalledWith(createRoleRole());
+        });
+      });
+    });
+
+    describe('update', () => {
+      describe('when update is successful', () => {
+        let saveSpy: jest.SpyInstance;
+
+        beforeEach(async () => {
+          saveSpy = jest.spyOn(service, 'save');
+          await service.update(updateRoleMap());
+        });
+
+        test('then it should call the save function with a Role, not a map', () => {
+          expect(saveSpy).toHaveBeenCalledWith(updateRoleRole());
+        });
+      });
+    });
+
     describe('save', () => {
       describe('when save is successful', () => {
         let role: Role;
 
         beforeEach(async () => {
-          role = await service.save(roleNew());
+          role = await service.save(updateRoleRole());
         });
 
-        it('should call the repository', () => {
-          expect(repository.save).toHaveBeenCalledWith(roleNew());
+        test('then it should call the repository', () => {
+          expect(repository.save).toHaveBeenCalledWith(updateRoleRole());
         });
 
-        it('should return the newly created role', () => {
+        test('then it should return the newly created role', () => {
           expect(role).toEqual(roleExisting());
         });
       });

@@ -1,8 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { RolesController } from '../roles.controller';
-import { roleNew, roleExisting } from './stubs/role.stub';
-import { CreateRoleDto, UpdateRoleDto } from '../dto';
+import {
+  roleExisting,
+  createRoleDto,
+  createRoleMap,
+  updateRoleDto,
+  updateRoleMap,
+} from './stubs/role.stub';
 import { Role } from '../schema';
 
 import { RolesService } from '../roles.service';
@@ -25,17 +30,19 @@ describe('RolesController', () => {
 
   describe('getOne', () => {
     describe('when a record that exists is requested', () => {
+      let label: string;
       let role: Role;
 
       beforeEach(async () => {
-        role = await controller.getOne(roleExisting().label);
+        label = roleExisting().label;
+        role = await controller.getOne(label);
       });
 
       test('then it should call service', () => {
-        expect(service.findOne).toBeCalledWith(roleExisting().label);
+        expect(service.findOne).toBeCalledWith(label);
       });
 
-      test('then it should return a role', () => {
+      test('then it should return a Role', () => {
         expect(role).toEqual(roleExisting());
       });
     });
@@ -65,7 +72,7 @@ describe('RolesController', () => {
         expect(service.find).toHaveBeenCalled();
       });
 
-      test('then it should return roles', () => {
+      test('then it should return an array of Roles', () => {
         expect(roles).toEqual([roleExisting()]);
       });
     });
@@ -74,20 +81,16 @@ describe('RolesController', () => {
   describe('create', () => {
     describe('when all fields are valid', () => {
       let role: Role;
-      let createRoleDto: CreateRoleDto;
 
       beforeEach(async () => {
-        createRoleDto = {
-          label: roleNew().label,
-        };
-        role = await controller.create(createRoleDto);
+        role = await controller.create(createRoleDto());
       });
 
       test('then it should call service', () => {
-        expect(service.create).toHaveBeenCalledWith(roleNew());
+        expect(service.create).toHaveBeenCalledWith(createRoleMap());
       });
 
-      test('then it should return a role', () => {
+      test('then it should return a Role', () => {
         expect(role).toEqual(roleExisting());
       });
     });
@@ -95,20 +98,16 @@ describe('RolesController', () => {
   describe('update', () => {
     describe('when all fields are valid', () => {
       let role: Role;
-      let updateRoleDto: UpdateRoleDto;
 
       beforeEach(async () => {
-        updateRoleDto = {
-          label: roleNew().label,
-        };
-        role = await controller.update(roleExisting().label, updateRoleDto);
+        role = await controller.update(roleExisting().label, updateRoleDto());
       });
 
       test('then it should call service', () => {
-        expect(service.update).toHaveBeenCalledWith(roleExisting());
+        expect(service.update).toHaveBeenCalledWith(updateRoleMap());
       });
 
-      test('then it should return a role', () => {
+      test('then it should return a Role', () => {
         expect(role).toEqual(roleExisting());
       });
     });

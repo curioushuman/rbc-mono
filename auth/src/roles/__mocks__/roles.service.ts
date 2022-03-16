@@ -1,6 +1,6 @@
 import { when } from 'jest-when';
 
-import { roleNew, roleExisting } from '../test/stubs/role.stub';
+import { roleExisting } from '../test/stubs/role.stub';
 
 const findOne = jest.fn().mockResolvedValue(null);
 when(findOne)
@@ -17,7 +17,7 @@ const find = jest.fn().mockResolvedValue([roleExisting()]);
 export const RolesService = jest.fn().mockReturnValue({
   findOne,
   find,
-  create: jest.fn().mockResolvedValue(roleNew()),
+  create: jest.fn().mockResolvedValue(roleExisting()),
   update: jest.fn().mockResolvedValue(roleExisting()),
   save: jest.fn().mockResolvedValue(roleExisting()),
 });

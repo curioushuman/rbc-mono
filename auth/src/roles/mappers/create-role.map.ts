@@ -8,12 +8,12 @@ import { Role, Permission } from '../schema';
  * Expose: allows data from DTO to be written directly to these fields
  * Transform: transforms info from DTO to DB structure
  */
-export class CreateRoleMap implements Role {
+export class CreateRoleMap implements Partial<Role> {
   @Expose()
-  label!: string;
+  label: string;
 
   @Expose()
   subscriptionTypeId?: string;
 
-  permissions!: Permission[];
+  permissions?: Permission[];
 }

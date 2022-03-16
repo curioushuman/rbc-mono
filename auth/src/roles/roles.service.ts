@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
 
 import { Role } from './schema';
 import { RolesRepository } from './roles.repository';
+import { CreateRoleMap, UpdateRoleMap } from './mappers';
 
 @Injectable()
 export class RolesService {
@@ -15,11 +17,13 @@ export class RolesService {
     return await this.rolesRepository.findOne({ label });
   }
 
-  create(role: Role): Promise<Role> {
+  create(createRoleMap: CreateRoleMap): Promise<Role> {
+    const role = plainToInstance(Role, createRoleMap);
     return this.save(role);
   }
 
-  update(role: Role): Promise<Role> {
+  update(updateRoleMap: UpdateRoleMap): Promise<Role> {
+    const role = plainToInstance(Role, updateRoleMap);
     return this.save(role);
   }
 

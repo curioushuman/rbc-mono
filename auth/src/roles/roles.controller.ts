@@ -30,7 +30,8 @@ export class RolesController {
   @Get()
   async get() {
     try {
-      return await this.rolesService.find();
+      const roles = await this.rolesService.find();
+      return roles;
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -58,11 +59,11 @@ export class RolesController {
    */
   @Post()
   async create(@Body() createRoleDto: CreateRoleDto) {
-    const role = plainToInstance(CreateRoleMap, createRoleDto, {
+    const roleFromDto = plainToInstance(CreateRoleMap, createRoleDto, {
       excludeExtraneousValues: true,
     });
     try {
-      return await this.rolesService.create(role);
+      return await this.rolesService.create(roleFromDto);
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -83,11 +84,11 @@ export class RolesController {
     });
     merge(role, roleFromDto);
     try {
-      role = await this.rolesService.update(role);
+      role = await this.rolesService.update(roleFromDto);
+      return role;
     } catch (error) {
       throw new BadRequestException(error.message);
     }
-    return role;
   }
 
   /**

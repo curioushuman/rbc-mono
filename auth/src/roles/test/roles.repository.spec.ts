@@ -3,7 +3,7 @@ import { Test } from '@nestjs/testing';
 import { FilterQuery } from 'mongoose';
 import { Role } from '../schema';
 import { RolesRepository } from '../roles.repository';
-import { roleNew, roleExisting } from './stubs/role.stub';
+import { roleExisting } from './stubs/role.stub';
 import { RoleMockModel } from './support/role.model';
 
 describe('RolesRepository', () => {
@@ -102,11 +102,11 @@ describe('RolesRepository', () => {
             RoleMockModel.prototype,
             'constructorSpy',
           );
-          role = await repository.save(roleNew());
+          role = await repository.save(roleExisting());
         });
 
         test('then it should call the roleModel', () => {
-          expect(constructorSpy).toHaveBeenCalledWith(roleNew());
+          expect(constructorSpy).toHaveBeenCalledWith(roleExisting());
           expect(saveSpy).toHaveBeenCalled();
         });
 
@@ -122,7 +122,7 @@ describe('RolesRepository', () => {
               throw new Error('Role error');
             });
           try {
-            await repository.save(roleNew());
+            await repository.save(roleExisting());
           } catch (error) {
             expect(saveSpy).toHaveBeenCalled();
             expect(error).toBeDefined();

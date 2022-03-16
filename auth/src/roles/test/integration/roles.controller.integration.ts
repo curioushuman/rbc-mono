@@ -4,7 +4,7 @@ import * as request from 'supertest';
 import { MongoDbService } from '@curioushuman/rbc-common';
 
 import { AppModule } from '../../../app.module';
-import { roleNew, roleExisting } from '../stubs/role.stub';
+import { createRoleDto, roleExisting, roleResponse } from '../stubs/role.stub';
 import { CreateRoleDto } from '../../dto';
 
 // * NOTES
@@ -46,7 +46,7 @@ describe('RolesController', () => {
         const response = await request(httpServer).get('/roles');
 
         expect(response.status).toBe(200);
-        expect(response.body).toMatchObject([roleExisting()]);
+        expect(response.body).toMatchObject([roleResponse()]);
       });
     });
     describe('When records DO NOT exist', () => {
@@ -61,18 +61,17 @@ describe('RolesController', () => {
 
   describe('createRole', () => {
     it('should create a role', async () => {
-      const createRoleDto: CreateRoleDto = roleNew();
       const response = await request(httpServer)
         .post('/roles')
-        .send(createRoleDto);
+        .send(createRoleDto());
 
       expect(response.status).toBe(201);
-      expect(response.body).toMatchObject(createRoleDto);
+      expect(response.body).toMatchObject(roleResponse());
 
       const role = await dbConnection
         .collection('roles')
-        .findOne({ label: createRoleDto.label });
-      expect(role).toMatchObject(createRoleDto);
+        .findOne({ label: createRoleDto().label });
+      expect(role).toMatchObject(roleExisting());
     });
   });
 });
