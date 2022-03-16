@@ -2,11 +2,6 @@ import { IsOptional, IsString, IsNotEmpty } from 'class-validator';
 
 export class CreateProfileDto {
   /**
-   * Member identifier
-   */
-  memberId!: string;
-
-  /**
    * Members first name
    * @example Jake
    */
@@ -20,5 +15,5 @@ export class CreateProfileDto {
    */
   @IsString()
   @IsNotEmpty()
-  lastName?: string;
+  lastName!: string;
 }

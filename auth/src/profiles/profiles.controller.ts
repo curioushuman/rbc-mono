@@ -10,12 +10,15 @@ import {
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { merge } from 'lodash';
+import { SerializeInterceptor } from '@curioushuman/rbc-common';
 
-import { CreateProfileDto, UpdateProfileDto } from './dto';
+import { CreateProfileDto, ProfileExternalDto, UpdateProfileDto } from './dto';
 import { CreateProfileMap, UpdateProfileMap } from './mappers';
+import { Profile } from './schema';
 import { Member } from '../members/schema';
 import { MembersService } from '../members/members.service';
 
+@SerializeInterceptor(ProfileExternalDto)
 @Controller('members/profiles')
 export class ProfilesController {
   constructor(private membersService: MembersService) {}
@@ -37,10 +40,11 @@ export class ProfilesController {
     @Param('memberId') memberId: string,
     @Body() createProfileDto: CreateProfileDto,
   ) {
-    const member = await this.findMember(memberId);
-    member.profile = plainToInstance(CreateProfileMap, createProfileDto, {
+    const profileFromDto = plainToInstance(CreateProfileMap, createProfileDto, {
       excludeExtraneousValues: true,
     });
+    const member = await this.findMember(memberId);
+    member.profile = plainToInstance(Profile, profileFromDto);
     return this.updateMemberProfile(member);
   }
 
@@ -63,7 +67,7 @@ export class ProfilesController {
   async findMember(id: string) {
     let member: Member;
     try {
-      member = await this.membersService.findOne({ id });
+      member = await this.membersService.findOne(id);
     } catch (error) {
       throw new BadRequestException(error.message);
     }

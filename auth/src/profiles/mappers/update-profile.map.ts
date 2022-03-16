@@ -8,9 +8,9 @@ import { Profile } from '../schema';
  * Expose: allows data from DTO to be written directly to these fields
  * Transform: transforms info from DTO to DB structure
  */
-export class UpdateProfileMap implements Profile {
+export class UpdateProfileMap implements Partial<Profile> {
   @Expose()
-  firstName: string;
+  firstName?: string;
 
   @Expose()
   lastName: string;

@@ -1,11 +1,6 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class UpdateProfileDto {
-  /**
-   * Member identifier
-   */
-  memberId!: string;
-
   /**
    * Members first name
    * @example Jake
@@ -20,6 +15,6 @@ export class UpdateProfileDto {
    * @example Blues
    */
   @IsString()
-  @IsOptional()
-  lastName?: string;
+  @IsNotEmpty()
+  lastName!: string;
 }
