@@ -69,7 +69,7 @@ describe('RolesRepository', () => {
           expect(mockModel.find).toHaveBeenCalledWith(filterQuery);
         });
 
-        test('then it should return a role', () => {
+        test('then it should return an array of roles', () => {
           expect(roles).toEqual([roleExisting()]);
         });
       });

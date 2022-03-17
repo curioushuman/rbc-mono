@@ -17,5 +17,5 @@ const find = jest.fn().mockResolvedValue([roleExisting()]);
 export const RolesRepository = jest.fn().mockReturnValue({
   findOne,
   find,
-  save: jest.fn().mockResolvedValue(roleExisting()),
+  save: jest.fn().mockImplementation((role) => Promise.resolve(role)),
 });

@@ -87,7 +87,7 @@ describe('RolesController', () => {
       });
 
       test('then it should call service', () => {
-        expect(service.create).toHaveBeenCalledWith(createRoleMap());
+        expect(service.create).toHaveBeenCalledWith(createRoleDto());
       });
 
       test('then it should return a Role', () => {
@@ -104,7 +104,10 @@ describe('RolesController', () => {
       });
 
       test('then it should call service', () => {
-        expect(service.update).toHaveBeenCalledWith(updateRoleMap());
+        expect(service.update).toHaveBeenCalledWith(
+          roleExisting(),
+          updateRoleDto(),
+        );
       });
 
       test('then it should return a Role', () => {

@@ -5,10 +5,10 @@ import { Role } from '../schema';
 import { RolesService } from '../roles.service';
 import {
   roleExisting,
-  createRoleMap,
   createRoleRole,
-  updateRoleMap,
   updateRoleRole,
+  createRoleDto,
+  updateRoleDto,
 } from './stubs/role.stub';
 
 import { RolesRepository } from '../roles.repository';
@@ -108,10 +108,10 @@ describe('RolesService', () => {
 
         beforeEach(async () => {
           saveSpy = jest.spyOn(service, 'save');
-          await service.create(createRoleMap());
+          await service.create(createRoleDto());
         });
 
-        test('then it should call the save function with a Role, not a map', () => {
+        test('then it should call the save function with a Role', () => {
           expect(saveSpy).toHaveBeenCalledWith(createRoleRole());
         });
       });
@@ -123,7 +123,7 @@ describe('RolesService', () => {
 
         beforeEach(async () => {
           saveSpy = jest.spyOn(service, 'save');
-          await service.update(updateRoleMap());
+          await service.update(roleExisting(), updateRoleDto());
         });
 
         test('then it should call the save function with a Role, not a map', () => {
@@ -145,7 +145,7 @@ describe('RolesService', () => {
         });
 
         test('then it should return the newly created role', () => {
-          expect(role).toEqual(roleExisting());
+          expect(role).toEqual(updateRoleRole());
         });
       });
     });

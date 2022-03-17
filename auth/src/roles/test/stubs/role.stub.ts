@@ -27,7 +27,7 @@ export const createErrorDto = (): CreateRoleDto => {
 
 export const updateRoleDto = (): UpdateRoleDto => {
   return {
-    label: 'Subscriber',
+    label: 'Member',
   };
 };
 
@@ -37,7 +37,13 @@ export const updateRoleMap = (): UpdateRoleMap => {
   };
 };
 
-export const updateRoleRole = (): Role => updateRoleMap() as Role;
+export const updateRoleRole = (): Role => {
+  return {
+    label: updateRoleDto().label,
+    permissions: [],
+    subscriptionTypeId: roleExisting().subscriptionTypeId,
+  };
+};
 
 export const updateErrorDto = (): UpdateRoleDto => {
   return {
@@ -47,9 +53,9 @@ export const updateErrorDto = (): UpdateRoleDto => {
 
 export const roleExisting = (): Role => {
   return {
-    label: 'Subscriber',
+    label: createRoleDto().label,
     permissions: [],
-    subscriptionTypeId: '123abc',
+    subscriptionTypeId: createRoleDto().subscriptionTypeId,
   };
 };
 

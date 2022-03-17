@@ -10,13 +10,10 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { ClientKafka, EventPattern } from '@nestjs/microservices';
-import { plainToInstance } from 'class-transformer';
-import { merge } from 'lodash';
 import { SerializeInterceptor } from '@curioushuman/rbc-common';
 
 import { RolesService } from './roles.service';
 import { CreateRoleDto, RoleExternalDto, UpdateRoleDto } from './dto';
-import { CreateRoleMap, UpdateRoleMap } from './mappers';
 import { Role } from './schema';
 
 @SerializeInterceptor(RoleExternalDto)
@@ -32,8 +29,7 @@ export class RolesController {
   @Get()
   async get() {
     try {
-      const roles = await this.rolesService.find();
-      return roles;
+      return await this.rolesService.find();
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -61,11 +57,8 @@ export class RolesController {
    */
   @Post()
   async create(@Body() createRoleDto: CreateRoleDto) {
-    const roleFromDto = plainToInstance(CreateRoleMap, createRoleDto, {
-      excludeExtraneousValues: true,
-    });
     try {
-      return await this.rolesService.create(roleFromDto);
+      return await this.rolesService.create(createRoleDto);
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -80,14 +73,9 @@ export class RolesController {
     @Param('label') label: string,
     @Body() updateRoleDto: UpdateRoleDto,
   ) {
-    let role = await this.getOne(label);
-    const roleFromDto = plainToInstance(UpdateRoleMap, updateRoleDto, {
-      excludeExtraneousValues: true,
-    });
-    merge(role, roleFromDto);
+    const role = await this.getOne(label);
     try {
-      role = await this.rolesService.update(roleFromDto);
-      return role;
+      return await this.rolesService.update(role, updateRoleDto);
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -96,6 +84,7 @@ export class RolesController {
   /**
    * Set permissions on a role
    * ! Decommissioned until I'm in a place to test it
+   * * Also needs to be updated to match update()
    *
    * You might need to loop through the permissions, and convert them individually
    */
@@ -105,10 +94,10 @@ export class RolesController {
   //   @Body() permissionsDto: PermissionsDto,
   // ) {
   //   let role = await this.getOne(label);
-  //   const roleFromDto = plainToInstance(PermissionsMap, permissionsDto, {
+  //   const roleMapped = plainToInstance(PermissionsMap, permissionsDto, {
   //     excludeExtraneousValues: true,
   //   });
-  //   merge(role, roleFromDto);
+  //   merge(role, roleMapped);
   //   try {
   //     role = await this.rolesService.update(role);
   //   } catch (error) {
