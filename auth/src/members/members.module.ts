@@ -7,8 +7,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { MembersController } from './members.controller';
 import { MembersService } from './members.service';
 import { MembersRepository } from './members.repository';
-import { MembersProducerService } from './members-producer.service';
 import { MembersEmailService } from './members-email.service';
+import { MembersProducerService } from './members-producer.service';
 import { Member, MemberSchema } from './schema';
 
 // TODO
@@ -37,8 +37,8 @@ import { Member, MemberSchema } from './schema';
   controllers: [MembersController],
   providers: [
     MembersService,
-    MembersRepository,
     MembersEmailService,
+    MembersRepository,
     MembersProducerService,
   ],
   exports: [MembersService],

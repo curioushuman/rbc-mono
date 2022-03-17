@@ -3,16 +3,16 @@ import { EmailTypeEnum } from '../types/email-type.enum';
 
 @Schema({ _id: false })
 export class MemberEmail {
-  constructor(email?: string) {
-    this.email = email || null;
-  }
-
   @Prop({ required: true })
   email!: string;
 
+  /**
+   * * UPDATE: removed default value
+   * // default: Object.values(EmailTypeEnum)[0],
+   * I'll include this once it proves useful
+   */
   @Prop({
     enum: Object.values(EmailTypeEnum),
-    default: Object.values(EmailTypeEnum)[0],
   })
   type?: EmailTypeEnum;
 

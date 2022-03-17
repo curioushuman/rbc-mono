@@ -3,17 +3,17 @@ import {
   Injectable,
   OnModuleDestroy,
   OnModuleInit,
-  UseInterceptors,
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { plainToInstance } from 'class-transformer';
 
-// ! These are to be replaced by import from rbc-common
-// ! interceptors only work in controllers doofus
-import { SerializeInterceptor } from '../interceptors';
-
-import { MemberInternalProducerDto } from './dto';
+import { MemberInternalDto } from './dto';
 import { Member } from './schema';
+
+/**
+ * TODO
+ * [ ] needs to be tested separately
+ */
 
 @Injectable()
 export class MembersProducerService implements OnModuleInit, OnModuleDestroy {
@@ -40,30 +40,35 @@ export class MembersProducerService implements OnModuleInit, OnModuleDestroy {
   /**
    * Emit that a member has been created
    */
-  public sendCreated(member: Member) {
-    this.emitMember('member_created', member);
+  public async sendCreated(member: Member): Promise<void> {
+    await this.emitMember('member.created', member);
   }
 
   /**
    * Emit that a member has been updated
    */
-  public sendUpdated(member: Member) {
-    this.emitMember('member_updated', member);
+  public async sendUpdated(member: Member): Promise<void> {
+    await this.emitMember('member.updated', member);
+  }
+
+  /**
+   * Emit that a members email has been changed
+   */
+  public async sendEmailUpdated(member: Member): Promise<void> {
+    await this.emitMember('member.emailUpdated', member);
   }
 
   /**
    * Emit member info
    */
-  // @Serialize(MemberInternalProducerDto)
-  @UseInterceptors(new SerializeInterceptor(MemberInternalProducerDto))
-  public emitMember(topic: string, member: Member) {
+  public async emitMember(topic: string, member: Member): Promise<void> {
     // this looks like it is serializing beforehand
     // this.kafkaClient.emit(topic, { ...member });
-    console.log('Seriliazing data', member);
-    const serialized = plainToInstance(MemberInternalProducerDto, member, {
+    console.log('Serializing data', member);
+    const serialized = plainToInstance(MemberInternalDto, member, {
       excludeExtraneousValues: true,
     });
     console.log('Serialized', serialized);
-    this.kafkaClient.emit<MemberInternalProducerDto>(topic, serialized);
+    await this.kafkaClient.emit<MemberInternalDto>(topic, serialized);
   }
 }

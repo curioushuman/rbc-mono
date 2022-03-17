@@ -1,6 +1,6 @@
-import { Expose, Transform } from 'class-transformer';
+import { Expose } from 'class-transformer';
 
-import { Member, MemberEmail } from '../schema';
+import { Member } from '../schema';
 import { Profile } from '../../profiles/schema';
 
 /**
@@ -9,13 +9,13 @@ import { Profile } from '../../profiles/schema';
  * Expose: allows data from DTO to be written directly to these fields
  * Transform: transforms info from DTO to DB structure
  */
-export class UpdateMemberMap implements Member {
+export class UpdateMemberMap implements Partial<Member> {
   @Expose()
   id: string;
 
-  // TODO This needs to be resolved
-  // @Transform(({ obj }) => 'overidden@transform.dto')
-  emails: MemberEmail[];
+  // * This can only be 'transformed' once we have obtained member data
+  @Expose()
+  email: string;
 
-  profile: Profile;
+  profile?: Profile;
 }

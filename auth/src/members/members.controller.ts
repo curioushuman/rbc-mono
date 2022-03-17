@@ -8,21 +8,16 @@ import {
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
-import { plainToInstance } from 'class-transformer';
-import { merge } from 'lodash';
+import { SerializeInterceptor } from '@curioushuman/rbc-common';
 
 import { MembersService } from './members.service';
-import { MembersProducerService } from './members-producer.service';
-import { CreateMemberDto, UpdateMemberDto } from './dto';
-import { CreateMemberMap, UpdateMemberMap } from './mappers';
+import { CreateMemberDto, UpdateMemberDto, MemberExternalDto } from './dto';
 import { Member } from './schema';
 
+@SerializeInterceptor(MemberExternalDto)
 @Controller('members')
 export class MembersController {
-  constructor(
-    private membersService: MembersService,
-    private producerService: MembersProducerService,
-  ) {}
+  constructor(private membersService: MembersService) {}
 
   /**
    * Get all members
@@ -58,36 +53,27 @@ export class MembersController {
    */
   @Post()
   async create(@Body() createMemberDto: CreateMemberDto) {
-    let member: Member;
-    const memberFromDto = plainToInstance(CreateMemberMap, createMemberDto, {
-      excludeExtraneousValues: true,
-    });
     try {
-      member = await this.membersService.create(memberFromDto);
+      return await this.membersService.create(createMemberDto);
     } catch (error) {
       throw new BadRequestException(error.message);
     }
-    this.producerService.sendCreated(member);
-    return member;
   }
 
   /**
    * Update a member
    * TODO: separate PUT and PATCH; probably after you've created a separate module for profile
    */
-  @Put()
-  async update(@Body() updateMemberDto: UpdateMemberDto) {
-    let member = await this.getOne(updateMemberDto.id);
-    const memberFromDto = plainToInstance(UpdateMemberMap, updateMemberDto, {
-      excludeExtraneousValues: true,
-    });
-    merge(member, memberFromDto);
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateMemberDto: UpdateMemberDto,
+  ) {
+    const member = await this.getOne(id);
     try {
-      member = await this.membersService.update(member);
+      return await this.membersService.update(member, updateMemberDto);
     } catch (error) {
       throw new BadRequestException(error.message);
     }
-    this.producerService.sendUpdated(member);
-    return member;
   }
 }

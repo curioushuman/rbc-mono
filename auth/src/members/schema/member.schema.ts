@@ -37,7 +37,7 @@ export class Member {
       lastName: { type: String },
     }),
   )
-  profile: Profile;
+  profile?: Profile;
 }
 
 export const MemberSchema = SchemaFactory.createForClass(Member);

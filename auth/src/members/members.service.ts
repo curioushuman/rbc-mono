@@ -1,29 +1,98 @@
 import { Injectable } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
+import { merge } from 'lodash';
 
 import { Member } from './schema';
 import { MembersRepository } from './members.repository';
+import { CreateMemberMap, UpdateMemberMap } from './mappers';
+import { CreateMemberDto, UpdateMemberDto } from './dto';
+import { MembersEmailService } from './members-email.service';
+import { MembersProducerService } from './members-producer.service';
+
+// TODO
+// [ ] should "map DTO to DB structure" be in a decorator?
 
 @Injectable()
 export class MembersService {
-  constructor(private readonly membersRepository: MembersRepository) {}
+  constructor(
+    private readonly membersRepository: MembersRepository,
+    private producerService: MembersProducerService,
+  ) {}
 
   async find(): Promise<Member[]> {
     return await this.membersRepository.find({});
   }
 
-  async findOne(id: string): Promise<Member> {
+  async findOne(id: string): Promise<Member | null> {
     return await this.membersRepository.findOne({ id });
   }
 
-  create(member: Member): Promise<Member> {
-    return this.save(member);
+  async create(createMemberDto: CreateMemberDto): Promise<Member> {
+    // map DTO to DB structure
+    const memberMapped = plainToInstance(CreateMemberMap, createMemberDto, {
+      excludeExtraneousValues: true,
+    });
+    // convert to Member for saving
+    let member = plainToInstance(Member, memberMapped);
+    // save the member
+    member = await this.save(member);
+    // update the ecosystem, but don't wait for it
+    this.producerService.sendCreated(member);
+    // return the member
+    return member;
   }
 
-  update(member: Member): Promise<Member> {
-    return this.save(member);
+  /**
+   * Maybe later support finding of member here, when it has a use case
+   * UPDATE: do this via a separate function, that calls this function
+   */
+  // update(updateMemberDto: UpdateMemberDto): Promise<Member>;
+  // update(updateMemberDto: UpdateMemberDto, member: Member): Promise<Member>;
+  async update(
+    member: Member,
+    updateMemberDto: UpdateMemberDto,
+  ): Promise<Member> {
+    // map DTO to DB structure
+    const memberMapped = plainToInstance(UpdateMemberMap, updateMemberDto, {
+      excludeExtraneousValues: true,
+    });
+    // merge the new info with the member
+    member = this.merge(member, memberMapped);
+    // save the member
+    member = await this.save(member);
+    // update the ecosystem, but don't wait for it
+    this.producerService.sendUpdated(member);
+    // return the member
+    return member;
   }
 
   async save(member: Member): Promise<Member> {
     return this.membersRepository.save(member);
+  }
+
+  /**
+   * Combine the new information received, with current member information
+   */
+  merge(member: Member, memberMapped: UpdateMemberMap): Member {
+    // Strip extraneous properties from member DTO
+    // * NOTE: this is the only time we exclude extraneous values
+    //   between map and Model.
+    const updatedMember = plainToInstance(Member, memberMapped, {
+      excludeExtraneousValues: true,
+    });
+    const currentPrimaryEmail = MembersEmailService.getPrimaryEmail(member);
+    // update the emails with the new one provided
+    MembersEmailService.mergePrimaryEmail(member, memberMapped.email);
+    // check if email has changed
+    this.checkChangePrimaryEmail(member, currentPrimaryEmail);
+    // merge the rest of the info with the member
+    return merge(member, updatedMember);
+  }
+
+  checkChangePrimaryEmail(member: Member, primaryEmail: string): void {
+    const newPrimaryEmail = MembersEmailService.getPrimaryEmail(member);
+    if (newPrimaryEmail !== primaryEmail) {
+      this.producerService.sendEmailUpdated(member);
+    }
   }
 }
