@@ -11,6 +11,7 @@ import {
   updateMemberMember,
 } from './stubs/member.stub';
 
+import { MembersEmailService } from '../members-email.service';
 import { MembersRepository } from '../members.repository';
 jest.mock('../members.repository');
 import { MembersProducerService } from '../members-producer.service';
@@ -25,7 +26,12 @@ describe('MembersService', () => {
 
     beforeEach(async () => {
       const moduleRef: TestingModule = await Test.createTestingModule({
-        providers: [MembersService, MembersRepository, MembersProducerService],
+        providers: [
+          MembersService,
+          MembersRepository,
+          MembersProducerService,
+          MembersEmailService,
+        ],
       }).compile();
 
       service = moduleRef.get<MembersService>(MembersService);
@@ -96,7 +102,12 @@ describe('MembersService', () => {
 
     beforeEach(async () => {
       const moduleRef: TestingModule = await Test.createTestingModule({
-        providers: [MembersService, MembersRepository, MembersProducerService],
+        providers: [
+          MembersService,
+          MembersRepository,
+          MembersProducerService,
+          MembersEmailService,
+        ],
       }).compile();
 
       service = moduleRef.get<MembersService>(MembersService);

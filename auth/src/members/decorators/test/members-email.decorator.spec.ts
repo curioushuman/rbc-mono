@@ -30,10 +30,15 @@ describe('members-email-decorator(s)', () => {
   });
   describe('CreatePrimaryEmail', () => {
     describe('When "Transform-ing from" a DTO with an email as a string', () => {
-      test('then it should "Transform to" a MemberEmail with a single MemberEmail marked as primary', () => {
-        const test = plainToInstance(TestCreateClass, createMemberDto());
-        expect(test.emails[0].email).toBe(createMemberDto().email);
-        expect(test.emails[0].primary).toBe(true);
+      let testClass: TestCreateClass;
+      beforeAll(() => {
+        testClass = plainToInstance(TestCreateClass, createMemberDto());
+      });
+      test('then it should "Transform to" a MemberEmail array of 1', () => {
+        expect(testClass.emails[0].email).toBe(createMemberDto().email);
+      });
+      test('that email should be marked as primary', () => {
+        expect(testClass.emails[0].primary).toBe(true);
       });
     });
   });

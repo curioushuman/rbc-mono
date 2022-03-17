@@ -1,3 +1,4 @@
+import { Test, TestingModule } from '@nestjs/testing';
 import { MembersEmailService } from '../members-email.service';
 import { Member, MemberEmail } from '../schema';
 import {
@@ -7,12 +8,18 @@ import {
 } from './stubs/member.stub';
 
 describe(MembersEmailService.name, () => {
+  let service: MembersEmailService;
+  beforeEach(async () => {
+    const moduleRef: TestingModule = await Test.createTestingModule({
+      providers: [MembersEmailService],
+    }).compile();
+
+    service = moduleRef.get<MembersEmailService>(MembersEmailService);
+  });
   describe('getPrimaryEmail', () => {
     describe('when primary email exists', () => {
       test('then it should return the primary email as a string', () => {
-        const primaryEmail = MembersEmailService.getPrimaryEmail(
-          updateMemberMember(),
-        );
+        const primaryEmail = service.getPrimaryEmail(updateMemberMember());
         expect(primaryEmail).toBe(updateMemberMember().emails[1].email);
       });
     });
@@ -21,7 +28,7 @@ describe(MembersEmailService.name, () => {
       test('then it should return NULL', () => {
         const member = updateMemberMember();
         member.emails[1].primary = false;
-        const primaryEmail = MembersEmailService.getPrimaryEmail(member);
+        const primaryEmail = service.getPrimaryEmail(member);
         expect(primaryEmail).toBeNull();
       });
     });
@@ -31,7 +38,7 @@ describe(MembersEmailService.name, () => {
       test('then it should return MemberEmail marked as primary', () => {
         const email = 'email@email.com';
         const memEmail = memberEmail(email, true);
-        const primaryEmail = MembersEmailService.createPrimaryEmail(email);
+        const primaryEmail = service.createPrimaryEmail(email);
         expect(primaryEmail).toEqual(memEmail);
       });
     });
@@ -41,7 +48,7 @@ describe(MembersEmailService.name, () => {
       let member: Member;
       beforeAll(() => {
         member = updateMemberMember();
-        member.emails = MembersEmailService.updatePrimaryEmail(
+        member.emails = service.updatePrimaryEmail(
           member.emails,
           member.emails[0].email,
         );
@@ -61,10 +68,7 @@ describe(MembersEmailService.name, () => {
         email = 'email@email.com';
         memEmail = memberEmail(email, true);
         member = createMemberMember();
-        member.emails = MembersEmailService.updatePrimaryEmail(
-          member.emails,
-          email,
-        );
+        member.emails = service.updatePrimaryEmail(member.emails, email);
       });
       test('then it should add a new MemberEmail', () => {
         expect(member.emails.length).toBe(2);
@@ -83,7 +87,7 @@ describe(MembersEmailService.name, () => {
         const email = 'email@email.com';
         const member = createMemberMember();
         member.emails = [];
-        MembersEmailService.mergePrimaryEmail(member, email);
+        service.mergePrimaryEmail(member, email);
         expect(member.emails.length).toBe(1);
       });
     });

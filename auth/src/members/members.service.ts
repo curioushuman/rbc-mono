@@ -17,6 +17,7 @@ export class MembersService {
   constructor(
     private readonly membersRepository: MembersRepository,
     private producerService: MembersProducerService,
+    private emailService: MembersEmailService,
   ) {}
 
   async find(): Promise<Member[]> {
@@ -80,9 +81,9 @@ export class MembersService {
     const updatedMember = plainToInstance(Member, memberMapped, {
       excludeExtraneousValues: true,
     });
-    const currentPrimaryEmail = MembersEmailService.getPrimaryEmail(member);
+    const currentPrimaryEmail = this.emailService.getPrimaryEmail(member);
     // update the emails with the new one provided
-    MembersEmailService.mergePrimaryEmail(member, memberMapped.email);
+    this.emailService.mergePrimaryEmail(member, memberMapped.email);
     // check if email has changed
     this.checkChangePrimaryEmail(member, currentPrimaryEmail);
     // merge the rest of the info with the member
@@ -90,7 +91,7 @@ export class MembersService {
   }
 
   checkChangePrimaryEmail(member: Member, primaryEmail: string): void {
-    const newPrimaryEmail = MembersEmailService.getPrimaryEmail(member);
+    const newPrimaryEmail = this.emailService.getPrimaryEmail(member);
     if (newPrimaryEmail !== primaryEmail) {
       this.producerService.sendEmailUpdated(member);
     }
