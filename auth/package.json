@@ -8,6 +8,8 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
+    "build:docker": "docker build --target development -t curioushuman/rbc-auth .",
+    "publish:docker": "docker push curioushuman/rbc-auth",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "debug:start": "npm run start",
