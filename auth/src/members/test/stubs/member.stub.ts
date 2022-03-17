@@ -12,12 +12,21 @@ import { Member, MemberEmail } from '../../schema';
 
 const memberEmailWork = 'jake@bluesbrothers.com';
 const memberEmailPersonal = 'jakey@homeofblues.com';
+const memberOtherWork = 'elwood@bluesbrothers.com';
+// const memberOtherPersonal = 'lady.e@homeofblues.com';
 
 export const memberEmail = (email: string, primary = true): MemberEmail => {
   return {
     email,
     primary,
     // type: EmailTypeEnum.Work,
+  };
+};
+
+export const memberWithoutProfile = (): Member => {
+  return {
+    id: 'def456',
+    emails: [memberEmail(memberOtherWork)],
   };
 };
 

@@ -8,28 +8,33 @@ import {
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
-import { plainToInstance } from 'class-transformer';
-import { merge } from 'lodash';
 import { SerializeInterceptor } from '@curioushuman/rbc-common';
 
 import { CreateProfileDto, ProfileExternalDto, UpdateProfileDto } from './dto';
-import { CreateProfileMap, UpdateProfileMap } from './mappers';
 import { Profile } from './schema';
 import { Member } from '../members/schema';
-import { MembersService } from '../members/members.service';
+import { ProfilesService } from './profiles.service';
 
 @SerializeInterceptor(ProfileExternalDto)
 @Controller('members/profiles')
 export class ProfilesController {
-  constructor(private membersService: MembersService) {}
+  constructor(private profilesService: ProfilesService) {}
 
   /**
    * Get a profile
    */
   @Get(':memberId')
   async getOne(@Param('memberId') memberId: string) {
-    const member = await this.findMember(memberId);
-    return member.profile;
+    let profile: Profile;
+    try {
+      profile = await this.profilesService.findOne(memberId);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+    if (!profile) {
+      profile = new Profile();
+    }
+    return profile;
   }
 
   /**
@@ -40,12 +45,14 @@ export class ProfilesController {
     @Param('memberId') memberId: string,
     @Body() createProfileDto: CreateProfileDto,
   ) {
-    const profileFromDto = plainToInstance(CreateProfileMap, createProfileDto, {
-      excludeExtraneousValues: true,
-    });
+    // find the member
     const member = await this.findMember(memberId);
-    member.profile = plainToInstance(Profile, profileFromDto);
-    return this.updateMemberProfile(member);
+    // create the profile
+    try {
+      return this.profilesService.create(member, createProfileDto);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   /**
@@ -56,18 +63,20 @@ export class ProfilesController {
     @Param('memberId') memberId: string,
     @Body() updateProfileDto: UpdateProfileDto,
   ) {
+    // find the member
     const member = await this.findMember(memberId);
-    const profileFromDto = plainToInstance(UpdateProfileMap, updateProfileDto, {
-      excludeExtraneousValues: true,
-    });
-    merge(member.profile, profileFromDto);
-    return this.updateMemberProfile(member);
+    // update the profile
+    try {
+      return this.profilesService.update(member, updateProfileDto);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
-  async findMember(id: string) {
+  async findMember(memberId: string) {
     let member: Member;
     try {
-      member = await this.membersService.findOne(id);
+      member = await this.profilesService.findMember(memberId);
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -75,14 +84,5 @@ export class ProfilesController {
       throw new NotFoundException('Member not found');
     }
     return member;
-  }
-
-  async updateMemberProfile(member: Member) {
-    try {
-      const updatedMember = await this.membersService.update(member);
-      return updatedMember.profile;
-    } catch (error) {
-      throw new BadRequestException(error.message);
-    }
   }
 }

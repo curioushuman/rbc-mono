@@ -59,6 +59,11 @@ export class MembersService {
     });
     // merge the new info with the member
     member = this.merge(member, memberMapped);
+    // update the member
+    return this.updateMember(member);
+  }
+
+  async updateMember(member: Member): Promise<Member> {
     // save the member
     member = await this.save(member);
     // update the ecosystem, but don't wait for it

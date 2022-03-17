@@ -23,4 +23,8 @@ export const MembersService = jest.fn().mockReturnValue({
   find,
   create: jest.fn().mockReturnValue(createMemberMember()),
   update: jest.fn().mockReturnValue(updateMemberMember()),
+  save: jest.fn().mockReturnValue(memberExisting()),
+  updateMember: jest
+    .fn()
+    .mockImplementation((member) => Promise.resolve(member)),
 });
