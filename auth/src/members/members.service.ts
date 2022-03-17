@@ -16,8 +16,8 @@ import { MembersProducerService } from './members-producer.service';
 export class MembersService {
   constructor(
     private readonly membersRepository: MembersRepository,
-    private producerService: MembersProducerService,
-    private emailService: MembersEmailService,
+    private readonly producerService: MembersProducerService,
+    private readonly emailService: MembersEmailService,
   ) {}
 
   async find(): Promise<Member[]> {
@@ -43,12 +43,6 @@ export class MembersService {
     return member;
   }
 
-  /**
-   * Maybe later support finding of member here, when it has a use case
-   * UPDATE: do this via a separate function, that calls this function
-   */
-  // update(updateMemberDto: UpdateMemberDto): Promise<Member>;
-  // update(updateMemberDto: UpdateMemberDto, member: Member): Promise<Member>;
   async update(
     member: Member,
     updateMemberDto: UpdateMemberDto,

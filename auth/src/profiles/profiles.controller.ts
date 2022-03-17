@@ -18,7 +18,7 @@ import { ProfilesService } from './profiles.service';
 @SerializeInterceptor(ProfileExternalDto)
 @Controller('members/profiles')
 export class ProfilesController {
-  constructor(private profilesService: ProfilesService) {}
+  constructor(private readonly profilesService: ProfilesService) {}
 
   /**
    * Get a profile

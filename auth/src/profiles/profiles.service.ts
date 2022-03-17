@@ -13,7 +13,7 @@ import { CreateProfileDto, UpdateProfileDto } from './dto';
 
 @Injectable()
 export class ProfilesService {
-  constructor(private membersService: MembersService) {}
+  constructor(private readonly membersService: MembersService) {}
 
   async findOne(memberId: string): Promise<Profile | null> {
     const member = await this.membersService.findOne(memberId);
@@ -49,17 +49,15 @@ export class ProfilesService {
     const profileMapped = plainToInstance(UpdateProfileMap, updateProfileDto, {
       excludeExtraneousValues: true,
     });
-    // convert to Profile for saving
-    const profile = plainToInstance(Profile, profileMapped);
     // merge the new info with the profile
-    member.profile = this.merge(member.profile, profile);
+    member.profile = this.merge(member.profile, profileMapped);
     // save the profile
     member = await this.membersService.updateMember(member);
     // return the profile
     return member.profile;
   }
 
-  merge(profile: Profile, updatedProfile: Profile): Profile {
-    return merge(profile, updatedProfile);
+  merge(profile: Profile, profileMapped: UpdateProfileMap): Profile {
+    return merge(profile, profileMapped);
   }
 }

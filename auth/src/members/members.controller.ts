@@ -17,7 +17,7 @@ import { Member } from './schema';
 @SerializeInterceptor(MemberExternalDto)
 @Controller('members')
 export class MembersController {
-  constructor(private membersService: MembersService) {}
+  constructor(private readonly membersService: MembersService) {}
 
   /**
    * Get all members
