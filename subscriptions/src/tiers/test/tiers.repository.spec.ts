@@ -3,7 +3,7 @@ import { Test } from '@nestjs/testing';
 import { FilterQuery } from 'mongoose';
 import { Tier } from '../schema';
 import { TiersRepository } from '../tiers.repository';
-import { tierNew, tierExisting } from './stubs/tier.stub';
+import { tierExisting } from './stubs/tier.stub';
 import { TierMockModel } from './support/tier.model';
 
 describe('TiersRepository', () => {
@@ -69,7 +69,7 @@ describe('TiersRepository', () => {
           expect(mockModel.find).toHaveBeenCalledWith(filterQuery);
         });
 
-        test('then it should return a tier', () => {
+        test('then it should return an array of tiers', () => {
           expect(tiers).toEqual([tierExisting()]);
         });
       });
@@ -102,11 +102,11 @@ describe('TiersRepository', () => {
             TierMockModel.prototype,
             'constructorSpy',
           );
-          tier = await repository.save(tierNew());
+          tier = await repository.save(tierExisting());
         });
 
         test('then it should call the tierModel', () => {
-          expect(constructorSpy).toHaveBeenCalledWith(tierNew());
+          expect(constructorSpy).toHaveBeenCalledWith(tierExisting());
           expect(saveSpy).toHaveBeenCalled();
         });
 
@@ -122,7 +122,7 @@ describe('TiersRepository', () => {
               throw new Error('Tier error');
             });
           try {
-            await repository.save(tierNew());
+            await repository.save(tierExisting());
           } catch (error) {
             expect(saveSpy).toHaveBeenCalled();
             expect(error).toBeDefined();

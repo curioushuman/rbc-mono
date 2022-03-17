@@ -1,6 +1,6 @@
 import { when } from 'jest-when';
 
-import { tierNew, tierExisting } from '../test/stubs/tier.stub';
+import { tierExisting } from '../test/stubs/tier.stub';
 
 const findOne = jest.fn().mockResolvedValue(null);
 when(findOne)
@@ -17,7 +17,7 @@ const find = jest.fn().mockResolvedValue([tierExisting()]);
 export const TiersService = jest.fn().mockReturnValue({
   findOne,
   find,
-  create: jest.fn().mockResolvedValue(tierNew()),
+  create: jest.fn().mockResolvedValue(tierExisting()),
   update: jest.fn().mockResolvedValue(tierExisting()),
   save: jest.fn().mockResolvedValue(tierExisting()),
 });

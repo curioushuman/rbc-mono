@@ -8,14 +8,14 @@ import {
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
-import { plainToInstance } from 'class-transformer';
-import { merge } from 'lodash';
 
 import { TiersService } from './tiers.service';
 import { CreateTierDto, UpdateTierDto } from './dto';
-import { CreateTierMap, UpdateTierMap } from './mappers';
 import { Tier } from './schema';
+import { SerializeInterceptor } from '@curioushuman/rbc-common';
+import { TierExternalDto } from './dto/tier-external.dto';
 
+@SerializeInterceptor(TierExternalDto)
 @Controller('tiers')
 export class TiersController {
   constructor(private readonly tiersService: TiersService) {}
@@ -54,11 +54,8 @@ export class TiersController {
    */
   @Post()
   async create(@Body() createTierDto: CreateTierDto) {
-    const tier = plainToInstance(CreateTierMap, createTierDto, {
-      excludeExtraneousValues: true,
-    });
     try {
-      return await this.tiersService.create(tier);
+      return await this.tiersService.create(createTierDto);
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -72,16 +69,11 @@ export class TiersController {
     @Param('label') label: string,
     @Body() updateTierDto: UpdateTierDto,
   ) {
-    let tier = await this.getOne(label);
-    const tierFromDto = plainToInstance(UpdateTierMap, updateTierDto, {
-      excludeExtraneousValues: true,
-    });
-    merge(tier, tierFromDto);
+    const tier = await this.getOne(label);
     try {
-      tier = await this.tiersService.update(tier);
+      return await this.tiersService.update(tier, updateTierDto);
     } catch (error) {
       throw new BadRequestException(error.message);
     }
-    return tier;
   }
 }

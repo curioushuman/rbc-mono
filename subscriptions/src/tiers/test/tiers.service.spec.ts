@@ -3,7 +3,13 @@ import { FilterQuery } from 'mongoose';
 
 import { Tier } from '../schema';
 import { TiersService } from '../tiers.service';
-import { tierNew, tierExisting } from './stubs/tier.stub';
+import {
+  tierExisting,
+  createTierTier,
+  updateTierTier,
+  createTierDto,
+  updateTierDto,
+} from './stubs/tier.stub';
 
 import { TiersRepository } from '../tiers.repository';
 jest.mock('../tiers.repository');
@@ -96,20 +102,50 @@ describe('TiersService', () => {
       jest.clearAllMocks();
     });
 
+    describe('create', () => {
+      describe('when create is successful', () => {
+        let saveSpy: jest.SpyInstance;
+
+        beforeEach(async () => {
+          saveSpy = jest.spyOn(service, 'save');
+          await service.create(createTierDto());
+        });
+
+        test('then it should call the save function with a Tier', () => {
+          expect(saveSpy).toHaveBeenCalledWith(createTierTier());
+        });
+      });
+    });
+
+    describe('update', () => {
+      describe('when update is successful', () => {
+        let saveSpy: jest.SpyInstance;
+
+        beforeEach(async () => {
+          saveSpy = jest.spyOn(service, 'save');
+          await service.update(tierExisting(), updateTierDto());
+        });
+
+        test('then it should call the save function with a Tier, not a map', () => {
+          expect(saveSpy).toHaveBeenCalledWith(updateTierTier());
+        });
+      });
+    });
+
     describe('save', () => {
       describe('when save is successful', () => {
         let tier: Tier;
 
         beforeEach(async () => {
-          tier = await service.save(tierNew());
+          tier = await service.save(updateTierTier());
         });
 
-        it('should call the repository', () => {
-          expect(repository.save).toHaveBeenCalledWith(tierNew());
+        test('then it should call the repository', () => {
+          expect(repository.save).toHaveBeenCalledWith(updateTierTier());
         });
 
-        it('should return the newly created tier', () => {
-          expect(tier).toEqual(tierExisting());
+        test('then it should return the newly created tier', () => {
+          expect(tier).toEqual(updateTierTier());
         });
       });
     });

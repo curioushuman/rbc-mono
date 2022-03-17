@@ -4,8 +4,7 @@ import * as request from 'supertest';
 import { MongoDbService } from '@curioushuman/rbc-common';
 
 import { AppModule } from '../../../app.module';
-import { tierNew, tierExisting } from '../stubs/tier.stub';
-import { CreateTierDto } from '../../dto';
+import { createTierDto, tierExisting, tierResponse } from '../stubs/tier.stub';
 
 // * NOTES
 // Currently disabled, as it won't be able to connect to MongoDB without cluster
@@ -46,7 +45,7 @@ describe('TiersController', () => {
         const response = await request(httpServer).get('/tiers');
 
         expect(response.status).toBe(200);
-        expect(response.body).toMatchObject([tierExisting()]);
+        expect(response.body).toMatchObject([tierResponse()]);
       });
     });
     describe('When records DO NOT exist', () => {
@@ -61,18 +60,17 @@ describe('TiersController', () => {
 
   describe('createTier', () => {
     it('should create a tier', async () => {
-      const createTierDto: CreateTierDto = tierNew();
       const response = await request(httpServer)
         .post('/tiers')
-        .send(createTierDto);
+        .send(createTierDto());
 
       expect(response.status).toBe(201);
-      expect(response.body).toMatchObject(createTierDto);
+      expect(response.body).toMatchObject(tierResponse());
 
       const tier = await dbConnection
         .collection('tiers')
-        .findOne({ label: createTierDto.label });
-      expect(tier).toMatchObject(createTierDto);
+        .findOne({ label: createTierDto().label });
+      expect(tier).toMatchObject(tierExisting());
     });
   });
 });

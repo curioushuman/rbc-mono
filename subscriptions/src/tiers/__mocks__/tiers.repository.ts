@@ -17,5 +17,5 @@ const find = jest.fn().mockResolvedValue([tierExisting()]);
 export const TiersRepository = jest.fn().mockReturnValue({
   findOne,
   find,
-  save: jest.fn().mockResolvedValue(tierExisting()),
+  save: jest.fn().mockImplementation((tier) => Promise.resolve(tier)),
 });

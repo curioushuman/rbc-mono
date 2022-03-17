@@ -1,8 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { TiersController } from '../tiers.controller';
-import { tierNew, tierExisting } from './stubs/tier.stub';
-import { CreateTierDto, UpdateTierDto } from '../dto';
+import { tierExisting, createTierDto, updateTierDto } from './stubs/tier.stub';
 import { Tier } from '../schema';
 
 import { TiersService } from '../tiers.service';
@@ -25,17 +24,19 @@ describe('TiersController', () => {
 
   describe('getOne', () => {
     describe('when a record that exists is requested', () => {
+      let label: string;
       let tier: Tier;
 
       beforeEach(async () => {
-        tier = await controller.getOne(tierExisting().label);
+        label = tierExisting().label;
+        tier = await controller.getOne(label);
       });
 
       test('then it should call service', () => {
-        expect(service.findOne).toBeCalledWith(tierExisting().label);
+        expect(service.findOne).toBeCalledWith(label);
       });
 
-      test('then it should return a tier', () => {
+      test('then it should return a Tier', () => {
         expect(tier).toEqual(tierExisting());
       });
     });
@@ -65,7 +66,7 @@ describe('TiersController', () => {
         expect(service.find).toHaveBeenCalled();
       });
 
-      test('then it should return tiers', () => {
+      test('then it should return an array of Tiers', () => {
         expect(tiers).toEqual([tierExisting()]);
       });
     });
@@ -74,20 +75,16 @@ describe('TiersController', () => {
   describe('create', () => {
     describe('when all fields are valid', () => {
       let tier: Tier;
-      let createTierDto: CreateTierDto;
 
       beforeEach(async () => {
-        createTierDto = {
-          label: tierNew().label,
-        };
-        tier = await controller.create(createTierDto);
+        tier = await controller.create(createTierDto());
       });
 
       test('then it should call service', () => {
-        expect(service.create).toHaveBeenCalledWith(tierNew());
+        expect(service.create).toHaveBeenCalledWith(createTierDto());
       });
 
-      test('then it should return a tier', () => {
+      test('then it should return a Tier', () => {
         expect(tier).toEqual(tierExisting());
       });
     });
@@ -95,20 +92,19 @@ describe('TiersController', () => {
   describe('update', () => {
     describe('when all fields are valid', () => {
       let tier: Tier;
-      let updateTierDto: UpdateTierDto;
 
       beforeEach(async () => {
-        updateTierDto = {
-          label: tierExisting().label,
-        };
-        tier = await controller.update(tierExisting().label, updateTierDto);
+        tier = await controller.update(tierExisting().label, updateTierDto());
       });
 
       test('then it should call service', () => {
-        expect(service.update).toHaveBeenCalledWith(tierExisting());
+        expect(service.update).toHaveBeenCalledWith(
+          tierExisting(),
+          updateTierDto(),
+        );
       });
 
-      test('then it should return a tier', () => {
+      test('then it should return a Tier', () => {
         expect(tier).toEqual(tierExisting());
       });
     });

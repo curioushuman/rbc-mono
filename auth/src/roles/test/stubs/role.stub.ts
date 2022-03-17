@@ -47,7 +47,7 @@ export const updateRoleRole = (): Role => {
 
 export const updateErrorDto = (): UpdateRoleDto => {
   return {
-    label: 'ERROR',
+    label: createErrorDto().label,
   };
 };
 
