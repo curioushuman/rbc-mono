@@ -1,13 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { RolesController } from '../roles.controller';
-import {
-  roleExisting,
-  createRoleDto,
-  createRoleMap,
-  updateRoleDto,
-  updateRoleMap,
-} from './stubs/role.stub';
+import { roleExisting, createRoleDto, updateRoleDto } from './stubs/role.stub';
 import { Role } from '../schema';
 
 import { RolesService } from '../roles.service';
