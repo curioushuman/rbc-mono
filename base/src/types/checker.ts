@@ -1,4 +1,4 @@
-import { UtilsConfig } from 'src/config/config';
+import { UtilsConfig } from '..//config/config';
 
 export abstract class Checker<C extends UtilsConfig> {
   protected config: C;
