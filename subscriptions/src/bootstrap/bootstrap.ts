@@ -25,6 +25,7 @@ export class App {
     const configService = app.get(ConfigService);
 
     // setup microservices
+    // i.e. what are we listening out for?
     await this.setupMicroservices(app, configService);
 
     // setup swagger
