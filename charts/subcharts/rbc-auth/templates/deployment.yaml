@@ -34,13 +34,23 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            - name: PORT
+            - name: RBC_SVC_PORT
               value: "{{ .Values.service.port }}"
-            {{- if eq .Values.database.type "mongodb" }}
-            - name: MONGODB_URI
-              value: "mongodb://{{ .Values.database.host }}:{{ .Values.database.port }}/{{ .Values.database.name }}"
-            - name: MONGODB_URI_TEST
-              value: "mongodb://{{ .Values.database.host }}:{{ .Values.database.port }}/{{ .Values.database.name }}-test"
+            - name: RBC_APP_NAME
+              value: "{{ include "rbc-auth.name" . }}"
+            - name: RBC_RELEASE_NAME
+              value: "{{ .Release.Name }}"
+            {{- if .Values.database.serviceAlias }}
+            - name: RBC_DATABASE_SVC_NAME
+              value: "{{ .Values.database.serviceAlias }}"
+            {{- end }}
+            {{- if .Values.database.name }}
+            - name: RBC_DATABASE_NAME
+              value: "{{ .Values.database.name }}"
+            {{- end }}
+            {{- if .Values.database.port }}
+            - name: RBC_DATABASE_PORT
+              value: "{{ .Values.database.port }}"
             {{- end }}
           ports:
           {{- if .Values.ports }}
