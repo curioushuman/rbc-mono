@@ -6,6 +6,8 @@
   "scripts": {
     "prebuild": "rimraf ./dist",
     "build": "tsc",
+    "build:docker": "docker build --target development -t curioushuman/rbc-base .",
+    "publish:docker": "docker push curioushuman/rbc-base",
     "loop:kafka": "npm run build && until node dist/index.js -c kafka; do sleep 2; done",
     "loop:api": "npm run build && until node dist/index.js -c api; do sleep 2; done",
     "loop:auth": "npm run build && until node dist/index.js -c service -s auth; do sleep 2; done",

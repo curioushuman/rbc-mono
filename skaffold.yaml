@@ -1,11 +1,20 @@
 apiVersion: skaffold/v2beta27
 kind: Config
 deploy:
-  kubectl:
-    manifests:
-      - ./infra/k8s/*
-      - ./infra/k8s-dev/*
-      # - ./infra/k8s-monitor/*
+  # kubectl:
+  #   manifests:
+  #     - ./infra/k8s/*
+  #     - ./infra/k8s-dev/*
+  #     - ./infra/k8s-monitor/*
+  helm:
+    releases:
+    - name: rbc-auth
+      chartPath: charts/subcharts/rbc-auth
+      namespace: rbc
+      artifactOverrides:
+        image: curioushuman/rbc-auth
+      imageStrategy:
+        helm: {}
 build:
   local:
     push: false
@@ -23,16 +32,16 @@ build:
             dest: .
           - src: 'src/**/*.md'
             dest: .
-    - image: curioushuman/rbc-subscriptions
-      context: subscriptions
-      docker:
-        dockerfile: Dockerfile
-        target: development
-      sync:
-        manual:
-          - src: 'src/**/*.ts'
-            dest: .
-          - src: 'src/**/*.http'
-            dest: .
-          - src: 'src/**/*.md'
-            dest: .
+    # - image: curioushuman/rbc-subscriptions
+    #   context: subscriptions
+    #   docker:
+    #     dockerfile: Dockerfile
+    #     target: development
+    #   sync:
+    #     manual:
+    #       - src: 'src/**/*.ts'
+    #         dest: .
+    #       - src: 'src/**/*.http'
+    #         dest: .
+    #       - src: 'src/**/*.md'
+    #         dest: .
