@@ -119,6 +119,19 @@ $ docker push curioushuman/rbc-service
 
 TBC
 
+## Environment management
+
+TBC - for now, you don't need to do anything special just yet
+
+We'll be keeping things simple to begin with. Environment information & configuration will be stored in:
+
+* For development
+  * Different Skaffold profiles OR KUBECONTEXT
+* For non-local
+  * Different [Helm files for Argo](https://argo-cd.readthedocs.io/en/stable/user-guide/helm/)
+
+*
+
 # Decisions (made along the way)
 
 ## Mongoose over TypeORM for MongoDB
