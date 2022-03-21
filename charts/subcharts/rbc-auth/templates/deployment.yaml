@@ -33,6 +33,15 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: PORT
+              value: "{{ .Values.service.port }}"
+            {{- if eq .Values.database.type "mongodb" }}
+            - name: MONGODB_URI
+              value: "mongodb://{{ .Values.database.host }}:{{ .Values.database.port }}/{{ .Values.database.name }}"
+            - name: MONGODB_URI_TEST
+              value: "mongodb://{{ .Values.database.host }}:{{ .Values.database.port }}/{{ .Values.database.name }}-test"
+            {{- end }}
           ports:
           {{- if .Values.ports }}
             {{- range .Values.ports }}

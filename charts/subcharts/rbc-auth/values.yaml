@@ -4,6 +4,23 @@
 
 replicaCount: 1
 
+# DB config for app
+database:
+  type: "mongodb"
+  host: "rbc-auth-mongodb"
+  port: "27017"
+  name: "rbc-auth"
+
+# Overriding DB values for mongodb
+mongodb:
+  auth:
+    enabled: false
+  # The following is here for reference only
+  # These are defaults
+  # service:
+  #   port: 27017
+
+
 image:
   repository: curioushuman/rbc-auth
   pullPolicy: IfNotPresent

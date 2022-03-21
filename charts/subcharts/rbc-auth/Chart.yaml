@@ -3,11 +3,14 @@ name: rbc-auth
 description: A Helm chart for the RbC auth microservice
 type: application
 version: 0.1.0
-appVersion: "0.1.0"
-# dependencies:
-#   - name: mongodb
-#     repository: https://charts.bitnami.com/bitnami
-#     version: ~11.1.1
-#     tags:
-#       - database
-#       - mongodb
+appVersion: "0.1.1"
+dependencies:
+  - name: mongodb
+    alias: rbc-auth-mongodb
+    repository: https://charts.bitnami.com/bitnami
+    version: ~11.1.1
+    tags:
+      - database
+      - mongodb
+      - auth
+      - members
