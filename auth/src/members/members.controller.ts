@@ -13,6 +13,8 @@ import { SerializeInterceptor } from '@curioushuman/rbc-common';
 import { MembersService } from './members.service';
 import { CreateMemberDto, UpdateMemberDto, MemberExternalDto } from './dto';
 import { Member } from './schema';
+import { plainToInstance } from 'class-transformer';
+import { CreateMemberMap, UpdateMemberMap } from './mappers';
 
 @SerializeInterceptor(MemberExternalDto)
 @Controller('members')
@@ -53,8 +55,12 @@ export class MembersController {
    */
   @Post()
   async create(@Body() createMemberDto: CreateMemberDto) {
+    // map DTO to DB structure so service can deal with it
+    const memberMapped = plainToInstance(CreateMemberMap, createMemberDto, {
+      excludeExtraneousValues: true,
+    });
     try {
-      return await this.membersService.create(createMemberDto);
+      return await this.membersService.create(memberMapped);
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -70,8 +76,12 @@ export class MembersController {
     @Body() updateMemberDto: UpdateMemberDto,
   ) {
     const member = await this.getOne(id);
+    // map DTO to DB structure so service can deal with it
+    const memberMapped = plainToInstance(UpdateMemberMap, updateMemberDto, {
+      excludeExtraneousValues: true,
+    });
     try {
-      return await this.membersService.update(member, updateMemberDto);
+      return await this.membersService.update(member, memberMapped);
     } catch (error) {
       throw new BadRequestException(error.message);
     }

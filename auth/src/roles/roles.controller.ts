@@ -13,6 +13,8 @@ import { SerializeInterceptor } from '@curioushuman/rbc-common';
 import { RolesService } from './roles.service';
 import { CreateRoleDto, RoleExternalDto, UpdateRoleDto } from './dto';
 import { Role } from './schema';
+import { plainToInstance } from 'class-transformer';
+import { CreateRoleMap, UpdateRoleMap } from './mappers';
 
 @SerializeInterceptor(RoleExternalDto)
 @Controller('roles')
@@ -53,8 +55,12 @@ export class RolesController {
    */
   @Post()
   async create(@Body() createRoleDto: CreateRoleDto) {
+    // map DTO to DB structure
+    const roleMapped = plainToInstance(CreateRoleMap, createRoleDto, {
+      excludeExtraneousValues: true,
+    });
     try {
-      return await this.rolesService.create(createRoleDto);
+      return await this.rolesService.create(roleMapped);
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -70,8 +76,12 @@ export class RolesController {
     @Body() updateRoleDto: UpdateRoleDto,
   ) {
     const role = await this.getOne(label);
+    // map DTO to DB structure
+    const roleMapped = plainToInstance(UpdateRoleMap, updateRoleDto, {
+      excludeExtraneousValues: true,
+    });
     try {
-      return await this.rolesService.update(role, updateRoleDto);
+      return await this.rolesService.update(role, roleMapped);
     } catch (error) {
       throw new BadRequestException(error.message);
     }

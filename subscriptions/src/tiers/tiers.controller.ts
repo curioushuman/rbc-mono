@@ -14,6 +14,8 @@ import { CreateTierDto, UpdateTierDto } from './dto';
 import { Tier } from './schema';
 import { SerializeInterceptor } from '@curioushuman/rbc-common';
 import { TierExternalDto } from './dto/tier-external.dto';
+import { plainToInstance } from 'class-transformer';
+import { CreateTierMap, UpdateTierMap } from './mappers';
 
 @SerializeInterceptor(TierExternalDto)
 @Controller('tiers')
@@ -54,8 +56,12 @@ export class TiersController {
    */
   @Post()
   async create(@Body() createTierDto: CreateTierDto) {
+    // map DTO to DB structure
+    const tierMapped = plainToInstance(CreateTierMap, createTierDto, {
+      excludeExtraneousValues: true,
+    });
     try {
-      return await this.tiersService.create(createTierDto);
+      return await this.tiersService.create(tierMapped);
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -70,8 +76,12 @@ export class TiersController {
     @Body() updateTierDto: UpdateTierDto,
   ) {
     const tier = await this.getOne(label);
+    // map DTO to DB structure
+    const tierMapped = plainToInstance(UpdateTierMap, updateTierDto, {
+      excludeExtraneousValues: true,
+    });
     try {
-      return await this.tiersService.update(tier, updateTierDto);
+      return await this.tiersService.update(tier, tierMapped);
     } catch (error) {
       throw new BadRequestException(error.message);
     }

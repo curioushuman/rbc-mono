@@ -6,7 +6,6 @@ import { Member } from '../members/schema';
 import { Profile } from './schema';
 import { MembersService } from '../members/members.service';
 import { CreateProfileMap, UpdateProfileMap } from './mappers';
-import { CreateProfileDto, UpdateProfileDto } from './dto';
 
 // TODO
 // [ ] should "map DTO to DB structure" be in a decorator?
@@ -26,12 +25,8 @@ export class ProfilesService {
 
   async create(
     member: Member,
-    createProfileDto: CreateProfileDto,
+    profileMapped: CreateProfileMap,
   ): Promise<Profile> {
-    // map DTO to DB structure
-    const profileMapped = plainToInstance(CreateProfileMap, createProfileDto, {
-      excludeExtraneousValues: true,
-    });
     // convert to Profile for saving
     const profile = plainToInstance(Profile, profileMapped);
     // save the member with profile
@@ -43,12 +38,8 @@ export class ProfilesService {
 
   async update(
     member: Member,
-    updateProfileDto: UpdateProfileDto,
+    profileMapped: UpdateProfileMap,
   ): Promise<Profile> {
-    // map DTO to DB structure
-    const profileMapped = plainToInstance(UpdateProfileMap, updateProfileDto, {
-      excludeExtraneousValues: true,
-    });
     // merge the new info with the profile
     member.profile = this.merge(member.profile, profileMapped);
     // save the profile

@@ -14,6 +14,8 @@ import { CreateProfileDto, ProfileExternalDto, UpdateProfileDto } from './dto';
 import { Profile } from './schema';
 import { Member } from '../members/schema';
 import { ProfilesService } from './profiles.service';
+import { plainToInstance } from 'class-transformer';
+import { CreateProfileMap, UpdateProfileMap } from './mappers';
 
 @SerializeInterceptor(ProfileExternalDto)
 @Controller('members/profiles')
@@ -47,9 +49,13 @@ export class ProfilesController {
   ) {
     // find the member
     const member = await this.findMember(memberId);
+    // map DTO to DB structure so service can deal with it
+    const profileMapped = plainToInstance(CreateProfileMap, createProfileDto, {
+      excludeExtraneousValues: true,
+    });
     // create the profile
     try {
-      return this.profilesService.create(member, createProfileDto);
+      return this.profilesService.create(member, profileMapped);
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -65,9 +71,13 @@ export class ProfilesController {
   ) {
     // find the member
     const member = await this.findMember(memberId);
+    // map DTO to DB structure so service can deal with it
+    const profileMapped = plainToInstance(UpdateProfileMap, updateProfileDto, {
+      excludeExtraneousValues: true,
+    });
     // update the profile
     try {
-      return this.profilesService.update(member, updateProfileDto);
+      return this.profilesService.update(member, profileMapped);
     } catch (error) {
       throw new BadRequestException(error.message);
     }

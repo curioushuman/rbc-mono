@@ -5,7 +5,6 @@ import { merge } from 'lodash';
 import { Member } from './schema';
 import { MembersRepository } from './members.repository';
 import { CreateMemberMap, UpdateMemberMap } from './mappers';
-import { CreateMemberDto, UpdateMemberDto } from './dto';
 import { MembersEmailService } from './members-email.service';
 import { MembersProducerService } from './members-producer.service';
 
@@ -28,11 +27,7 @@ export class MembersService {
     return await this.membersRepository.findOne({ id });
   }
 
-  async create(createMemberDto: CreateMemberDto): Promise<Member> {
-    // map DTO to DB structure
-    const memberMapped = plainToInstance(CreateMemberMap, createMemberDto, {
-      excludeExtraneousValues: true,
-    });
+  async create(memberMapped: CreateMemberMap): Promise<Member> {
     // convert to Member for saving
     let member = plainToInstance(Member, memberMapped);
     // save the member
@@ -43,14 +38,7 @@ export class MembersService {
     return member;
   }
 
-  async update(
-    member: Member,
-    updateMemberDto: UpdateMemberDto,
-  ): Promise<Member> {
-    // map DTO to DB structure
-    const memberMapped = plainToInstance(UpdateMemberMap, updateMemberDto, {
-      excludeExtraneousValues: true,
-    });
+  async update(member: Member, memberMapped: UpdateMemberMap): Promise<Member> {
     // merge the new info with the member
     member = this.merge(member, memberMapped);
     // update the member

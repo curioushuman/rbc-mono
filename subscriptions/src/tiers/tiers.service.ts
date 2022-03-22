@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { merge } from 'lodash';
 
-import { CreateTierDto, UpdateTierDto } from './dto';
 import { CreateTierMap, UpdateTierMap } from './mappers';
 import { Tier } from './schema';
 import { TiersRepository } from './tiers.repository';
@@ -19,11 +18,7 @@ export class TiersService {
     return await this.tiersRepository.findOne({ label });
   }
 
-  async create(createTierDto: CreateTierDto): Promise<Tier> {
-    // map DTO to DB structure
-    const tierMapped = plainToInstance(CreateTierMap, createTierDto, {
-      excludeExtraneousValues: true,
-    });
+  async create(tierMapped: CreateTierMap): Promise<Tier> {
     // convert to Tier for saving
     let tier = plainToInstance(Tier, tierMapped);
     // save the tier
@@ -32,11 +27,7 @@ export class TiersService {
     return tier;
   }
 
-  async update(tier: Tier, updateTierDto: UpdateTierDto): Promise<Tier> {
-    // map DTO to DB structure
-    const tierMapped = plainToInstance(UpdateTierMap, updateTierDto, {
-      excludeExtraneousValues: true,
-    });
+  async update(tier: Tier, tierMapped: UpdateTierMap): Promise<Tier> {
     // merge the new info with the tier
     tier = this.merge(tier, tierMapped);
     // save the tier
