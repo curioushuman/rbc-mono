@@ -1,24 +1,21 @@
 apiVersion: skaffold/v2beta27
 kind: Config
 deploy:
-  # kubectl:
-  #   manifests:
-  #     - ./infra/k8s/*
-  #     - ./infra/k8s-dev/*
-  #     - ./infra/k8s-monitor/*
   helm:
     releases:
     - name: rbc
+      version: ~0.1.6
       chartPath: charts/rbc
       namespace: rbc
+      createNamespace: true
       setValues:
         tags.rbc: false
     - name: rbc-auth
-      version: ~0.1.1
+      version: ~0.1.6
       chartPath: charts/subcharts/rbc-auth
       namespace: rbc
       artifactOverrides:
-        image: curioushuman/rbc-auth
+        imageKey: curioushuman/rbc-auth
       imageStrategy:
         helm: {}
 build:

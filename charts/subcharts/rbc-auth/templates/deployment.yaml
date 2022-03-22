@@ -40,6 +40,8 @@ spec:
               value: "{{ include "rbc-auth.name" . }}"
             - name: RBC_RELEASE_NAME
               value: "{{ .Release.Name }}"
+            - name: RBC_RELEASE_NAMESPACE
+              value: "{{ .Release.Namespace }}"
             {{- if .Values.database.serviceAlias }}
             - name: RBC_DATABASE_SVC_NAME
               value: "{{ .Values.database.serviceAlias }}"
@@ -51,6 +53,10 @@ spec:
             {{- if .Values.database.port }}
             - name: RBC_DATABASE_PORT
               value: "{{ .Values.database.port }}"
+            {{- end }}
+            {{- if .Values.global.debug }}
+            - name: RBC_DEBUG
+              value: "true"
             {{- end }}
           ports:
           {{- if .Values.ports }}

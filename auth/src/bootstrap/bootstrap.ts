@@ -1,14 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Transport } from '@nestjs/microservices';
+// import { Transport } from '@nestjs/microservices';
 import {
   SwaggerModule,
   DocumentBuilder,
   SwaggerDocumentOptions,
 } from '@nestjs/swagger';
-import type { KafkaConfig } from '@curioushuman/rbc-common';
-import { KafkaConsumerConfig, LoggableLogger } from '@curioushuman/rbc-common';
+import { LoggableLogger } from '@curioushuman/rbc-common';
 
 // TODO
 // - better handling of ConfigService

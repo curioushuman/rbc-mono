@@ -4,7 +4,7 @@ import {
   OnModuleDestroy,
   OnModuleInit,
 } from '@nestjs/common';
-import { ClientKafka } from '@nestjs/microservices';
+import { ClientProxy } from '@nestjs/microservices';
 import { plainToInstance } from 'class-transformer';
 
 import { MemberInternalDto } from './dto';
@@ -17,15 +17,13 @@ import { Member } from './schema';
 
 @Injectable()
 export class MembersProducerService implements OnModuleInit, OnModuleDestroy {
-  constructor(
-    @Inject('KAFKA_CLIENT') private readonly kafkaClient: ClientKafka,
-  ) {}
+  constructor(@Inject('NATS') private readonly msClient: ClientProxy) {}
 
   /**
    * Triggered when the module is initialized.
    */
   public async onModuleInit(): Promise<void> {
-    await this.kafkaClient.connect();
+    await this.msClient.connect();
   }
 
   // UP TO topic creation
@@ -34,7 +32,7 @@ export class MembersProducerService implements OnModuleInit, OnModuleDestroy {
    * Triggered when the module is destroyed.
    */
   public async onModuleDestroy(): Promise<void> {
-    await this.kafkaClient.close();
+    await this.msClient.close();
   }
 
   /**
@@ -63,12 +61,12 @@ export class MembersProducerService implements OnModuleInit, OnModuleDestroy {
    */
   public async emitMember(topic: string, member: Member): Promise<void> {
     // this looks like it is serializing beforehand
-    // this.kafkaClient.emit(topic, { ...member });
+    // this.msClient.emit(topic, { ...member });
     console.log('Serializing data', member);
     const serialized = plainToInstance(MemberInternalDto, member, {
       excludeExtraneousValues: true,
     });
     console.log('Serialized', serialized);
-    await this.kafkaClient.emit<MemberInternalDto>(topic, serialized);
+    await this.msClient.emit<MemberInternalDto>(topic, serialized);
   }
 }

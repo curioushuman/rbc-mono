@@ -5,11 +5,9 @@ import {
   Put,
   Body,
   Param,
-  Inject,
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
-import { ClientKafka, EventPattern } from '@nestjs/microservices';
 import { SerializeInterceptor } from '@curioushuman/rbc-common';
 
 import { RolesService } from './roles.service';
@@ -19,9 +17,7 @@ import { Role } from './schema';
 @SerializeInterceptor(RoleExternalDto)
 @Controller('roles')
 export class RolesController {
-  constructor(
-    private readonly rolesService: RolesService, // @Inject('KAFKA_CLIENT') private readonly kafkaClient: ClientKafka,
-  ) {}
+  constructor(private readonly rolesService: RolesService) {}
 
   /**
    * Get all roles
