@@ -1,0 +1,30 @@
+apiVersion: skaffold/v2beta27
+kind: Config
+deploy:
+  helm:
+    releases:
+    - name: rbc-auth
+      chartPath: ../charts/subcharts/rbc-auth
+      namespace: rbc-auth
+      createNamespace: true
+      artifactOverrides:
+        image: curioushuman/rbc-auth
+      imageStrategy:
+        helm: {}
+build:
+  local:
+    push: false
+  artifacts:
+    - image: curioushuman/rbc-auth
+      context: .
+      docker:
+        dockerfile: Dockerfile
+        target: development
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+          - src: 'src/**/*.http'
+            dest: .
+          - src: 'src/**/*.md'
+            dest: .

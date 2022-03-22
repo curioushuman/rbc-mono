@@ -1,40 +1,47 @@
 ## Description
 
-Members service for RbC
+Members service for RbC.
+
+## For more information
+
+See @/README.md.
 
 ## Installation
+
+### Node modules
 
 ```bash
 $ npm install
 ```
 
+### Required software
+
+See @/README.md for more info.
+
+- kubectl
+- helm
+- The ability to run a local cluster
+  - Docker, running kubernetes
+  - Minikube
+- Skaffold
+
+### Kubernetes dependencies
+
+```bash
+# Add helm repos
+$ helm repo add bitnami https://charts.bitnami.com/bitnami
+```
+
 ## Running the app
 
-Should be done as part of a cluster. See @/README.md
+Can be run as part of overall cluster; see @/README.md.
 
-### Running the app (on it's own) via Docker
-
-```bash
-# development, listening on http://localhost:3000/
-$ docker run -p 3000:3000 curioushuman/rbc-auth
-```
-
-## Test
-
-### Quick and dirty
-
-**NOTE**: this won't work if your tests actually use the MongoDB service, please mock it.
+OR you can run/test just this app using:
 
 ```bash
-# rebuild development image
-$ docker build --target development -t curioushuman/rbc-auth:development .
-
-# run tests
-$ docker run curioushuman/rbc-auth:development npm run test
-
-# e2e tests
-$ docker run curioushuman/rbc-auth:development npm run test:e2e
-
-# test coverage
-$ docker run curioushuman/rbc-auth:development npm run test:cov
+$ skaffold dev
 ```
+
+### TODO
+
+- [ ] Get it to not look for microservices, or not fail if they don't exist
