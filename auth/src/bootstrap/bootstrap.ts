@@ -36,8 +36,10 @@ export class App {
 
     // start listening
     const port = configService.get<string>('app.port') || 3000;
+    const release = configService.get<string>('app.release');
+    const namespace = configService.get<string>('app.namespace');
     await app.listen(port);
-    console.log(`Listening on port ${port}`);
+    console.log(`${release}, listening on port ${port} within ${namespace}`);
   }
 
   // public static async setupMicroservices(

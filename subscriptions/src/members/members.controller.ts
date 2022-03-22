@@ -18,7 +18,7 @@ export class MembersController {
   /**
    * Create a member
    */
-  @EventPattern('member_created')
+  @EventPattern('member.created')
   async onMemberCreated(data: {
     value: MemberInternalConsumerDto;
   }): Promise<void> {
@@ -32,6 +32,7 @@ export class MembersController {
       await this.membersService.create(member);
     } catch (error) {
       // need to do something more kafka-y
+      console.error('Error creating member from event', error);
     }
   }
 }

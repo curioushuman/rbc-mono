@@ -7,8 +7,7 @@ import {
   DocumentBuilder,
   SwaggerDocumentOptions,
 } from '@nestjs/swagger';
-import type { KafkaConfig } from '@curioushuman/rbc-common';
-import { KafkaConsumerConfig, LoggableLogger } from '@curioushuman/rbc-common';
+import { LoggableLogger } from '@curioushuman/rbc-common';
 
 // TODO
 // - better handling of ConfigService
@@ -37,43 +36,27 @@ export class App {
     app.useLogger(new LoggableLogger());
 
     // start listening
-    const port = configService.get<string>('app.port') || 3000;
+    const port = configService.get<string>('app.port') || 3001;
+    const release = configService.get<string>('app.release');
+    const namespace = configService.get<string>('app.namespace');
     await app.listen(port);
-    console.log(`Listening on port ${port}`);
+    console.log(`${release}, listening on port ${port} within ${namespace}`);
   }
 
   public static async setupMicroservices(
     app: INestApplication,
     configService: ConfigService,
   ) {
-    // grab auth microservice config
-    // const config = configService.get<KafkaConfig>(
-    //   'microservices.services.subscriptions',
-    // );
-
     // add microservices
-    // app.connectMicroservice(new KafkaConsumerConfig(config).get());
-    // TESTING
-    app.connectMicroservice(this.tmpConfig());
+    app.connectMicroservice({
+      transport: Transport.NATS,
+      options: {
+        servers: configService.get<string[]>('nats.servers'),
+      },
+    });
 
     // start the service
     await app.startAllMicroservices();
-  }
-
-  // TESTING
-  public static tmpConfig() {
-    return {
-      transport: Transport.KAFKA,
-      options: {
-        client: {
-          clientId: 'subscriptions',
-          brokers: ['kafka-srv:9092'],
-        },
-        consumer: {
-          groupId: 'auth-consumer',
-        },
-      },
-    };
   }
 
   public static setupSwagger(app: INestApplication) {
