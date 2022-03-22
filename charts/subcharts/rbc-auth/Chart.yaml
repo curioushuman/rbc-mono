@@ -3,7 +3,7 @@ name: rbc-auth
 description: A Helm chart for the RbC auth microservice
 type: application
 version: 0.1.0
-appVersion: "0.1.19"
+appVersion: "0.1.20"
 dependencies:
   - name: mongodb
     alias: rbc-auth-mongodb
