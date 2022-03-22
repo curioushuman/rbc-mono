@@ -8,7 +8,13 @@ deploy:
   #     - ./infra/k8s-monitor/*
   helm:
     releases:
+    - name: rbc
+      chartPath: charts/rbc
+      namespace: rbc
+      setValues:
+        tags.rbc: false
     - name: rbc-auth
+      version: ~0.1.1
       chartPath: charts/subcharts/rbc-auth
       namespace: rbc
       artifactOverrides:

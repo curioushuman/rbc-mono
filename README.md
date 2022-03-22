@@ -30,6 +30,7 @@ TBC
 ```bash
 # Add helm repos
 $ helm repo add bitnami https://charts.bitnami.com/bitnami
+$ helm repo add nats https://nats-io.github.io/k8s/helm/charts/
 ```
 
 ### 2. Install Nodes.js dependencies for all the microservices
