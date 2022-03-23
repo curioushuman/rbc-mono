@@ -1,6 +1,5 @@
-{{- if and .Values.ingress.enabled (not .Values.global.umbrellaRelease) -}}
-{{- $fullName := include "rbc-auth.fullname" . -}}
-{{- $svcPort := .Values.service.port -}}
+{{- if .Values.ingress.enabled -}}
+{{- $fullName := include "rbc.fullname" . -}}
 {{- if and .Values.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
   {{- if not (hasKey .Values.ingress.annotations "kubernetes.io/ingress.class") }}
   {{- $_ := set .Values.ingress.annotations "kubernetes.io/ingress.class" .Values.ingress.className}}
@@ -17,7 +16,7 @@ kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    {{- include "rbc-auth.labels" . | nindent 4 }}
+    {{- include "rbc.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -41,21 +40,19 @@ spec:
     - host: {{ .host | quote }}
       http:
         paths:
-          {{- range .paths }}
-          - path: {{ .path }}
-            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
-            pathType: {{ .pathType }}
-            {{- end }}
+          - path: /api/auth/?(.*)
+            pathType: Prefix
             backend:
-              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
-              service:
-                name: {{ $fullName }}
-                port:
-                  number: {{ $svcPort }}
-              {{- else }}
-              serviceName: {{ $fullName }}
-              servicePort: {{ $svcPort }}
-              {{- end }}
-          {{- end }}
+                service:
+                  name: rbc-auth
+                  port:
+                    number: 3000
+          - path: /api/subscriptions/?(.*)
+            pathType: Prefix
+            backend:
+                service:
+                  name: rbc-subscriptions
+                  port:
+                    number: 3001
     {{- end }}
 {{- end }}

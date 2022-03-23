@@ -58,7 +58,7 @@ spec:
             - name: RBC_DATABASE_PORT
               value: "{{ .Values.database.port }}"
             {{- end }}
-            {{- if .Values.global.debug }}
+            {{- if or .Values.global.debug .Values.local.debug }}
             - name: RBC_DEBUG
               value: "true"
             {{- end }}

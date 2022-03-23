@@ -8,14 +8,14 @@ deploy:
         [--debug]
     releases:
     - name: rbc
-      version: ~0.1.13
+      version: ~0.1.14
       chartPath: charts/rbc
       namespace: rbc
       createNamespace: true
       setValues:
         tags.rbc: false
     - name: rbc-auth
-      version: ~0.1.11
+      version: ~0.1.12
       chartPath: charts/subcharts/rbc-auth
       namespace: rbc
       artifactOverrides:
@@ -25,7 +25,7 @@ deploy:
       setValues:
         global.umbrellaRelease: "rbc"
     - name: rbc-subscriptions
-      version: ~0.1.8
+      version: ~0.1.9
       chartPath: charts/subcharts/rbc-subscriptions
       namespace: rbc
       artifactOverrides:
