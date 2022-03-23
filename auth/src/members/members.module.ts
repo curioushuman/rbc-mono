@@ -25,7 +25,7 @@ import { Member, MemberSchema } from './schema';
           return {
             transport: Transport.NATS,
             options: {
-              servers: configService.get<string[]>('nats.servers'),
+              servers: configService.get<string[]>('nats.options.servers'),
             },
           };
         },

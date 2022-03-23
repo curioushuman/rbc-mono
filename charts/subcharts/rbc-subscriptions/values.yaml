@@ -1,25 +1,33 @@
-# Default values for rbc.
+# Default values for rbc-subscriptions.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 global:
-  umbrellaRelease: "rbc"
-
-tags:
-  rbc: true
-
-nats:
-  auth:
-    enabled: false
-  logging:
-    debug: true
-    trace: true
-    connectErrorReports: true
+  debug: true
 
 replicaCount: 1
 
+# DB config for app
+# If no DB please replace with empty object {}
+database:
+  type: "mongodb"
+  port: "27017"
+  name: "rbc-subscriptions"
+  # Must be same as alias defined in chart
+  # TODO - make this dynamic (within templates)
+  serviceAlias: "rbc-subscriptions-mongodb"
+
+# Overriding DB values for mongodb
+mongodb:
+  auth:
+    enabled: false
+  # service:
+  #   port: 27017
+  #   nameOverride: "rbc-subscriptions-mongodb"
+
+
 image:
-  repository: nginx
+  repository: curioushuman/rbc-subscriptions
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -30,7 +38,8 @@ fullnameOverride: ""
 
 serviceAccount:
   # Specifies whether a service account should be created
-  create: true
+  # * NOTE: currently set to FALSE
+  create: false
   # Annotations to add to the service account
   annotations: {}
   # The name of the service account to use.
@@ -50,21 +59,48 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+# * NOTE: at this point, if you want to use ingress you need to use this port
 service:
   type: ClusterIP
-  port: 80
+  port: 3001
+  portName: rbc-subsc
+  protocol: TCP
+
+# OR define an optional ports array
+# TODO - utilise in ingress and testconnection
+# ports: [] # Use this if you want to remove this array
+ports:
+  - name: rbc-subsc
+    port: 3001
+    targetPort: 3001
+    protocol: TCP
+
+livenessProbe:
+  httpGet:
+    path: /api/subscriptions/hello
+    port: rbc-subsc
+  failureThreshold: 1
+  periodSeconds: 10
+
+startupProbe:
+  httpGet:
+    path: /api/subscriptions/hello
+    port: rbc-subsc
+  failureThreshold: 30
+  periodSeconds: 10
 
 ingress:
-  enabled: false
+  enabled: true
+  # Leave this as blank
   className: ""
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: chart-example.local
+    - host: rbc.dev
       paths:
-        - path: /
-          pathType: ImplementationSpecific
+        - path: /api/subscriptions/?(.*)
+          pathType: Prefix
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:

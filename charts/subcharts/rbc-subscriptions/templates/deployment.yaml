@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "rbc-auth.fullname" . }}
+  name: {{ include "rbc-subscriptions.fullname" . }}
   labels:
-    {{- include "rbc-auth.labels" . | nindent 4 }}
+    {{- include "rbc-subscriptions.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "rbc-auth.selectorLabels" . | nindent 6 }}
+      {{- include "rbc-subscriptions.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "rbc-auth.selectorLabels" . | nindent 8 }}
+        {{- include "rbc-subscriptions.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "rbc-auth.serviceAccountName" . }}
+      serviceAccountName: {{ include "rbc-subscriptions.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -37,7 +37,7 @@ spec:
             - name: RBC_SVC_PORT
               value: "{{ .Values.service.port }}"
             - name: RBC_APP_NAME
-              value: "{{ include "rbc-auth.name" . }}"
+              value: "{{ include "rbc-subscriptions.name" . }}"
             - name: RBC_RELEASE_NAME
               value: "{{ .Release.Name }}"
             - name: RBC_RELEASE_NAMESPACE

@@ -31,7 +31,7 @@ export class MembersController {
     try {
       await this.membersService.create(member);
     } catch (error) {
-      // need to do something more kafka-y
+      // TODO use logger
       console.error('Error creating member from event', error);
     }
   }

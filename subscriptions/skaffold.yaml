@@ -3,19 +3,19 @@ kind: Config
 deploy:
   helm:
     releases:
-    - name: rbc-auth
-      chartPath: ../charts/subcharts/rbc-auth
-      namespace: rbc-auth
+    - name: rbc-subscriptions
+      chartPath: ../charts/subcharts/rbc-subscriptions
+      namespace: rbc-subscriptions
       createNamespace: true
       artifactOverrides:
-        imageKey: curioushuman/rbc-auth
+        imageKey: curioushuman/rbc-subscriptions
       imageStrategy:
         helm: {}
 build:
   local:
     push: false
   artifacts:
-    - image: curioushuman/rbc-auth
+    - image: curioushuman/rbc-subscriptions
       context: .
       docker:
         dockerfile: Dockerfile

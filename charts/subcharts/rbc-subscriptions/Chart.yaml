@@ -1,9 +1,9 @@
 apiVersion: v2
-name: rbc-auth
-description: A Helm chart for the RbC auth microservice
+name: rbc-subscriptions
+description: A Helm chart for the RbC subscriptions microservice
 type: application
-version: 0.1.11
-appVersion: "0.1.29"
+version: 0.1.8
+appVersion: "0.1.9"
 dependencies:
   - name: mongodb
     repository: https://charts.bitnami.com/bitnami
@@ -11,5 +11,5 @@ dependencies:
     tags:
       - database
       - mongodb
-      - auth
+      - subscriptions
       - members

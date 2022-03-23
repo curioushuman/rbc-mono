@@ -23,6 +23,12 @@ export class App {
     // instantiate config
     const configService = app.get(ConfigService);
 
+    // testing
+    const appConfig = configService.get('app');
+    console.log('appConfig', appConfig);
+    const natsConfig = configService.get('nats');
+    console.log('natsConfig', natsConfig);
+
     // setup microservices
     // i.e. what are we listening out for?
     await this.setupMicroservices(app, configService);
@@ -51,7 +57,7 @@ export class App {
     app.connectMicroservice({
       transport: Transport.NATS,
       options: {
-        servers: configService.get<string[]>('nats.servers'),
+        servers: configService.get<string[]>('nats.options.servers'),
       },
     });
 

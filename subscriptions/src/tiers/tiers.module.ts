@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ClientsModule } from '@nestjs/microservices';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { KafkaConfig, KafkaConsumerConfig } from '@curioushuman/rbc-common';
 
 import { TiersService } from './tiers.service';
 import { TiersController } from './tiers.controller';
@@ -18,19 +17,20 @@ import { TiersRepository } from './tiers.repository';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Tier.name, schema: TierSchema }]),
-    ClientsModule.registerAsync([
-      {
-        name: 'KAFKA_CLIENT',
-        imports: [ConfigModule],
-        inject: [ConfigService],
-        useFactory: async (configService: ConfigService) => {
-          const config = configService.get<KafkaConfig>(
-            'microservices.services.subscriptions',
-          );
-          return new KafkaConsumerConfig(config).get();
-        },
-      },
-    ]),
+    // ClientsModule.registerAsync([
+    //   {
+    //     name: 'NATS',
+    //     useFactory: (configService: ConfigService) => {
+    //       return {
+    //         transport: Transport.NATS,
+    //         options: {
+    //           servers: configService.get<string[]>('nats.servers'),
+    //         },
+    //       };
+    //     },
+    //     inject: [ConfigService],
+    //   },
+    // ]),
   ],
   controllers: [TiersController],
   providers: [TiersService, TiersRepository],
