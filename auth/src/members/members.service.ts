@@ -8,9 +8,6 @@ import { CreateMemberMap, UpdateMemberMap } from './mappers';
 import { MembersEmailService } from './members-email.service';
 import { MembersProducerService } from './members-producer.service';
 
-// TODO
-// [ ] should "map DTO to DB structure" be in a decorator?
-
 @Injectable()
 export class MembersService {
   constructor(

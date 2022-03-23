@@ -7,6 +7,7 @@ import {
 } from '@curioushuman/rbc-common';
 
 import { TiersModule } from './tiers/tiers.module';
+import { MembersModule } from './members/members.module';
 import { AppController } from './root/app.controller';
 import { AppService } from './root/app.service';
 
@@ -18,6 +19,7 @@ import { AppService } from './root/app.service';
       isGlobal: true,
     }),
     MongoDbModule,
+    MembersModule,
     TiersModule,
   ],
   controllers: [AppController],

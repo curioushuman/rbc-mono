@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-// import { Transport } from '@nestjs/microservices';
+import { Transport } from '@nestjs/microservices';
 import {
   SwaggerModule,
   DocumentBuilder,
@@ -42,32 +42,28 @@ export class App {
     console.log(`${release}, listening on port ${port} within ${namespace}`);
   }
 
-  // public static async setupMicroservices(
-  //   app: INestApplication,
-  //   configService: ConfigService,
-  // ) {
-  // grab auth microservice config
-  // const config = configService.get<KafkaConfig>(
-  //   'microservices.services.auth',
-  // );
-  // add microservices
-  // app.connectMicroservice(new KafkaConsumerConfig(config).get());
-  // app.connectMicroservice(this.tmpConfig());
-  // start the service
-  // await app.startAllMicroservices();
-  // }
+  public static async setupMicroservices(
+    app: INestApplication,
+    configService: ConfigService,
+  ) {
+    // add microservices
+    const servers = configService.get<string[]>('nats.options.servers');
+    if (!servers || servers.length === 0) {
+      return;
+    }
+    app.connectMicroservice({
+      transport: Transport.NATS,
+      options: {
+        servers: servers,
+        debug: true,
+      },
+    });
 
-  // TESTING
-  // public static tmpConfig() {
-  //   return {
-  //     transport: Transport.KAFKA,
-  //     options: {
-  //       client: {
-  //         brokers: ['kafka-srv:9092'],
-  //       },
-  //     },
-  //   };
-  // }
+    console.log(`Microservice connected via ${servers[0]}`);
+
+    // start the service
+    await app.startAllMicroservices();
+  }
 
   public static setupSwagger(app: INestApplication) {
     const config = new DocumentBuilder()
