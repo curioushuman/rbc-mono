@@ -1,7 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { TiersController } from '../tiers.controller';
-import { tierExisting, createTierDto, updateTierDto } from './stubs/tier.stub';
+import {
+  tierExisting,
+  createTierDto,
+  updateTierDto,
+  createTierMap,
+  updateTierMap,
+} from './stubs/tier.stub';
 import { Tier } from '../schema';
 
 import { TiersService } from '../tiers.service';
@@ -81,7 +87,7 @@ describe('TiersController', () => {
       });
 
       test('then it should call service', () => {
-        expect(service.create).toHaveBeenCalledWith(createTierDto());
+        expect(service.create).toHaveBeenCalledWith(createTierMap());
       });
 
       test('then it should return a Tier', () => {
@@ -100,7 +106,7 @@ describe('TiersController', () => {
       test('then it should call service', () => {
         expect(service.update).toHaveBeenCalledWith(
           tierExisting(),
-          updateTierDto(),
+          updateTierMap(),
         );
       });
 

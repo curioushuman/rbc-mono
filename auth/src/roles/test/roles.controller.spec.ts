@@ -1,7 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { RolesController } from '../roles.controller';
-import { roleExisting, createRoleDto, updateRoleDto } from './stubs/role.stub';
+import {
+  roleExisting,
+  createRoleDto,
+  updateRoleDto,
+  createRoleMap,
+  updateRoleMap,
+} from './stubs/role.stub';
 import { Role } from '../schema';
 
 import { RolesService } from '../roles.service';
@@ -81,7 +87,7 @@ describe('RolesController', () => {
       });
 
       test('then it should call service', () => {
-        expect(service.create).toHaveBeenCalledWith(createRoleDto());
+        expect(service.create).toHaveBeenCalledWith(createRoleMap());
       });
 
       test('then it should return a Role', () => {
@@ -100,7 +106,7 @@ describe('RolesController', () => {
       test('then it should call service', () => {
         expect(service.update).toHaveBeenCalledWith(
           roleExisting(),
-          updateRoleDto(),
+          updateRoleMap(),
         );
       });
 

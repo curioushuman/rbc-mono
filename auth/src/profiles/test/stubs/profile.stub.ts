@@ -9,6 +9,7 @@ import {
   memberWithoutProfile,
 } from '../../../members/test/stubs/member.stub';
 import { Member } from '../../../members/schema';
+import { CreateProfileMap, UpdateProfileMap } from '../../mappers';
 
 export const profileExisting = (): Profile => {
   return memberExisting().profile;
@@ -26,6 +27,13 @@ export const createProfileDto = (): CreateProfileDto => {
   return {
     firstName: 'Elwood',
     lastName: 'Blues',
+  };
+};
+
+export const createProfileMap = (): CreateProfileMap => {
+  return {
+    firstName: createProfileDto().firstName,
+    lastName: createProfileDto().lastName,
   };
 };
 
@@ -49,6 +57,13 @@ export const updateProfileDto = (): UpdateProfileDto => {
   return {
     firstName: 'Joliet',
     lastName: 'Blues',
+  };
+};
+
+export const updateProfileMap = (): UpdateProfileMap => {
+  return {
+    firstName: updateProfileDto().firstName,
+    lastName: updateProfileDto().lastName,
   };
 };
 

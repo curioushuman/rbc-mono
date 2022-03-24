@@ -4,12 +4,12 @@ import { Profile } from '../schema';
 import { ProfilesService } from '../profiles.service';
 import {
   profileExisting,
-  createProfileDto,
   createProfileProfile,
-  updateProfileDto,
   updateProfileProfile,
   createProfileMember,
   updateProfileMember,
+  createProfileMap,
+  updateProfileMap,
 } from './stubs/profile.stub';
 import {
   memberExisting,
@@ -117,7 +117,7 @@ describe('ProfilesService', () => {
 
         beforeEach(async () => {
           saveSpy = jest.spyOn(membersService, 'updateMember');
-          profile = await service.create(member, createProfileDto());
+          profile = await service.create(member, createProfileMap());
         });
 
         test('then it should call the members service updateMember', () => {
@@ -137,7 +137,7 @@ describe('ProfilesService', () => {
 
         beforeEach(async () => {
           saveSpy = jest.spyOn(membersService, 'updateMember');
-          profile = await service.update(memberExisting(), updateProfileDto());
+          profile = await service.update(memberExisting(), updateProfileMap());
         });
 
         test('then it should call the members service updateMember', () => {

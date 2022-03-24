@@ -7,8 +7,8 @@ import {
   roleExisting,
   createRoleRole,
   updateRoleRole,
-  createRoleDto,
-  updateRoleDto,
+  createRoleMap,
+  updateRoleMap,
 } from './stubs/role.stub';
 
 import { RolesRepository } from '../roles.repository';
@@ -108,7 +108,7 @@ describe('RolesService', () => {
 
         beforeEach(async () => {
           saveSpy = jest.spyOn(service, 'save');
-          await service.create(createRoleDto());
+          await service.create(createRoleMap());
         });
 
         test('then it should call the save function with a Role', () => {
@@ -123,7 +123,7 @@ describe('RolesService', () => {
 
         beforeEach(async () => {
           saveSpy = jest.spyOn(service, 'save');
-          await service.update(roleExisting(), updateRoleDto());
+          await service.update(roleExisting(), updateRoleMap());
         });
 
         test('then it should call the save function with a Role, not a map', () => {

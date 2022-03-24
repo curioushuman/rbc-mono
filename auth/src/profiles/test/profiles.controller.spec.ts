@@ -8,6 +8,8 @@ import {
   createProfileProfile,
   updateProfileProfile,
   profileEmpty,
+  createProfileMap,
+  updateProfileMap,
 } from './stubs/profile.stub';
 import { Profile } from '../schema';
 import {
@@ -92,7 +94,7 @@ describe('ProfilesController', () => {
       test('then it should call service', () => {
         expect(service.create).toHaveBeenCalledWith(
           memberWithoutProfile(),
-          createProfileDto(),
+          createProfileMap(),
         );
       });
 
@@ -115,7 +117,7 @@ describe('ProfilesController', () => {
       test('then it should call service', () => {
         expect(service.update).toHaveBeenCalledWith(
           memberExisting(),
-          updateProfileDto(),
+          updateProfileMap(),
         );
       });
 

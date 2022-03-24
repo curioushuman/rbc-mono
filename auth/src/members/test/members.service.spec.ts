@@ -5,10 +5,10 @@ import { Member } from '../schema';
 import { MembersService } from '../members.service';
 import {
   memberExisting,
-  createMemberDto,
   createMemberMember,
-  updateMemberDto,
   updateMemberMember,
+  createMemberMap,
+  updateMemberMap,
 } from './stubs/member.stub';
 
 import { MembersEmailService } from '../members-email.service';
@@ -123,7 +123,7 @@ describe('MembersService', () => {
 
         beforeEach(async () => {
           saveSpy = jest.spyOn(service, 'save');
-          await service.create(createMemberDto());
+          await service.create(createMemberMap());
         });
 
         test('then it should call the save function with a Member, not a map', () => {
@@ -144,7 +144,7 @@ describe('MembersService', () => {
 
         beforeEach(async () => {
           saveSpy = jest.spyOn(service, 'save');
-          await service.update(memberExisting(), updateMemberDto());
+          await service.update(memberExisting(), updateMemberMap());
         });
 
         test('then it should have emitted that email had changed', () => {

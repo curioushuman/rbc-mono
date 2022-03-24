@@ -7,8 +7,8 @@ import {
   tierExisting,
   createTierTier,
   updateTierTier,
-  createTierDto,
-  updateTierDto,
+  createTierMap,
+  updateTierMap,
 } from './stubs/tier.stub';
 
 import { TiersRepository } from '../tiers.repository';
@@ -108,7 +108,7 @@ describe('TiersService', () => {
 
         beforeEach(async () => {
           saveSpy = jest.spyOn(service, 'save');
-          await service.create(createTierDto());
+          await service.create(createTierMap());
         });
 
         test('then it should call the save function with a Tier', () => {
@@ -123,7 +123,7 @@ describe('TiersService', () => {
 
         beforeEach(async () => {
           saveSpy = jest.spyOn(service, 'save');
-          await service.update(tierExisting(), updateTierDto());
+          await service.update(tierExisting(), updateTierMap());
         });
 
         test('then it should call the save function with a Tier, not a map', () => {

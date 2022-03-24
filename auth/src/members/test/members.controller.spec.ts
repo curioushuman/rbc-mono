@@ -7,6 +7,8 @@ import {
   updateMemberDto,
   createMemberMember,
   updateMemberMember,
+  createMemberMap,
+  updateMemberMap,
 } from './stubs/member.stub';
 import { Member } from '../schema';
 
@@ -87,7 +89,7 @@ describe('MembersController', () => {
       });
 
       test('then it should call service', () => {
-        expect(service.create).toHaveBeenCalledWith(createMemberDto());
+        expect(service.create).toHaveBeenCalledWith(createMemberMap());
       });
 
       test('then it should return a Member', () => {
@@ -109,7 +111,7 @@ describe('MembersController', () => {
       test('then it should call service', () => {
         expect(service.update).toHaveBeenCalledWith(
           memberExisting(),
-          updateMemberDto(),
+          updateMemberMap(),
         );
       });
 
