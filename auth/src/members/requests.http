@@ -16,8 +16,8 @@ POST http://rbc.dev/api/auth/members
 Content-Type: application/json
 
 {
-    "id": "4",
-    "email": "elwood@bluesbrothers.com"
+    "id": "9",
+    "email": "nana@bluesbrothers.com"
 }
 
 ### Create a new member - FAIL

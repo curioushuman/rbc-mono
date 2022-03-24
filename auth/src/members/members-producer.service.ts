@@ -60,13 +60,9 @@ export class MembersProducerService implements OnModuleInit, OnModuleDestroy {
    * Emit member info
    */
   public async emitMember(topic: string, member: Member): Promise<void> {
-    // this looks like it is serializing beforehand
-    // this.msClient.emit(topic, { ...member });
-    console.log('Serializing data', member);
     const serialized = plainToInstance(MemberInternalDto, member, {
       excludeExtraneousValues: true,
     });
-    console.log('Serialized', serialized);
     await this.msClient.emit<MemberInternalDto>(topic, serialized);
   }
 }

@@ -5,11 +5,8 @@ import { plainToInstance } from 'class-transformer';
 // ! To be moved to rbc-common
 import { MemberInternalConsumerDto } from './dto/member-internal.consumer.dto';
 
+import { CreateMemberMap, UpdateMemberMap } from './mappers';
 import { MembersService } from './members.service';
-import { Member } from './schema';
-
-// TODO
-// - extract the serialization out into a mapper service / interceptor
 
 @Controller('members')
 export class MembersController {
@@ -17,22 +14,48 @@ export class MembersController {
 
   /**
    * Create a member
+   * TODO
+   * [ ] need to throw an error in here, and log it using loggable
    */
   @EventPattern('member.created')
-  async onMemberCreated(data: {
-    value: MemberInternalConsumerDto;
-  }): Promise<void> {
-    const memberDto: MemberInternalConsumerDto = data.value;
-    console.log('Seriliazing dto', memberDto);
-    const member = plainToInstance(Member, memberDto, {
-      excludeExtraneousValues: true,
-    });
-    console.log('Serialized member', member);
+  async handleMemberCreated(data: MemberInternalConsumerDto): Promise<void> {
+    // map DTO to DB structure so service can deal with it
+    const memberMapped: CreateMemberMap = plainToInstance(
+      CreateMemberMap,
+      data,
+      {
+        excludeExtraneousValues: true,
+      },
+    );
     try {
-      await this.membersService.create(member);
+      await this.membersService.create(memberMapped);
     } catch (error) {
-      // TODO use logger
-      console.error('Error creating member from event', error);
+      // throw an error
+      console.log(error);
+    }
+  }
+
+  /**
+   * Update a member
+   * TODO
+   * [ ] need to throw an error in here, and log it using loggable
+   */
+  @EventPattern('member.updated')
+  async handleMemberUpdated(data: MemberInternalConsumerDto): Promise<void> {
+    // map DTO to DB structure so service can deal with it
+    const memberMapped: UpdateMemberMap = plainToInstance(
+      UpdateMemberMap,
+      data,
+      {
+        excludeExtraneousValues: true,
+      },
+    );
+    try {
+      const member = await this.membersService.findOne(memberMapped.id);
+      await this.membersService.update(member, memberMapped);
+    } catch (error) {
+      // throw an error
+      console.log(error);
     }
   }
 }

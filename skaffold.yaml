@@ -19,7 +19,7 @@ deploy:
       chartPath: charts/subcharts/rbc-auth
       namespace: rbc
       artifactOverrides:
-        imageKey: curioushuman/rbc-auth
+        image: curioushuman/rbc-auth
       imageStrategy:
         helm: {}
       setValues:
@@ -29,7 +29,7 @@ deploy:
       chartPath: charts/subcharts/rbc-subscriptions
       namespace: rbc
       artifactOverrides:
-        imageKey: curioushuman/rbc-subscriptions
+        image: curioushuman/rbc-subscriptions
       imageStrategy:
         helm: {}
       setValues:

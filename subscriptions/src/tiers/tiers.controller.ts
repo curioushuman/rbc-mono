@@ -8,13 +8,12 @@ import {
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
+import { SerializeInterceptor } from '@curioushuman/rbc-common';
 
 import { TiersService } from './tiers.service';
-import { CreateTierDto, UpdateTierDto } from './dto';
+import { CreateTierDto, UpdateTierDto, TierExternalDto } from './dto';
 import { Tier } from './schema';
-import { SerializeInterceptor } from '@curioushuman/rbc-common';
-import { TierExternalDto } from './dto/tier-external.dto';
-import { plainToInstance } from 'class-transformer';
 import { CreateTierMap, UpdateTierMap } from './mappers';
 
 @SerializeInterceptor(TierExternalDto)
